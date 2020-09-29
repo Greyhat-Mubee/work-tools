@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: work-tools
+  labels:
+    app: work-tools
+spec:
+  selector:
+    matchLabels:
+      app: work-tools
+  template:
+    metadata:
+      labels:
+        app: work-tools
+    spec:
+      containers:
+      - name: work-tools
+        image: localhost:32000/work-tools:registry
+        ports:
+        - containerPort: 80
