@@ -1,0 +1,33 @@
+.contentpage{
+    position: absolute;
+    margin-top: 8px;
+    width: 60vw;
+    background-color:#F7F8FC;
+}
+@media(max-width: 1360px){
+    .contentpage{
+        width: 99%;
+    }
+}
+
+.my-modal .modal-content{
+    height: 0px;
+    width: 0px;
+    margin-bottom: 10%;
+}
+
+.otherModal .modal-header{
+    height: 60px;
+}
+
+.shcenter{
+    
+    left: 25%;
+    max-height: 90vh;
+    width: 60vw;
+}
+
+label{
+    text-align: left;
+    padding-bottom: 0.5vh;
+}
