@@ -1,0 +1,30 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  Deploy_to_Production:
+    # The type of runner that the job will run on
+    runs-on: self-hosted
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    # Runs a single command using the runners shelltwo
+    - name: Update docker image
+      run: sudo docker build . -t localhost:32000/work-tools:registry
+    - name: Push docker image to kubernetes registry
+      run: sudo docker push localhost:32000/work-tools
+    - name: Deploy new image to kubernetes pod
+      run: POD_NAME=$(command sudo microk8s kubectl get pods |grep -o '^\S*'|grep work-tools) && sudo microk8s kubectl delete pod $POD_NAME
