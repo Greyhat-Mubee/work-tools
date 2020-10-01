@@ -16,5 +16,6 @@ spec:
       containers:
       - name: work-tools
         image: localhost:32000/work-tools:registry
+        imagePullPolicy: "Always"
         ports:
         - containerPort: 80
