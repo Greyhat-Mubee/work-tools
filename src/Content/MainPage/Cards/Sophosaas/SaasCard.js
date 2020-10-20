@@ -4,8 +4,8 @@ import './SaasCard.css'
 import createlogo from './Create Subscriber.png';
 import decommlogo from './Decommission.png';
 import {Row, Coloum} from 'simple-flexbox';
-import CreateSubscriber from "../../CreateSubscriber/CreateSubscriber.1";
-import Decommission from '../../Decommission/Decommision';
+import CreateSubscriber from "./CreateSubscriber/CreateSubscriber.1";
+import Decommission from './Decommission/Decommision';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
  
 const styles = StyleSheet.create({

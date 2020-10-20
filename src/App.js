@@ -8,6 +8,7 @@ import HeaderComponent from './Content/Header/HeaderComponent'
 import Card from './Content/MainPage/Cards/Dashboard/Cards';
 import SaasCard from './Content/MainPage/Cards/Sophosaas/SaasCard';
 import Login from './Content/Login/Login/Login';
+import FwbCards from './Content/MainPage/Cards/Fixed-wireless/fwbCard';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
 
 class App extends Component{
   state = { selectedItem: '',
-            isSignedIn: false,
+            isSignedIn: true,
             auth_token: ""
     };
     componentDidMount() {
@@ -65,6 +66,8 @@ class App extends Component{
                       />
                       : selectedItem === 'Dashboard' && isSignedIn === true?
                       <Card ClassName={css(styles.content)}/>
+                      : selectedItem === 'Fixed Wireless Broadband' && isSignedIn === true?
+                      <FwbCards/>
                       :<Login ClassName={css(styles.content)} 
                       isSignedIn={isSignedIn}
                       auth_token={auth_token} 
