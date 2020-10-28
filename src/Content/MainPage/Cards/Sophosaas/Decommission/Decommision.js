@@ -5,7 +5,7 @@ import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import { css } from "@emotion/core";
 import RingLoader from "react-spinners/HashLoader";
-import SaasCard from '../../MainPage/Cards/Sophosaas/SaasCard';
+import SaasCard from '../SaasCard';
 
 
 function MyVerticallyCenteredModal(props) {

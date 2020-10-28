@@ -11,6 +11,10 @@ export default function Login(props) {
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
   const {isSignedIn, auth_token} = props
+
+  function SignInChange (val) {
+    return props.onSignChange(val)
+  }
    function onItemClicked (item) {   
     return props.onChange(item);    
     }
@@ -33,13 +37,13 @@ export default function Login(props) {
         url:'http://192.168.6.253:32598/token',
         data: bodyFormData
     }) .then(function(response){
-        
             onItemClicked(true)
-            StoreToken(response.data['access_token'])       
+            StoreToken(response.data['access_token'])
+            SignInChange('Dashboard')     
     }).catch(err => {
           onItemClicked(false)
           setLoginStatus('false')
-          console.log(loginStatus)
+          console.log(err)
     }) 
     event.preventDefault();
   }

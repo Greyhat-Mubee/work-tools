@@ -1,13 +1,25 @@
 import React from 'react';
 import Imageicon from './saasicon.png';
 import { StyleSheet, css } from 'aphrodite';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import wireless_img from './wireless.png'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import SaasCard from '../Sophosaas/SaasCard'
+import FwbCards from '../Fixed-wireless/fwbCard'
 
 const styles = StyleSheet.create({
     imageicons:{
         height:'190px',
         width: '110px',
+        justifyContent:'center',
+        borderRadius:'10px',
+        paddingTop:"30px",
+        paddingBottom:"80px",
+        },
+    imageicon:{
+        height:'190px',
+        width: '80px',
         justifyContent:'center',
         borderRadius:'10px',
         paddingTop:"30px",
@@ -34,10 +46,10 @@ const styles = StyleSheet.create({
     }
 )
 
-const Card = () => { 
+const Card = (props) => { 
     return (
-        
         <Router>
+        <Row>
         <Link to="/sophosaas">
         <div className= 'tc dib br3 ba b--light-gray pa3 ma2 bw2 pointer w5'>
             <img alt='robots' src= {Imageicon} className={css(styles.imageicons)}/>
@@ -47,10 +59,21 @@ const Card = () => {
             </div>
         </div>
         </Link>
+        <Link to="/fwb" onClick={props.selectedItem === 'Fixed Wireless Broadband'}>
+        <div className= 'tc dib br3 ba b--light-gray pa3 ma2 bw2 pointer w5'>
+            <img alt='robots' src= {wireless_img} className={css(styles.imageicon)}/>
+            <div className={css(styles.separator)}></div>
+            <div>
+                <p className={css(styles.text)}>Fixed Wireless</p>
+            </div>
+        </div>
+        </Link>
+        </Row>
         <Switch>
             <Route path="/sophosaas/">
                 <SaasCard/>
             </Route>    
+            <Route path='/fwb' component={FwbCards}/>
         </Switch>
         </Router>
     )

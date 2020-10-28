@@ -1,0 +1,33 @@
+.contentpager{
+    position: absolute;
+    bottom: -50vh;
+    max-height: 90vh;
+    margin-top: 8px;
+    width: 82vw;
+    background-color:#F7F8FC;
+}
+@media(max-width: 1360px){
+    .contentpage{
+        width: 99%;
+    }
+}
+.centerdets{
+    margin-left: 35%;
+    padding: 30px;
+}
+.roboimg{
+    width: 210px;
+    height: 210px;
+    margin-left: 7%;
+}
+.subcard{
+    margin-top: 20px;
+    padding: 20px;
+    font-family: Muli;
+    font-weight: bold;
+    width: 400px;
+}
+.accordioncard{
+    width: 400px;
+    margin-top: 20px;
+}

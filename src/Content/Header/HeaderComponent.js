@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
         '@media (max-width: 1080px)': {
             marginLeft: 50
         },
+        '@media (max-width: 1366px)': {
+            marginLeft: 40
+        },
         '@media (max-width: 468px)': {
             fontSize: 20
         }
@@ -73,7 +76,7 @@ class HeaderComponent extends Component {
     }
 
     onLogoutClick = (item) => {
-        console.log("Does this work")
+        this.onItemClicked('Login')
         return this.props.onSignChange(item)
     }
        

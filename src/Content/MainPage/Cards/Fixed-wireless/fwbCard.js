@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import './SaasCard.css'
-import createlogo from './Create Subscriber.png';
-import decommlogo from './Decommission.png';
+import './fwbCard.css'
+import createlogo from './newSub.png';
+import decommlogo from './query.png';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import CreateSubscriber from "./CreateSubscriber/CreateSubscriber.1";
-import Decommission from './Decommission/Decommision';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
- 
+import Create_Subscriber from './Create_Subscriber/CreateSubscriber.1';
+import QuerySubscriber from './Query_Subscriber/querySub';
+
 const styles = StyleSheet.create({
     contentpage:{
         position:"absolute",
@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
     }
 )
 
-const SaasCard = (props) => {
+const FwbCards = (props) => {
     const {auth_token} = props
     return(
     <div className={css(styles.contentpage)}>   
     <Row>
         <Router>
-            <Link to="/sophosaas/createsubscriber">
+            <Link to="/fwb/createsubscriber">
                 <div className= 'tc dib br3 backcolor ba b--light-gray pa3 ma2 bw2 pointer w5'>
                     <img alt='robots' src= {createlogo} className={css(styles.imageicons)}/>
                     <div className={css(styles.separator)}></div>
@@ -58,21 +58,21 @@ const SaasCard = (props) => {
                     </div>
                 </div>
             </Link>
-            <Link to="/sophosaas/decommission">
+            <Link to="/fwb/querysubscriber">
             <div className= 'tc dib br3 ba backcolor b--light-gray pa3 ma2 bw2 pointer w5'>
                 <img alt='robots' src= {decommlogo} className={css(styles.imageicons)}/>
                 <div className={css(styles.separator)}></div>
                 <div>
-                    <p className={css(styles.text)}>Decommission</p>
+                    <p className={css(styles.text)}>Query Subscriber</p>
                 </div>
             </div>
             </Link>
             <Switch>
-                <Route path="/sophosaas/createsubscriber">
-                    <CreateSubscriber auth_token={auth_token}/>
+                <Route path="/fwb/createsubscriber">
+                    <Create_Subscriber auth_token={auth_token}/>
                 </Route>
-                <Route path="/sophosaas/decommission" >
-                    <Decommission auth_token={auth_token}/>
+                <Route path="/fwb/querysubscriber" >
+                    <QuerySubscriber auth_token={auth_token}/>
                 </Route>
             </Switch>
         </Router>
@@ -81,4 +81,4 @@ const SaasCard = (props) => {
     )
 }
 
-export default SaasCard;
+export default FwbCards;
