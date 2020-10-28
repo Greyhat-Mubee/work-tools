@@ -54,7 +54,7 @@ const CreateSubscriber = (props) => {
        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
         axios({
             method: 'POST',
-            url:'http://localhost:8000/fwb/newsubscriber',
+            url:'http://192.168.6.253:32598/fwb/newsubscriber',
             data:{
               "name": subscriberName,
               "subnet": lanSubnetAddress,

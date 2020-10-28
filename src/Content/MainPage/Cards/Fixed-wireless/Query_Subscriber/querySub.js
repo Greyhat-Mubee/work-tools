@@ -15,7 +15,7 @@ const QuerySubscriber = (props) =>{
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'POST',
-             url:'http://localhost:8000/fwb/querysubscriber',
+             url:'http://192.168.6.253:32598/fwb/querysubscriber',
              data:{
                "name": searchName,
              },

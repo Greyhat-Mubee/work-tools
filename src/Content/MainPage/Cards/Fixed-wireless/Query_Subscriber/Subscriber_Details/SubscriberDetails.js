@@ -75,7 +75,7 @@ const SubscriberDetails = (props) => {
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'POST',
-             url:'http://localhost:8000/fwb/changeipaddress',
+             url:'http://192.168.6.253:32598/fwb/changeipaddress',
              data:{
                 "name": subscriber_name,
                 "Old_ip": subscriber_ip,
@@ -96,7 +96,7 @@ const SubscriberDetails = (props) => {
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'POST',
-             url:'http://localhost:8000/fwb/deletesubscriber',
+             url:'http://192.168.6.253:32598/fwb/deletesubscriber',
              data:{
                "name": subscriber_name,
              },
@@ -114,7 +114,7 @@ const SubscriberDetails = (props) => {
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'POST',
-             url:'http://localhost:8000/fwb/changeattribute',
+             url:'http://192.168.6.253:32598/fwb/changeattribute',
              data:{
                     "name": subscriber_name,
                     "attr_name": attribute_name,
