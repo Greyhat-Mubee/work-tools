@@ -23,9 +23,13 @@ export default function Login(props) {
         return props.tokenChange(token)
     }
 
-  function validateForm() {
-    return email.length > 0 && password.length > 0;
-  }
+    function StoreName(token){
+      return props.nameChange(token)
+    }
+
+    function validateForm() {
+      return email.length > 0 && password.length > 0;
+    }
 
   function handleSubmit(event) {
     axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -39,6 +43,7 @@ export default function Login(props) {
     }) .then(function(response){
             onItemClicked(true)
             StoreToken(response.data['access_token'])
+            StoreName(response.data['name'])       
             SignInChange('Dashboard')     
     }).catch(err => {
           onItemClicked(false)

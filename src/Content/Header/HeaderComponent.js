@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { string } from 'prop-types';
 import { Row, Column } from 'simple-flexbox';
+import user_pic from './userpic.png';
 import { StyleSheet, css } from 'aphrodite';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -81,7 +82,7 @@ class HeaderComponent extends Component {
     }
        
     render (){
-        const { icon, title,isSignedin, ...otherProps } = this.props;
+        const { icon, title,isSignedin, user_name} = this.props;
         if (isSignedin === true) {
             return (
                 <Router>
@@ -89,12 +90,13 @@ class HeaderComponent extends Component {
                     className={css(styles.container)}
                     vertical="center"
                     horizontal="space-between"
-                    {...otherProps}
                     >
                     <span className={css(styles.title)}>{title}</span>
                     <Row vertical="center">
                         <div className={css(styles.separator)}></div>
-                        <Row vertical="center">    
+                        <Row vertical="center">
+                        <img src={user_pic} style={{height:"30px", marginRight:"15px"}}/>
+                        <p style={{fontFamily:"Muli", fontWeight:"bold",fontSize:"20px",paddingTop:"20px"}}>{user_name}</p> 
                         <Link to="/logout">
                             <button className={css(styles.iconStyles)}
                               onClick= {() => this.onLogoutClick(false)}
@@ -115,7 +117,6 @@ class HeaderComponent extends Component {
                     className={css(styles.container)}
                     vertical="center"
                     horizontal="space-between"
-                    {...otherProps}
                 >
                     <span className={css(styles.title)}>{title}</span>
                     <Row vertical="center">

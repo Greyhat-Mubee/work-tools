@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
 class App extends Component{
   state = { selectedItem: 'Login',
             isSignedIn: false,
-            auth_token: ""
+            auth_token: "",
+            name: ""
     };
     componentDidMount() {
         window.addEventListener('resize', this.resize);
@@ -45,15 +46,16 @@ class App extends Component{
     resize = () => this.forceUpdate();
     
   render(){
-    const { selectedItem, isSignedIn, auth_token } = this.state;
+    const { selectedItem, isSignedIn, auth_token, name } = this.state;
   return (
     <div>
       <Row className={css(styles.container)}>
                 <Sidebar selectedItem={selectedItem} onChange={(selectedItem) => this.setState({ selectedItem })} />
                 <Column flexGrow={1} className={css(styles.mainBlock)}>
-                    <HeaderComponent title={selectedItem} 
+                <HeaderComponent title={selectedItem} 
                         onChange={(selectedItem) => this.setState({ selectedItem })} 
                         isSignedin={isSignedIn}
+                        user_name = {name}
                         onSignChange={(isSignedIn) => this.setState({ isSignedIn })}
                         />
                      {
@@ -64,6 +66,7 @@ class App extends Component{
                           onChange={(isSignedIn) => this.setState({ isSignedIn })}
                           tokenChange={(auth_token) => this.setState({auth_token})}
                           onSignChange={(selectedItem)=> this.setState({selectedItem})}
+                          nameChange={(name) => this.setState({name})}
                           />
                       : selectedItem === 'Sophos as a Service' && isSignedIn === true ? 
                       <SaasCard ClassName={css(styles.content)}
