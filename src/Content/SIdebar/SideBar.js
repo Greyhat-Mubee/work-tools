@@ -111,6 +111,13 @@ class Sidebar extends Component {
                                 active={this.props.selectedItem === 'Sophos as a Service'}
                             />
                             </Link>
+                            <Link to="/fwb">
+                            <Menu
+                                title="Fixed Wireless"
+                                onClick={() => this.onItemClicked('Fixed Wireless Broadband')}
+                                active={this.props.selectedItem === 'Fixed Wireless Broadband'}
+                            />
+                            </Link>
                            </Router>
                         </Column>
                     </Column>

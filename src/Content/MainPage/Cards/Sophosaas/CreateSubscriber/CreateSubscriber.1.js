@@ -3,7 +3,7 @@ import './CreateSubscriber.css';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import SaasCard from '../../MainPage/Cards/Sophosaas/SaasCard';
+import SaasCard from '../SaasCard';
 import { css } from "@emotion/core";
 import RingLoader from "react-spinners/HashLoader";
 

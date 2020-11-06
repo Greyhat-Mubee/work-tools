@@ -1,0 +1,41 @@
+.contentpage{
+    position: absolute;
+    margin-top: 8px;
+    width: 60vw;
+    background-color:#F7F8FC;
+}
+@media(max-width: 1360px){
+    .contentpage{
+        width: 99%;
+    }
+}
+.searchinput {
+    outline: 0;
+    background-color: transparent;
+    border-width: 0 0 2px;
+    border-color: #61aaf2;
+    width: 50%;
+  }
+  .searchinput:focus {
+    border-color: #61aaf2;
+    border-width: 0 0 4px;
+  }
+
+.centered{
+    display: flex;
+    justify-content: center;
+    margin-top: 20%;
+}
+.centeredrd{
+    display: flex;
+    justify-content: center;
+}
+.searchbtn{
+    background-color: transparent;
+    outline: 0;
+    border: none;
+}
+.formstyle{
+    width: 100%;
+    margin-left: 30%;
+}
