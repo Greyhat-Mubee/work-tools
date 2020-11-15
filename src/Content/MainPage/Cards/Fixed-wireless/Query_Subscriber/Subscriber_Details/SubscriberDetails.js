@@ -6,13 +6,14 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import "react-toggle/style.css"
-import Scroll from '../../../Scroll'
+import {FormGroup, FormControl} from "react-bootstrap";
+import "react-toggle/style.css";
+import Scroll from '../../../Scroll';
 import RingLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/core";
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
+import IpComponent from './IpCompnent';
 
 
 const SubscriberDetails = (props) => {
@@ -62,7 +63,6 @@ const SubscriberDetails = (props) => {
     const [FilterMovies, setFilterMovies] = useState(check_attr(subscriberdata['attributes'][5]['attribute value']))
     const [FilterP2P, setFilterP2P] = useState(check_attr(subscriberdata['attributes'][6]['attribute value']))
     const [FilterYoutube, setFilterYoutube] = useState(check_attr(subscriberdata['attributes'][7]['attribute value']))
-    const [toggleActive, settoogleActive] = useState(false)
     const [show, setShow] = useState(false);
     const [Decommisionshow, setDecommisionshow] = useState(false);
     const [Errorshow, setErrorshow] = useState(false);
@@ -162,6 +162,7 @@ const SubscriberDetails = (props) => {
   }
     const SuspendSubscriber = (event) => {
         change_attr_api('Plan', 'suspend');
+        setSubscriberPlan("Suspended")
         event.preventDefault();
     }
     const ChangeSubscriberPlan = (newValue) => {
@@ -181,10 +182,7 @@ const SubscriberDetails = (props) => {
      function validateForm() {
         return NewIPAddress.length > 0 ;
       }
-    function handleSubmit(event) {
-    ChangeSubscriberIPapi();
-    event.preventDefault();
-    }
+    
 
     function MyVerticallyCenteredModal(props) {
 
@@ -213,42 +211,7 @@ const SubscriberDetails = (props) => {
 
     return(
         <div>
-             <Modal show={show} className='otherModal' 
-              onHide={handleClose} centered backdrop="static" 
-              style={{padding:"300px"}} animation={false}
-              >
-              <Modal.Body> 
-                <form onSubmit={handleSubmit}>
-                    <Row>
-                        <Col>
-                            <p style={{fontFamily:"Muli", paddingBottom:"20px", paddingLeft:"5px", fontWeight:"bold", fontSize:"17px"}}>Change IP Address</p>
-                        </Col>
-                        <Col>
-                            <Button variant="secondary" style={{backgroundColor:"transparent", borderStyle:"none", marginLeft:"80%", fontSize:"10px"}} onClick={handleClose}>
-                            ✖
-                            </Button>
-                        </Col>      
-                    </Row>
-                    <Row>
-                       <Col>
-                        <FormControl
-                                autoFocus
-                                type="text"
-                                value={NewIPAddress}
-                                onChange={e => setNewIPAddress(e.target.value)}
-                            />
-                       </Col>
-                       <Col xs lg="4">
-                            <Button block disabled={!validateForm()} type="submit">
-                                Change
-                            </Button>
-                       </Col> 
-                    </Row>
-                     
-                    
-                </form> 
-              </Modal.Body>
-          </Modal>  
+             
           <Modal show={Decommisionshow} className='otherModal' 
               onHide={handleClose} 
               style={{padding:"300px"}}
@@ -312,14 +275,17 @@ const SubscriberDetails = (props) => {
                             </Card.Header>
                             <Accordion.Collapse eventKey="0">
                             <Card.Body>
-                                <form onSubmit={IPchangeModal}>
-                                    <Row>
-                                    <Col>{subscriber_ip}</Col>
-                                    <Col></Col>
-                                    <Col><Button style={{height:"90%", padding:"1px", marginTop:"1px"}} type="submit">Change</Button></Col>
-                                    </Row>
-                                                                        
-                                </form>
+                            <div>
+                                {
+                                    subscriber_ip.map((user, i) => {
+                                    return(<IpComponent key = {i} 
+                                                ip={subscriber_ip[i]}
+                                                authen_token = {auth_token}
+                                                subscriber_name = {subscriberdata['name']}
+                                                />)
+                                })
+                            }
+                            </div>
                             </Card.Body>
                             </Accordion.Collapse>
                         </Card>
