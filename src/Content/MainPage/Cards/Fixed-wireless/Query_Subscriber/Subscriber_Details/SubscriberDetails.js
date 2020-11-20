@@ -67,6 +67,7 @@ const SubscriberDetails = (props) => {
     const [Decommisionshow, setDecommisionshow] = useState(false);
     const [Errorshow, setErrorshow] = useState(false);
     const handleClose = () => setShow(false);
+    const handleClose_Decomm = () => setDecommisionshow(false);
     const handleShow = () => setShow(true);
     const [NewIPAddress, setNewIPAddress] = useState("");
     const [apiResponse, setapiResponse] = useState("");
@@ -105,6 +106,7 @@ const SubscriberDetails = (props) => {
              }
          }) .then(function(response){
                  setapiResponse(response.data);
+                 setDecommisionshow(true);
                  
          }) .catch(err=>{
                  setErrorshow(true)
@@ -171,7 +173,6 @@ const SubscriberDetails = (props) => {
     }
     const DecommissionSusbscriber = (newValue) => {
         DecommissionSubscriberapi();
-        setDecommisionshow(true);
     }
 
     const IPchangeModal = (event) => {
@@ -213,7 +214,7 @@ const SubscriberDetails = (props) => {
         <div>
              
           <Modal show={Decommisionshow} className='otherModal' 
-              onHide={handleClose} 
+              onHide={handleClose_Decomm} 
               style={{padding:"300px"}}
               >
               <Modal.Body> 
@@ -222,7 +223,7 @@ const SubscriberDetails = (props) => {
                             <p style={{fontFamily:"Muli", paddingBottom:"20px", paddingLeft:"5px", fontWeight:"bold", fontSize:"17px"}}>Subscriber Successfully Deleted</p>
                         </Col>
                         <Col>
-                            <Button variant="secondary" style={{backgroundColor:"transparent", borderStyle:"none", marginLeft:"80%", fontSize:"10px"}} onClick={handleClose}>
+                            <Button variant="secondary" style={{backgroundColor:"transparent", borderStyle:"none", marginLeft:"80%", fontSize:"10px"}} onClick={handleClose_Decomm}>
                             ✖
                             </Button>
                         </Col>      
