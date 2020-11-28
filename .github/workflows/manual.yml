@@ -32,5 +32,5 @@ jobs:
     - name: Deploy new image to kubernetes pod
       run: POD_NAME=$(command sudo microk8s kubectl get pods |grep -o '^\S*'|grep work-tools) && sudo microk8s kubectl delete pod $POD_NAME
     - name: Delete old docker images
-      run: IMG_NAME=$(command docker images | grep none | awk '{print $3}') && docker rmi $IMG_NAME
+      run: IMG_NAME=$(command docker images | grep none | awk '{print $3}') && docker rmi -f $IMG_NAME
 
