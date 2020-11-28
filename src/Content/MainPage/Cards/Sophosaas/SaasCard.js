@@ -67,14 +67,6 @@ const SaasCard = (props) => {
                 </div>
             </div>
             </Link>
-            <Switch>
-                <Route path="/sophosaas/createsubscriber">
-                    <CreateSubscriber auth_token={auth_token}/>
-                </Route>
-                <Route path="/sophosaas/decommission" >
-                    <Decommission auth_token={auth_token}/>
-                </Route>
-            </Switch>
         </Router>
     </Row>
     </div> 

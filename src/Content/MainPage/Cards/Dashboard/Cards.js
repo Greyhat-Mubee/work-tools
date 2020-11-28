@@ -69,12 +69,6 @@ const Card = (props) => {
         </div>
         </Link>
         </Row>
-        <Switch>
-            <Route path="/sophosaas/">
-                <SaasCard/>
-            </Route>    
-            <Route path='/fwb' component={FwbCards}/>
-        </Switch>
         </Router>
     )
 }
