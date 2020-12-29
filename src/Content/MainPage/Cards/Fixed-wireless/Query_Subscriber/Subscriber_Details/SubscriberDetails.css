@@ -1,10 +1,9 @@
 .contentpager{
     position: absolute;
-    bottom: -50vh;
     max-height: 90vh;
-    margin-top: 8px;
     width: 82vw;
     background-color:#F7F8FC;
+    bottom: 60px;
 }
 @media(max-width: 1360px){
     .contentpage{

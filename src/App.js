@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 
 class App extends Component{
   state = { selectedItem: 'Login',
-            isSignedIn: false,
+            isSignedIn: true,
             auth_token: "",
             name: ""
     };
