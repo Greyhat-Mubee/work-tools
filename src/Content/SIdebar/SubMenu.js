@@ -35,11 +35,11 @@ const styles = StyleSheet.create({
         lineHeight: '20px',
         letterSpacing: '0.2px',
         color: '#A4A6B3',
-        // marginLeft: 24
+        marginLeft: 24
     }
 });
 
-function Menu(props) {
+function SubMenu(props) {
     const { active, icon, title, ...otherProps } = props;
     const Icon = icon;
     return (
@@ -50,9 +50,9 @@ function Menu(props) {
     );
 }
 
-Menu.propTypes = {
+SubMenu.propTypes = {
     active: bool,
     title: string
 };
 
-export default Menu;
+export default SubMenu;

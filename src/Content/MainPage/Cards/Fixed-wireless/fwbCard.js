@@ -67,14 +67,6 @@ const FwbCards = (props) => {
                 </div>
             </div>
             </Link>
-            <Switch>
-                <Route path="/fwb/createsubscriber">
-                    <Create_Subscriber auth_token={auth_token}/>
-                </Route>
-                <Route path="/fwb/querysubscriber" >
-                    <QuerySubscriber auth_token={auth_token}/>
-                </Route>
-            </Switch>
         </Router>
     </Row>
     </div> 

@@ -9,6 +9,10 @@ import Card from './Content/MainPage/Cards/Dashboard/Cards';
 import SaasCard from './Content/MainPage/Cards/Sophosaas/SaasCard';
 import Login from './Content/Login/Login/Login';
 import FwbCards from './Content/MainPage/Cards/Fixed-wireless/fwbCard';
+import CreateSubscriber from './Content/MainPage/Cards/Sophosaas/CreateSubscriber/CreateSubscriber.1';
+import Decommission from './Content/MainPage/Cards/Sophosaas/Decommission/Decommision';
+import FwbCreate from './Content/MainPage/Cards/Fixed-wireless/Create_Subscriber/CreateSubscriber.1';
+import QuerySubscriber from './Content/MainPage/Cards/Fixed-wireless/Query_Subscriber/querySub'
 
 const styles = StyleSheet.create({
   container: {
@@ -31,7 +35,7 @@ const styles = StyleSheet.create({
 
 class App extends Component{
   state = { selectedItem: 'Login',
-            isSignedIn: false,
+            isSignedIn: true,
             auth_token: "",
             name: ""
     };
@@ -50,7 +54,9 @@ class App extends Component{
   return (
     <div>
       <Row className={css(styles.container)}>
-                <Sidebar selectedItem={selectedItem} onChange={(selectedItem) => this.setState({ selectedItem })} />
+                <Sidebar selectedItem={selectedItem} 
+                        onChange={(selectedItem) => this.setState({ selectedItem })}
+                        isSignedIn={isSignedIn}  />
                 <Column flexGrow={1} className={css(styles.mainBlock)}>
                 <HeaderComponent title={selectedItem} 
                         onChange={(selectedItem) => this.setState({ selectedItem })} 
@@ -77,6 +83,14 @@ class App extends Component{
                        onChange={(selectedItem) => this.setState({ selectedItem })} />
                       : selectedItem === 'Fixed Wireless Broadband' && isSignedIn === true?
                       <FwbCards/>
+                      : selectedItem === 'Sophos > Create Subscriber' && isSignedIn === true?
+                      <CreateSubscriber auth_token={auth_token}/>
+                      : selectedItem === 'Sophos > Decommission' && isSignedIn === true?
+                      <Decommission auth_token={auth_token}/>
+                      : selectedItem === 'Fwb > Create Subscriber' && isSignedIn === true?
+                      <FwbCreate auth_token={auth_token}/>
+                      : selectedItem === 'Fwb > Query Subscriber' && isSignedIn === true?
+                      <QuerySubscriber auth_token={auth_token}/>
                       :<Login ClassName={css(styles.content)} 
                       isSignedIn={isSignedIn}
                       auth_token={auth_token} 

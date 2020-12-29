@@ -3,7 +3,7 @@ import './SubscriberDetails.css';
 import Toggle from 'react-toggle'
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {FormGroup, FormControl} from "react-bootstrap";
@@ -346,8 +346,8 @@ const SubscriberDetails = (props) => {
                                     </Col>
                                 </Row>
                                 <Row className="ma3">
-                                    <Col>Filter Streaming</Col>
-                                    <Col style={{marginLeft:"90px"}}>
+                                    <Col sm={8}>Filter Streaming</Col>
+                                    <Col sm={4}>
                                     <Toggle
                                         id='filterStreaming'
                                         defaultChecked={FilterStreaming}
@@ -355,8 +355,8 @@ const SubscriberDetails = (props) => {
                                     </Col>
                                 </Row>
                                 <Row className="ma3">
-                                    <Col md={90} style={{marginLeft:"15px"}}>Filter Apple Update</Col>
-                                    <Col style={{marginLeft:"80px"}}>
+                                    <Col sm={8}>Filter Apple Update</Col>
+                                    <Col sm={4}>
                                     <Toggle
                                         id='filterappleupdate'
                                         defaultChecked={FilterAppleUpdate}
@@ -364,8 +364,8 @@ const SubscriberDetails = (props) => {
                                     </Col>                                
                                 </Row>
                                 <Row className="ma3">
-                                    <Col>Filter Itunes</Col>
-                                    <Col style={{marginLeft:"90px"}}>
+                                    <Col sm={8}>Filter Itunes</Col>
+                                    <Col sm={4}>
                                     <Toggle
                                         id='filteritunes'
                                         defaultChecked={FilterItunes}
@@ -373,8 +373,8 @@ const SubscriberDetails = (props) => {
                                     </Col>
                                 </Row>
                                 <Row className="ma3">
-                                    <Col md={90} style={{marginLeft:"15px"}}>Filter Microsoft Update</Col>
-                                    <Col style={{marginLeft:"55px"}}>
+                                    <Col sm={8}>Filter Microsoft Update</Col>
+                                    <Col sm={4}>
                                     <Toggle
                                         id='filtermicrosoftupdates'
                                         defaultChecked={FilterMicrosoftUpdate}
@@ -382,8 +382,8 @@ const SubscriberDetails = (props) => {
                                     </Col>                                
                                 </Row>
                                 <Row className="ma3">
-                                    <Col>Filter Movies</Col>
-                                    <Col style={{marginLeft:"90px"}}>
+                                    <Col sm={8}>Filter Movies</Col>
+                                    <Col sm={4}>
                                     <Toggle
                                         id='filtermovies'
                                         defaultChecked={FilterMovies}
@@ -391,8 +391,8 @@ const SubscriberDetails = (props) => {
                                     </Col>
                                 </Row>
                                 <Row className="ma3">
-                                    <Col>Filter P2P</Col>
-                                    <Col style={{marginLeft:"90px"}}>
+                                    <Col sm={8}>Filter P2P</Col>
+                                    <Col sm={4}>
                                     <Toggle
                                         id='filterp2p'
                                         defaultChecked={FilterP2P}
@@ -400,8 +400,8 @@ const SubscriberDetails = (props) => {
                                     </Col>
                                 </Row>
                                 <Row className="ma3">
-                                    <Col>Filter Youtube</Col>
-                                    <Col style={{marginLeft:"90px"}}>
+                                    <Col sm={8}>Filter Youtube</Col>
+                                    <Col sm={4}>
                                     <Toggle
                                         id='filteryoutube'
                                         defaultChecked={FilterYoutube}

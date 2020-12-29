@@ -1,21 +1,18 @@
 import React from 'react';
 import Imageicon from './saasicon.png';
+import ServiceIcon from './all_services.png';
+import WifiIcon from './cll-wifi.png';
 import { StyleSheet, css } from 'aphrodite';
-import Row from 'react-bootstrap/Row'
+import Row from 'react-bootstrap/Row';
+import Table from 'react-bootstrap/Table'
 import Col from 'react-bootstrap/Col'
 import wireless_img from './wireless.png'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import SaasCard from '../Sophosaas/SaasCard'
-import FwbCards from '../Fixed-wireless/fwbCard'
 
 const styles = StyleSheet.create({
     imageicons:{
-        height:'190px',
-        width: '110px',
-        justifyContent:'center',
+        height:'25px',
+        width: '33px',
         borderRadius:'10px',
-        paddingTop:"30px",
-        paddingBottom:"80px",
         },
     imageicon:{
         height:'190px',
@@ -34,11 +31,11 @@ const styles = StyleSheet.create({
         opacity: 0.06
     },
     text:{
-        paddingTop:'30px',
+        paddingTop:"7px",
+        paddingLeft:"10px",
         fontFamily: 'Muli',
-        fontSize: '20px',
+        fontSize: '17px',
         fontWeight:'bold',
-        textAlignLast:'center',
         lineHeight: '12px',
         letterSpacing: '0.2px',
         color: 'black',
@@ -48,34 +45,141 @@ const styles = StyleSheet.create({
 
 const Card = (props) => { 
     return (
-        <Router>
-        <Row>
-        <Link to="/sophosaas">
-        <div className= 'tc dib br3 ba b--light-gray pa3 ma2 bw2 pointer w5'>
-            <img alt='robots' src= {Imageicon} className={css(styles.imageicons)}/>
-            <div className={css(styles.separator)}></div>
-            <div>
-                <p className={css(styles.text)}>Sophos as a service</p>
-            </div>
+        <div style={{marginTop:'60px'}}>
+            <Row>
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
+                    <Row>
+                        <img alt='robots' src= {ServiceIcon} style={{width:'25px',height:'25px', padding:'2px'}}/>
+                        <p className={css(styles.text)}>All Services</p>
+                    </Row>
+                    <Row>
+                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
+                    </Row>
+                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
+                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> 2 </p>
+                    </Row>
+                </div>
+
+                <div className= ' dib br3 ba b--light-gray pa3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
+                    <Row>
+                        <img alt='robots' src= {Imageicon} className={css(styles.imageicons)}/>
+                        <p className={css(styles.text)}>Sophos as a service</p>
+                    </Row>
+                    <Row>
+                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
+                    </Row>
+                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
+                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> 2 </p>
+                    </Row>
+                </div>
+                
+                <div className= ' dib br3 ba b--light-gray pa3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
+                    <Row>
+                        <img alt='robots' src= {wireless_img} style={{width:'28px',height:'28px', padding:'2px'}}/>
+                        <p className={css(styles.text)}>Fixed Wireless</p>
+                    </Row>
+                    <Row>
+                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
+                    </Row>
+                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
+                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> 2 </p>
+                    </Row>
+                </div>
+
+                <div className= ' dib br3 ba b--light-gray pa3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
+                    <Row>
+                        <img alt='robots' src= {WifiIcon} style={{width:'25px',height:'25px', padding:'2px'}}/>
+                        <p className={css(styles.text)}>Coollink Wifi</p>
+                    </Row>
+                    <Row>
+                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
+                    </Row>
+                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
+                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> 2 </p>
+                    </Row>
+                </div>
+            </Row>
+
+            <Row>
+            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
+                    <Row>
+                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Fixed Wireless Users</p>
+                    </Row>
+                    <Row>
+                    <Table>
+                        <thead>
+                            <tr>
+                            <th></th>
+                            <th>SOLID - ID</th>
+                            <th>PLAN</th>
+                            <th>USAGE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>1</td>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            </tr>
+                            <tr>
+                            <td>2</td>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            </tr>
+                            <tr>
+                            <td>3</td>
+                            <td colSpan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    </Row>
+                </div>
+            </Row>
+
+            <Row>
+            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
+                    <Row>
+                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Sophos as Services Users</p>
+                    </Row>
+                    <Row>
+                    <Table>
+                        <thead>
+                            <tr>
+                            <th></th>
+                            <th>SOLID - ID</th>
+                            <th>Bandwidth Usage</th>
+                            <th>Top application</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>1</td>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            </tr>
+                            <tr>
+                            <td>2</td>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            </tr>
+                            <tr>
+                            <td>3</td>
+                            <td colSpan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    </Row>
+                </div>
+            </Row>
+
+                
         </div>
-        </Link>
-        <Link to="/fwb" onClick={props.selectedItem === 'Fixed Wireless Broadband'}>
-        <div className= 'tc dib br3 ba b--light-gray pa3 ma2 bw2 pointer w5'>
-            <img alt='robots' src= {wireless_img} className={css(styles.imageicon)}/>
-            <div className={css(styles.separator)}></div>
-            <div>
-                <p className={css(styles.text)}>Fixed Wireless</p>
-            </div>
-        </div>
-        </Link>
-        </Row>
-        <Switch>
-            <Route path="/sophosaas/">
-                <SaasCard/>
-            </Route>    
-            <Route path='/fwb' component={FwbCards}/>
-        </Switch>
-        </Router>
     )
 }
 export default Card;

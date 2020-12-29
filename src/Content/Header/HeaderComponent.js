@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
     },
     container: {
         height: 40,
+        width:'84%',
+        position:'fixed',
+        backgroundColor:'#F7F8FC'
     },
     cursorPointer: {
         cursor: 'pointer',
