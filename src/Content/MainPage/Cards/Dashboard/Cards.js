@@ -2,10 +2,10 @@ import React from 'react';
 import Imageicon from './saasicon.png';
 import ServiceIcon from './all_services.png';
 import WifiIcon from './cll-wifi.png';
+import TopCard from './TopCard';
 import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table'
-import Col from 'react-bootstrap/Col'
 import wireless_img from './wireless.png'
 
 const styles = StyleSheet.create({
@@ -56,48 +56,25 @@ const Card = (props) => {
                         <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
                     </Row>
                     <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> 2 </p>
+                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {67} </p>
                     </Row>
                 </div>
-
-                <div className= ' dib br3 ba b--light-gray pa3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
-                    <Row>
-                        <img alt='robots' src= {Imageicon} className={css(styles.imageicons)}/>
-                        <p className={css(styles.text)}>Sophos as a service</p>
-                    </Row>
-                    <Row>
-                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
-                    </Row>
-                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> 2 </p>
-                    </Row>
-                </div>
+                <TopCard
+                subscriber_no = {34}
+                service_name = 'Sophos as a Service'
+                service_img = {Imageicon} 
+                />
+                <TopCard
+                subscriber_no = {12}
+                service_name = 'Fixed Wireless'
+                service_img = {wireless_img} 
+                />
+                <TopCard
+                subscriber_no = {21}
+                service_name = 'Coollink Wifi'
+                service_img = {WifiIcon} 
+                />
                 
-                <div className= ' dib br3 ba b--light-gray pa3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
-                    <Row>
-                        <img alt='robots' src= {wireless_img} style={{width:'28px',height:'28px', padding:'2px'}}/>
-                        <p className={css(styles.text)}>Fixed Wireless</p>
-                    </Row>
-                    <Row>
-                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
-                    </Row>
-                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> 2 </p>
-                    </Row>
-                </div>
-
-                <div className= ' dib br3 ba b--light-gray pa3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
-                    <Row>
-                        <img alt='robots' src= {WifiIcon} style={{width:'25px',height:'25px', padding:'2px'}}/>
-                        <p className={css(styles.text)}>Coollink Wifi</p>
-                    </Row>
-                    <Row>
-                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
-                    </Row>
-                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> 2 </p>
-                    </Row>
-                </div>
             </Row>
 
             <Row>

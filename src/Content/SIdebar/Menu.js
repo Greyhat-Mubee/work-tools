@@ -44,6 +44,7 @@ function Menu(props) {
     const Icon = icon;
     return (
         <Row className={css(styles.container, active && styles.activeContainer)} vertical="center" {...otherProps}>
+            <img src={Icon}/>
             {active && <div className={css(styles.activeBar)}></div>}
             <span className={css(styles.title, active && styles.activeTitle)}>{title}</span>
         </Row>

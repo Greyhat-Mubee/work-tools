@@ -1,20 +1,19 @@
 import React from 'react';
+import TopCard from '../Dashboard/TopCard';
 import { StyleSheet, css } from 'aphrodite';
-import './fwbCard.css'
-import createlogo from './newSub.png';
-import decommlogo from './query.png';
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Create_Subscriber from './Create_Subscriber/CreateSubscriber.1';
-import QuerySubscriber from './Query_Subscriber/querySub';
+import Row from 'react-bootstrap/Row';
+import Table from 'react-bootstrap/Table';
+import Icontotal from './totalSubscribers.png';
+import Iconactive from './activeSub.png';
+import Iconsus from './suspendSub.png'
 
 const styles = StyleSheet.create({
-    contentpage:{
-        position:"absolute",
-        paddingTop:"40px"
-    }
-    ,imageicons:{
+    imageicons:{
+        height:'25px',
+        width: '33px',
+        borderRadius:'10px',
+        },
+    imageicon:{
         height:'190px',
         width: '80px',
         justifyContent:'center',
@@ -31,11 +30,11 @@ const styles = StyleSheet.create({
         opacity: 0.06
     },
     text:{
-        paddingTop:'30px',
+        paddingTop:"7px",
+        paddingLeft:"10px",
         fontFamily: 'Muli',
-        fontSize: '20px',
+        fontSize: '17px',
         fontWeight:'bold',
-        textAlignLast:'center',
         lineHeight: '12px',
         letterSpacing: '0.2px',
         color: 'black',
@@ -43,34 +42,110 @@ const styles = StyleSheet.create({
     }
 )
 
-const FwbCards = (props) => {
-    const {auth_token} = props
-    return(
-    <div className={css(styles.contentpage)}>   
-    <Row>
-        <Router>
-            <Link to="/fwb/createsubscriber">
-                <div className= 'tc dib br3 backcolor ba b--light-gray pa3 ma2 bw2 pointer w5'>
-                    <img alt='robots' src= {createlogo} className={css(styles.imageicons)}/>
-                    <div className={css(styles.separator)}></div>
-                    <div>
-                        <p className={css(styles.text)}>Create Subscriber</p>
-                    </div>
+const Card = (props) => { 
+    return (
+        <div style={{marginTop:'60px'}}>
+            <Row>
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
+                    <Row>
+                        <img alt='robots' src={Icontotal} style={{width:'25px',height:'25px', padding:'2px'}}/>
+                        <p className={css(styles.text)}>Total Subscribers</p>
+                    </Row>
+                    <Row>
+                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
+                    </Row>
+                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
+                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {67} </p>
+                    </Row>
                 </div>
-            </Link>
-            <Link to="/fwb/querysubscriber">
-            <div className= 'tc dib br3 ba backcolor b--light-gray pa3 ma2 bw2 pointer w5'>
-                <img alt='robots' src= {decommlogo} className={css(styles.imageicons)}/>
-                <div className={css(styles.separator)}></div>
-                <div>
-                    <p className={css(styles.text)}>Query Subscriber</p>
+                <TopCard
+                subscriber_no = {34}
+                service_name = 'Active Subscribers'
+                service_img = {Iconactive} 
+                />
+                <TopCard
+                subscriber_no = {12}
+                service_name = 'Suspended Subscribers'
+                service_img = {Iconsus} 
+                />
+            </Row>
+
+            <Row>
+            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
+                    <Row>
+                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Subscriber Plans</p>
+                    </Row>
+                    <Row>
+                    <Table>
+                        <thead>
+                            <tr>
+                            <th></th>
+                            <th>Bandwidth</th>
+                            <th>Number of Subscribers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>1</td>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            </tr>
+                            <tr>
+                            <td>2</td>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            </tr>
+                            <tr>
+                            <td>3</td>
+                            <td colSpan="2">Larry the Bird</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    </Row>
                 </div>
-            </div>
-            </Link>
-        </Router>
-    </Row>
-    </div> 
+            </Row>
+
+            <Row>
+            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
+                    <Row>
+                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Subscribers</p>
+                    </Row>
+                    <Row>
+                    <Table>
+                        <thead>
+                            <tr>
+                            <th></th>
+                            <th>SOLID - ID</th>
+                            <th>Bandwidth Usage</th>
+                            <th>Top application</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>1</td>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            </tr>
+                            <tr>
+                            <td>2</td>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            </tr>
+                            <tr>
+                            <td>3</td>
+                            <td colSpan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    </Row>
+                </div>
+            </Row>
+
+                
+        </div>
     )
 }
-
-export default FwbCards;
+export default Card;

@@ -4,6 +4,10 @@ import { StyleSheet, css } from 'aphrodite';
 import LogoComponent from './LogoComponent';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
+import createlogo from './newSub.png';
+import decommlogo from './query.png';
+import createlogoSaas from './Create Subscriber.png';
+import decommlogoSaas from './Decommission.png';
 import Button from 'react-bootstrap/Button';
 import Menu from './Menu';
 import SubMenu from './SubMenu';
@@ -136,6 +140,7 @@ class Sidebar extends Component {
                                     <Card.Body style={{padding:0, margin:0, backgroundColor:"#535463"}}>
                                         <Link to="/sophosaas/create subscriber">
                                             <SubMenu
+                                                icon = {createlogoSaas}
                                                 title="Create Subscriber"
                                                 onClick={() => this.onItemClicked('Sophos > Create Subscriber')}
                                                 active={this.props.selectedItem === 'Sophos > Create Subscriber'}
@@ -143,6 +148,7 @@ class Sidebar extends Component {
                                         </Link>
                                         <Link to="/sophosaas/decommission">
                                             <SubMenu
+                                                icon = {decommlogoSaas}
                                                 title="Decommission"
                                                 onClick={() => this.onItemClicked('Sophos > Decommission')}
                                                 active={this.props.selectedItem === 'Sophos > Decommission'}
@@ -167,6 +173,7 @@ class Sidebar extends Component {
                                     <Card.Body style={{padding:0,margin:0, backgroundColor:"#535463"}}>
                                         <Link to="/fwb/create subscriber">
                                             <SubMenu
+                                                icon = {createlogo}
                                                 title="Create Subscriber"
                                                 onClick={() => this.onItemClicked('Fwb > Create Subscriber')}
                                                 active={this.props.selectedItem === 'Fwb > Create Subscriber'}
@@ -174,6 +181,7 @@ class Sidebar extends Component {
                                         </Link>
                                         <Link to="/fwb/query subscriber">
                                             <SubMenu
+                                                icon = {decommlogo}
                                                 title="Query Subscriber"
                                                 onClick={() => this.onItemClicked('Fwb > Query Subscriber')}
                                                 active={this.props.selectedItem === 'Fwb > Query Subscriber'}
