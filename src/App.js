@@ -80,9 +80,10 @@ class App extends Component{
                       />
                       : selectedItem === 'Dashboard' && isSignedIn === true?
                       <Card ClassName={css(styles.content)} selectedItem={selectedItem} 
-                       onChange={(selectedItem) => this.setState({ selectedItem })} />
+                       onChange={(selectedItem) => this.setState({ selectedItem })} 
+                       auth_token={auth_token}/>
                       : selectedItem === 'Fixed Wireless Broadband' && isSignedIn === true?
-                      <FwbCards/>
+                      <FwbCards auth_token={auth_token}/>
                       : selectedItem === 'Sophos > Create Subscriber' && isSignedIn === true?
                       <CreateSubscriber auth_token={auth_token}/>
                       : selectedItem === 'Sophos > Decommission' && isSignedIn === true?

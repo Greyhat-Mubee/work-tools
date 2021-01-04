@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
+import axios from 'axios';
 import TopCard from '../Dashboard/TopCard';
 import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
@@ -44,10 +45,50 @@ const styles = StyleSheet.create({
 )
 
 const Card = (props) => { 
+    const {auth_token} =props;
+    const [apiResponse, setapiResponse] = useState("");
+    const [apiResponse2, setapiResponse2] = useState([]);
+    const [apiResponse3, setapiResponse3] = useState([]);
+    async function apiRequest(){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+         axios({
+             method: 'GET',
+             url:'http://192.168.6.253:32598/sophosaas/dashboardstats',
+             data:{
+             },
+             headers:{
+               'Authorization': 'Bearer '+ auth_token
+             }
+         }) .then(function(response){
+                setapiResponse(response.data);
+         }) .catch(err=>{
+            
+         })
+     }
+     async function apiRequest2(){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+         axios({
+             method: 'GET',
+             url:'http://192.168.6.253:32598/sophosaas/saasstats',
+             data:{
+             },
+             headers:{
+               'Authorization': 'Bearer '+ auth_token
+             }
+         }) .then(function(response){
+                setapiResponse2(response.data);                                 
+         }) .catch(err=>{
+            
+         })
+     }
+    useEffect(()=>{
+        apiRequest()
+        apiRequest2()
+    },[apiResponse2])
     return (
         <div style={{marginTop:'60px'}}>
             <Row>
-                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow' style={{width:'370px', height:'180px'}}>
                     <Row>
                         <img alt='robots' src={Icontotal} style={{width:'25px',height:'25px', padding:'2px'}}/>
                         <p className={css(styles.text)}>Total Subscribers</p>
@@ -56,23 +97,18 @@ const Card = (props) => {
                         <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
                     </Row>
                     <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {67} </p>
+                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {apiResponse['subscriber']} </p>
                     </Row>
                 </div>
                 <TopCard
-                subscriber_no = {34}
+                subscriber_no = {apiResponse['cpu']+'%'}
                 service_name = 'Server Load'
                 service_img = {Iconload} 
                 />
                 <TopCard
-                subscriber_no = {12}
+                subscriber_no = {apiResponse['memory']+'%'}
                 service_name = 'RAM Usage'
                 service_img = {Iconram} 
-                />
-                <TopCard
-                subscriber_no = {12}
-                service_name = 'Average Bandwidth'
-                service_img = {Iconband} 
                 />
             </Row>
 
@@ -83,32 +119,27 @@ const Card = (props) => {
                     </Row>
                     <Row>
                     <Table>
-                        <thead>
+                    <thead>
                             <tr>
                             <th></th>
                             <th>SOLID - ID</th>
-                            <th>Bandwidth Usage</th>
-                            <th>Top application</th>
+                            <th>PUBLIC IP</th>
+                            <th>VLAN ID</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            </tr>
-                            <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            </tr>
-                            <tr>
-                            <td>3</td>
-                            <td colSpan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                            </tr>
+                        {
+                                    apiResponse2.map((usersaastable, i) => {
+                                    return(
+                                        <tr>
+                                        <td>{i+1}</td>
+                                        <td>{usersaastable[0]}</td>
+                                        <td>{usersaastable[1]}</td>
+                                        <td>{usersaastable[2]}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
                         </tbody>
                     </Table>
                     </Row>

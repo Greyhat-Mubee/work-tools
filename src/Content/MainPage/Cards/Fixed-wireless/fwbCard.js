@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import TopCard from '../Dashboard/TopCard';
 import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
@@ -43,10 +44,98 @@ const styles = StyleSheet.create({
 )
 
 const Card = (props) => { 
+    const subscriber_plans = {
+        "PLAN1": "1/1 Mbps",
+        "PLAN2": "2/2 Mbps",
+        "PLAN3": "3/3 Mbps",
+        "PLAN4": "4/4 Mbps",
+        "PLAN5": "5/5 Mbps",
+        "PLAN6": "6/6 Mbps",
+        "PLAN7": "7/7 Mbps",
+        "PLAN8": "8/8 Mbps",
+        "PLAN10": "10/10 Mbps",
+        "PLAN12": "12/12 Mbps",
+        "PLAN15": "15/15 Mbps",
+        "PLAN20": "20/20 Mbps",
+        "PLAN28": "28/28 Mbps",
+        "PLAN30": "30/30 Mbps",
+        "PLAN45": "45/45 Mbps",
+        "PLAN50": "50/50 Mbps",
+        "PLAN60": "60/60 Mbps",
+        "PLAN80": "80/80 Mbps",
+        "PLAN100": "100/100 Mbps",
+        "PLAN255": "255/255 Mbps",
+        "PLAN400": "400/400 Mbps",
+        "Night2": "2/2 Mbps (Night)",
+        "Night4": "4/4 Mbps (Night)",
+        "Night8": "8/8 Mbps (Night)",
+        "Night16": "16/16 Mbps (Night)",
+        "suspend": "Suspended",
+        "movamo": "Movamo",
+        "PLAN25": "25/25 Mbps"
+    }
+    const {auth_token} =props;
+    const [apiResponse, setapiResponse] = useState("");
+    const [apiResponse2, setapiResponse2] = useState([]);
+    const [apiResponse3, setapiResponse3] = useState([]);
+    async function apiRequest(){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+         axios({
+             method: 'GET',
+             url:'http://192.168.6.253:32598/fwb/dashboardstats',
+             data:{
+             },
+             headers:{
+               'Authorization': 'Bearer '+ auth_token
+             }
+         }) .then(function(response){
+                setapiResponse(response.data);
+         }) .catch(err=>{
+            
+         })
+     }
+     async function apiRequest2(){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+         axios({
+             method: 'GET',
+             url:'http://192.168.6.253:32598/fwb/topplans',
+             data:{
+             },
+             headers:{
+               'Authorization': 'Bearer '+ auth_token
+             }
+         }) .then(function(response){
+                setapiResponse2(response.data);                                 
+         }) .catch(err=>{
+            
+         })
+     }
+     async function apiRequest3(){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+         axios({
+             method: 'GET',
+             url:'http://192.168.6.253:32598/fwb/topsubscribers',
+             data:{
+             },
+             headers:{
+               'Authorization': 'Bearer '+ auth_token
+             }
+         }) .then(function(response){
+                setapiResponse3(response.data);                                 
+         }) .catch(err=>{
+            
+         })
+     }
+    useEffect(()=>{
+        apiRequest()
+        apiRequest2()
+        apiRequest3()
+    },[apiResponse2])
+
     return (
         <div style={{marginTop:'60px'}}>
             <Row>
-                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow' style={{width:'370px', height:'180px'}}>
                     <Row>
                         <img alt='robots' src={Icontotal} style={{width:'25px',height:'25px', padding:'2px'}}/>
                         <p className={css(styles.text)}>Total Subscribers</p>
@@ -55,16 +144,16 @@ const Card = (props) => {
                         <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
                     </Row>
                     <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {67} </p>
+                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {apiResponse['total']} </p>
                     </Row>
                 </div>
                 <TopCard
-                subscriber_no = {34}
+                subscriber_no = {apiResponse['active']}
                 service_name = 'Active Subscribers'
                 service_img = {Iconactive} 
                 />
                 <TopCard
-                subscriber_no = {12}
+                subscriber_no = {apiResponse['suspend']}
                 service_name = 'Suspended Subscribers'
                 service_img = {Iconsus} 
                 />
@@ -85,20 +174,17 @@ const Card = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            </tr>
-                            <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            </tr>
-                            <tr>
-                            <td>3</td>
-                            <td colSpan="2">Larry the Bird</td>
-                            </tr>
+                        {
+                                    apiResponse2.map((userdetstable, i) => {
+                                    return(
+                                        <tr>
+                                        <td>{i+1}</td>
+                                        <td>{subscriber_plans[userdetstable['Plan']]}</td>
+                                        <td>{userdetstable['Subscribers']}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
                         </tbody>
                     </Table>
                     </Row>
@@ -116,28 +202,23 @@ const Card = (props) => {
                             <tr>
                             <th></th>
                             <th>SOLID - ID</th>
-                            <th>Bandwidth Usage</th>
-                            <th>Top application</th>
+                            <th>PLAN</th>
+                            <th>DATE </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            </tr>
-                            <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            </tr>
-                            <tr>
-                            <td>3</td>
-                            <td colSpan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                            </tr>
+                        {
+                            apiResponse3.map((userdetstables, i) => {
+                            return(
+                                <tr>
+                                    <td>{i+1}</td>
+                                    <td>{userdetstables[0]}</td>
+                                    <td>{subscriber_plans[userdetstables[1]]}</td>
+                                    <td>{userdetstables[2]}</td>
+                                </tr>
+                                    )
+                                })
+                            }
                         </tbody>
                     </Table>
                     </Row>

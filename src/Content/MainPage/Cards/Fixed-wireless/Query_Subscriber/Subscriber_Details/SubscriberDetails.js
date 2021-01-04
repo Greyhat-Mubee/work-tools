@@ -43,7 +43,8 @@ const SubscriberDetails = (props) => {
         "Night4": "4/4 Mbps (Night)",
         "Night8": "8/8 Mbps (Night)",
         "Night16": "16/16 Mbps (Night)",
-        "suspend": "Suspended"
+        "suspend": "Suspended",
+        "PLAN25": "25/25 Mbps"
     }
     
     const check_attr = (attr_val) => {

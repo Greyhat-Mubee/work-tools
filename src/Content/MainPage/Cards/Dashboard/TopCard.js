@@ -22,7 +22,7 @@ const TopCard = (props) => {
     const {service_name} = props
     const{service_img} = props
     return(
-        <div className= ' dib br3 ba b--light-gray pa3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
+        <div className= ' dib br3 ba b--light-gray pa3 ma3 mt4 shadow' style={{width:'370px', height:'180px'}}>
             <Row>
                 <img alt='robots' src= {service_img} style={{height:'30px',width:'30px', padding:'2px'}}/>
                 <p className={css(styles.text)}>{service_name}</p>
