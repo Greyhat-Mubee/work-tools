@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState, SyntheticEvent} from 'react';
 import { Column, Row } from 'simple-flexbox';
+import { useGlobalEvent } from "beautiful-react-hooks";
 import { StyleSheet, css } from 'aphrodite';
 import './App.css';
 import Scroll from './Content/MainPage/Scroll'
@@ -33,77 +34,87 @@ const styles = StyleSheet.create({
   }
 });
 
-class App extends Component{
-  state = { selectedItem: 'Login',
-            isSignedIn: false,
-            auth_token: "",
-            name: ""
-    };
-    componentDidMount() {
-        window.addEventListener('resize', this.resize);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.resize);
-    }
-
-    resize = () => this.forceUpdate();
-    
-  render(){
-    const { selectedItem, isSignedIn, auth_token, name } = this.state;
-  return (
-    <div>
-      <Row className={css(styles.container)}>
-                <Sidebar selectedItem={selectedItem} 
-                        onChange={(selectedItem) => this.setState({ selectedItem })}
-                        isSignedIn={isSignedIn}  />
-                <Column flexGrow={1} className={css(styles.mainBlock)}>
-                <HeaderComponent title={selectedItem} 
-                        onChange={(selectedItem) => this.setState({ selectedItem })} 
-                        isSignedin={isSignedIn}
-                        user_name = {name}
-                        onSignChange={(isSignedIn) => this.setState({ isSignedIn })}
-                        />
-                     {
-                       selectedItem === 'Login'? 
-                       <Login ClassName={css(styles.content)} 
-                          isSignedIn={isSignedIn}
-                          auth_token={auth_token} 
-                          onChange={(isSignedIn) => this.setState({ isSignedIn })}
-                          tokenChange={(auth_token) => this.setState({auth_token})}
-                          onSignChange={(selectedItem)=> this.setState({selectedItem})}
-                          nameChange={(name) => this.setState({name})}
-                          />
-                      : selectedItem === 'Sophos as a Service' && isSignedIn === true ? 
-                      <SaasCard ClassName={css(styles.content)}
-                        auth_token={auth_token}
-                      />
-                      : selectedItem === 'Dashboard' && isSignedIn === true?
-                      <Card ClassName={css(styles.content)} selectedItem={selectedItem} 
-                       onChange={(selectedItem) => this.setState({ selectedItem })} 
-                       auth_token={auth_token}/>
-                      : selectedItem === 'Fixed Wireless Broadband' && isSignedIn === true?
-                      <FwbCards auth_token={auth_token}/>
-                      : selectedItem === 'Sophos > Create Subscriber' && isSignedIn === true?
-                      <CreateSubscriber auth_token={auth_token}/>
-                      : selectedItem === 'Sophos > Decommission' && isSignedIn === true?
-                      <Decommission auth_token={auth_token}/>
-                      : selectedItem === 'Fwb > Create Subscriber' && isSignedIn === true?
-                      <FwbCreate auth_token={auth_token}/>
-                      : selectedItem === 'Fwb > Query Subscriber' && isSignedIn === true?
-                      <QuerySubscriber auth_token={auth_token}/>
-                      :<Login ClassName={css(styles.content)} 
-                      isSignedIn={isSignedIn}
-                      auth_token={auth_token} 
-                      onChange={(isSignedIn) => this.setState({ isSignedIn })}
-                      tokenChange={(auth_token) => this.setState({auth_token})}
-                      />
-                     }
-                </Column>
-            </Row>
-    </div>
+function App () {
+  
+  function usePersistedState(key, defaultValue) {
+    const [state, setState] = React.useState(
+      () => JSON.parse(localStorage.getItem(key)) || defaultValue
     );
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify(state));
+    }, [key, state]);
+    return [state, setState];
   }
-}
+  const [selectedItem, setselectedItem] = usePersistedState('selectedItem','Login');
+  const [isSignedIn, setisSignedIn] = usePersistedState('isSignedIn',false);;
+  const [auth_token, setauth_token] = usePersistedState('auth_token',"");
+  const [name, setname] = usePersistedState('name',"");
+  
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const onWindowResize = useGlobalEvent("resize");
+  onWindowResize((event: React.SyntheticEvent) => {
+    setWindowWidth(window.innerWidth);
+  });
+  useEffect(() => {
+  })
+
+
+  console.log("isSignedIn State: ",isSignedIn)
+  console.log("isSignedIn localStorage: ",localStorage.getItem("isSignedIn"))
+  return (
+      <div>
+        <Row className={css(styles.container)}>
+                  <Sidebar selectedItem={selectedItem} 
+                          onChange={(selectedItem) => setselectedItem(selectedItem)}
+                          isSignedIn={isSignedIn}  />
+                  <Column flexGrow={1} className={css(styles.mainBlock)}>
+                  <HeaderComponent title={selectedItem} 
+                          onChange={(selectedItem) => setselectedItem(selectedItem)} 
+                          auth_token={auth_token} 
+                          isSignedin={isSignedIn}
+                          user_name = {name}
+                          onSignChange={(isSignedIn) => setisSignedIn(isSignedIn)}
+                          />
+                      {
+                        selectedItem === 'Login'? 
+                        <Login ClassName={css(styles.content)} 
+                            isSignedIn={isSignedIn}
+                            auth_token={auth_token} 
+                            onChange={(isSignedIn) => setisSignedIn(isSignedIn)}
+                            tokenChange={(auth_token) => setauth_token(auth_token)}
+                            onSignChange={(selectedItem)=> setselectedItem(selectedItem)}
+                            nameChange={(name) => setname(name)}
+                            />
+                        : selectedItem === 'Sophos as a Service' && isSignedIn === true ? 
+                        <SaasCard ClassName={css(styles.content)}
+                          auth_token={auth_token}
+                        />
+                        : selectedItem === 'Dashboard' && isSignedIn === true?
+                        <Card ClassName={css(styles.content)} selectedItem={selectedItem} 
+                        onChange={(selectedItem) => setselectedItem({ selectedItem })} 
+                        auth_token={auth_token}/>
+                        : selectedItem === 'Fixed Wireless Broadband' && isSignedIn === true?
+                        <FwbCards auth_token={auth_token}/>
+                        : selectedItem === 'Sophos > Create Subscriber' && isSignedIn === true?
+                        <CreateSubscriber auth_token={auth_token}/>
+                        : selectedItem === 'Sophos > Decommission' && isSignedIn === true?
+                        <Decommission auth_token={auth_token}/>
+                        : selectedItem === 'Fwb > Create Subscriber' && isSignedIn === true?
+                        <FwbCreate auth_token={auth_token}/>
+                        : selectedItem === 'Fwb > Query Subscriber' && isSignedIn === true?
+                        <QuerySubscriber auth_token={auth_token}/>
+                        :<Login ClassName={css(styles.content)} 
+                        isSignedIn={isSignedIn}
+                        auth_token={auth_token} 
+                        onChange={(isSignedIn) => setisSignedIn({ isSignedIn })}
+                        tokenChange={(auth_token) => setauth_token({auth_token})}
+                        />
+                      }
+                  </Column>
+              </Row>
+      </div>
+      );
+    }
+
 
 export default App;

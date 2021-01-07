@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "aphrodite": "^2.4.0",
     "axios": "^0.20.0",
+    "beautiful-react-hooks": "^0.31.0",
     "bootstrap": "^4.5.2",
     "jquery": "^1.9.1",
     "mdbreact": "^4.27.0",
