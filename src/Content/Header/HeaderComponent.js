@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import { string } from 'prop-types';
 import { Row, Column } from 'simple-flexbox';
 import user_pic from './userpic.png';
@@ -74,18 +74,19 @@ const styles = StyleSheet.create({
     }
 });
 
-class HeaderComponent extends Component {
-    onItemClicked = (item) => {
-        return this.props.onChange(item);    
+ function HeaderComponent (props) {
+    const { icon, auth_token,title,isSignedin, user_name} = props;
+    
+    
+    const onItemClicked = (item) => {
+        return props.onChange(item);    
     }
 
-    onLogoutClick = (item) => {
-        this.onItemClicked('Login')
-        return this.props.onSignChange(item)
+    const onLogoutClick = (item) => {
+        onItemClicked('Login');
+        localStorage.clear()
+        return props.onSignChange(item)
     }
-       
-    render (){
-        const { icon, title,isSignedin, user_name} = this.props;
         if (isSignedin === true) {
             return (
                 <Router>
@@ -100,9 +101,9 @@ class HeaderComponent extends Component {
                         <Row vertical="center">
                         <img src={user_pic} style={{height:"30px", marginRight:"15px"}}/>
                         <p style={{fontFamily:"Muli", fontWeight:"bold",fontSize:"20px",paddingTop:"20px"}}>{user_name}</p> 
-                        <Link to="/logout">
+                        <Link to="/login">
                             <button className={css(styles.iconStyles)}
-                              onClick= {() => this.onLogoutClick(false)}
+                              onClick= {() => onLogoutClick(false)}
                             >
                             <img src="https://img.icons8.com/material/64/000000/exit.png" alt="avatar" className={css(styles.avatar)} />
                             <span className={css(styles.name, styles.cursorPointer)}>Sign Out</span>
@@ -127,7 +128,7 @@ class HeaderComponent extends Component {
                         <Row vertical="center">
                         <Link to="/login">
                         <button className={css(styles.hideButton)}
-                         onClick= {() => this.onItemClicked('Login')}
+                         onClick= {() => onItemClicked('Login')}
                          id = 'login'
                         >
                             <img src="https://img.icons8.com/dotty/80/000000/login-rounded-right.png" alt="avatar" className={css(styles.avatar)} />
@@ -143,8 +144,6 @@ class HeaderComponent extends Component {
         }
         
     }
-}
-
 HeaderComponent.propTypes = {
     title: string
 };

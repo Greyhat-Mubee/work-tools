@@ -151,8 +151,9 @@ const FwbCreate = (props) => {
                         <option>CBN POP</option>
                         <option>ABUJA POP</option>
                         <option>CBN ABUJA POP</option>
-                        <option>AIM POP</option>
-                        <option>SAKA POP</option>
+                        <option>MEDALLION POP</option>
+                        <option>SAKA 18 POP</option>
+                        <option>SAKA 25 POP</option>
                         <option>IJORA POP</option>
                         <option>IKORODU POP</option>
                       </FormControl>
