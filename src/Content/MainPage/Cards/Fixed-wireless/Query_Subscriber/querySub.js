@@ -47,6 +47,7 @@ const QuerySubscriber = (props) =>{
                 <form className="formstyle" onSubmit={handleSubmit}>
                 <input onChange={e => setsearchName(e.target.value)}
                     className="ml-3 w-50 searchinput" type="text" placeholder="Subscriber Name" aria-label="Search" />
+                {/* Tried to use react router to make to change the url onSubmit but for some reason i get a blank screen if you can please try and fix this. Thanks */}
                 <button className="searchbtn" block disabled={!validateForm()} type="submit">
                     <img src= {searchimg} className=""/>
                 </button>
