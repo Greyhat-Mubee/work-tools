@@ -5,12 +5,28 @@ import searchimg from './search.png';
 import Row from 'react-bootstrap/Row';
 import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import SubscriberDetails from './Subscriber_Details/SubscriberDetails'
+import Backdrop from '@material-ui/core/Backdrop';
+import { makeStyles } from '@material-ui/core/styles';
+import SubscriberDetails from './Subscriber_Details/SubscriberDetails';
+import RingLoader from "react-spinners/GridLoader";
+
+
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1
+    },
+  }));
+
 const QuerySubscriber = (props) =>{
     const {auth_token} =props;
     const [searchName, setsearchName] = useState("");
     const [hasLoaded, sethasLoaded] = useState("");
-    const [apiResponse, setapiResponse] = useState("")
+    const [apiResponse, setapiResponse] = useState("");
+    const [open, setOpen] = useState(false);
+    const handleClose = () => setOpen(false);
+    const classes = useStyles();
+
+    
     async function apiRequest(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
@@ -24,10 +40,13 @@ const QuerySubscriber = (props) =>{
              }
          }) .then(function(response){
                  setapiResponse(response.data);
+                 handleClose();
                  sethasLoaded('loaded');
+
                  
          }) .catch(err=>{
-                 sethasLoaded('loadingError');
+                handleClose();
+                sethasLoaded('loadingError');
                  
          })
      }
@@ -36,12 +55,22 @@ const QuerySubscriber = (props) =>{
         return searchName.length > 0 ;
       }
     function handleSubmit(event) {
+    setOpen(true)
     apiRequest();
     event.preventDefault();
     }
     return(
         <Router>
         <div className='contentpage'>
+
+            <Backdrop className={classes.backdrop} open={open}>
+                <RingLoader
+                        size={42}
+                        color={"#3678D7"}
+                        loading={true}
+                    />  
+            </Backdrop>
+
             <Row className='centered'>
                 
                 <form className="formstyle" onSubmit={handleSubmit}>

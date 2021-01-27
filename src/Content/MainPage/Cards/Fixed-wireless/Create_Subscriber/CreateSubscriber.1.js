@@ -1,60 +1,48 @@
 import React, {useState} from 'react';
 import './CreateSubscriber.css';
 import axios from 'axios';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form'
 import { Button, FormGroup, FormControl, FormLabel, Row, Col } from "react-bootstrap";
-import { css } from "@emotion/core";
-import RingLoader from "react-spinners/HashLoader";
+import Backdrop from '@material-ui/core/Backdrop';
+import { makeStyles } from '@material-ui/core/styles';
+import RingLoader from "react-spinners/GridLoader";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import FwbCards from '../fwbCard';
+
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: 'transparent',
+  },
+}));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const FwbCreate = (props) => {
     const {auth_token} =props;
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const errorClose = () => seterrorModal(false);
     const handleShow = () => setShow(true);
-    const [modalShow, setModalShow] = React.useState(false);
     const [subscriberName, setsubscriberName] = useState("");
     const [vlanID, setvlanID] = useState("");
     const [pop, setpop] = useState("");
     const [lanSubnetAddress, setlanSubnetAddress] = useState("");
     const [SubscriberPlan, setSubscriberPlan] = useState("");
     const [hasLoaded, sethasLoaded] = useState("");
-    const [apiResponse, setapiResponse] = useState("")
-    const [loadingModal, setloadingModal] = useState(false)
-    const [errorModal, seterrorModal] = useState(false)
+    const [apiResponse, setapiResponse] = useState("");
+    const [loadingModal, setloadingModal] = useState(false);
+    const [errorModal, seterrorModal] = useState(false);
+    const handleClose = () => seterrorModal(false);
+    const handleSuccessClose = () => setShow(false);
+    const classes = useStyles();
+
     
     function validateForm() {
         return subscriberName.length > 0 && pop.length > 0;
       }
-
-    function MyVerticallyCenteredModal(props) {
-
-        const override = css`
-        position:fixed;
-        margin-left:12%;
-      }
-      `;
-        return (
-            <Modal show={loadingModal}
-              backdrop={false}
-              centered
-              className='my-modal'
-            >
-                <Modal.Header>
-                  <RingLoader
-                    css={override}
-                    size={120}
-                    color={"#3678D7"}
-                    loading={true}
-                  />
-                </Modal.Header>
-              </Modal>         
-        );
-      }
       
-    
       async function apiRequest(){
        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
         axios({
@@ -72,6 +60,7 @@ const FwbCreate = (props) => {
             }
         }) .then(function(response){
                 setapiResponse(response.data['message']);
+                setloadingModal(false);
                 sethasLoaded('loaded');
                 handleShow();
         }) .catch(err=>{
@@ -90,29 +79,33 @@ const FwbCreate = (props) => {
 
     return (
         <div className='contentpage3'>
+          
+          <Backdrop className={classes.backdrop} open={loadingModal}>
+                <RingLoader
+                        size={42}
+                        color={"#3678D7"}
+                        loading={true}
+                    />  
+          </Backdrop>
+
           {
           hasLoaded === 'loaded' ?
           <div>
             <FwbCards/>
-            <Modal show={show} className='otherModal' onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Success</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{apiResponse}</Modal.Body>
-            </Modal>
+
+            <Snackbar open={show} autoHideDuration={6000} onClose={handleSuccessClose}>
+                <Alert onClose={handleSuccessClose} severity="success">
+                Subscriber Successfully Created
+                </Alert>
+            </Snackbar>
           </div>
           :
           <div>
-            <MyVerticallyCenteredModal
-              show={loadingModal}
-            />
-            
-          <Modal show={errorModal} className='otherModal' onHide={errorClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Error</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>Unable to create subscriber. Please try again.</Modal.Body>
-          </Modal>
+          <Snackbar open={errorModal} autoHideDuration={6000} onClose={handleClose}>
+              <Alert onClose={handleClose} severity="error">
+              An error occured please try again later
+              </Alert>
+          </Snackbar>
 
           <form onSubmit={handleSubmit}>
               <p className="f3 fw6 ph0 mh0 pt4">Create Subscriber</p>

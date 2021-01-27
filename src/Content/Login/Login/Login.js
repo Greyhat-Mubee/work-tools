@@ -10,6 +10,7 @@ export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
+  const [loginCheck, setLoginCheck] = useState("Login")
   const {isSignedIn, auth_token} = props
 
   function SignInChange (val) {
@@ -32,6 +33,7 @@ export default function Login(props) {
     }
 
   function handleSubmit(event) {
+    setLoginCheck('Loading');
     axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
     var bodyFormData = new FormData();
     bodyFormData.append('username',email);
@@ -48,7 +50,7 @@ export default function Login(props) {
     }).catch(err => {
           onItemClicked(false)
           setLoginStatus('false')
-          console.log(err)
+          setLoginCheck("Login")
     }) 
     event.preventDefault();
   }
@@ -75,7 +77,7 @@ export default function Login(props) {
               />
             </FormGroup>
             <Button block disabled={!validateForm()} type="submit">
-              Login
+              {loginCheck}
             </Button>
             {
               loginStatus === 'false' ? 
