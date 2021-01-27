@@ -4,46 +4,39 @@ import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import { css } from "@emotion/core";
-import RingLoader from "react-spinners/HashLoader";
+import Backdrop from '@material-ui/core/Backdrop';
+import { makeStyles } from '@material-ui/core/styles';
+import RingLoader from "react-spinners/GridLoader";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import SaasCard from '../SaasCard';
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: 'transparent',
+  },
+}));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 const Decommission = (props) => {
     const {auth_token} =props;
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => seterrorModal(false);
     const errorClose = () => seterrorModal(false);
-    const handleShow = () => setShow(true);
     const [subscriberName, setsubscriberName] = useState("");
     const [hasLoaded, sethasLoaded] = useState("");
     const [apiResponse, setapiResponse] = useState("");
-    const [loadingModal, setloadingModal] = useState(false)
-    const [errorModal, seterrorModal] = useState(false)
+    const [loadingModal, setloadingModal] = useState(false);
+    const [errorModal, seterrorModal] = useState(false);
+    const handleSuccessClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const classes = useStyles();
 
-    function MyVerticallyCenteredModal(props) {
-
-      const override = css`
-      position:fixed;
-      margin-left:12%;
-    }
-    `;
-      return (
-          <Modal show={loadingModal}
-            backdrop={false}
-            centered
-            className='my-modal'
-          >
-              <Modal.Header>
-                <RingLoader
-                  css={override}
-                  size={120}
-                  color={"#3678D7"}
-                  loading={true}
-                />
-              </Modal.Header>
-            </Modal>         
-      );
-    }    
 
     function validateForm() {
         return subscriberName.length > 0;
@@ -86,26 +79,28 @@ const Decommission = (props) => {
             hasLoaded === 'loaded' ?
             <div>
               <SaasCard/>
-              <Modal show={show} className='otherModal' onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Sucess</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{apiResponse}</Modal.Body>
-            </Modal>
+              
+                <Snackbar open={show} autoHideDuration={6000} onClose={handleSuccessClose}>
+                  <Alert onClose={handleSuccessClose} severity="success">
+                  Subscriber Successfully Created
+                  </Alert>
+              </Snackbar>
             </div>
           :
             <div>
-              <MyVerticallyCenteredModal
-                show={loadingModal}
-              />
-              <Modal show={errorModal} className='otherModal' onHide={errorClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Error</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  Unable to decommission sophos as a service subscriber. Please try again.
-                </Modal.Body>
-              </Modal>
+              <Backdrop className={classes.backdrop} open={loadingModal}>
+                <RingLoader
+                        size={42}
+                        color={"#3678D7"}
+                        loading={true}
+                    />  
+            </Backdrop>
+
+            <Snackbar open={errorModal} autoHideDuration={6000} onClose={handleClose}>
+              <Alert onClose={handleClose} severity="error">
+              An error occured please try again later
+              </Alert>
+            </Snackbar>
               <form onSubmit={handleSubmit}>
                   <p className="f3 fw6 ph0 mh0 pt4">Decommission</p>
                   <FormGroup controlId="subscriberName">
@@ -117,7 +112,10 @@ const Decommission = (props) => {
                       onChange={e => setsubscriberName(e.target.value)}
                     />
                   </FormGroup>
-                  <Button block disabled={!validateForm()} type="submit">
+                  <Button block disabled={!validateForm()} 
+                  type="submit"
+                  style={{display:"flex",width:"100%", justifyContent:"center",fontFamily:"Muli",fontWeight:"bold", backgroundColor:"#b80202"}}
+                  >
                     Decommission
                   </Button>
                 </form>

@@ -10,8 +10,6 @@ import Col from 'react-bootstrap/Col';
 import {FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import "react-toggle/style.css";
 import Scroll from '../../../Scroll';
-import RingLoader from "react-spinners/HashLoader";
-import { css } from "@emotion/core";
 import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -244,7 +242,7 @@ const SubscriberDetails = (props) => {
 
             <Snackbar open={show} autoHideDuration={6000} onClose={handleShow}>
                 <Alert onClose={handleShow} severity="success">
-                Subscriber Attribute Successfully changed
+                Subscriber attribute successfully changed
                 </Alert>
             </Snackbar>
 
