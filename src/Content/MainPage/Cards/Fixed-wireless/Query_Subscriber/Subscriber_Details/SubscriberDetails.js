@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import './SubscriberDetails.css';
 import Toggle from 'react-toggle'
 import Accordion from 'react-bootstrap/Accordion';
@@ -6,14 +7,72 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {FormGroup, FormControl} from "react-bootstrap";
+import {FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import "react-toggle/style.css";
 import Scroll from '../../../Scroll';
 import RingLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/core";
-import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import IpComponent from './IpCompnent';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  
+  
+  const useStyles = makeStyles((theme) => ({
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      
+    },
+    paper: {
+      marginLeft:'25em',
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      width: '60%'
+    },
+  }));
+  
+  const Fade = React.forwardRef(function Fade(props, ref) {
+    const { in: open, children, onEnter, onExited, ...other } = props;
+    const style = useSpring({
+      from: { opacity: 0 },
+      to: { opacity: open ? 1 : 0 },
+      onStart: () => {
+        if (open && onEnter) {
+          onEnter();
+        }
+      },
+      onRest: () => {
+        if (!open && onExited) {
+          onExited();
+        }
+      },
+    });
+  
+    return (
+      <animated.div ref={ref} style={style} {...other}>
+        {children}
+      </animated.div>
+    );
+  });
+  
+  Fade.propTypes = {
+    children: PropTypes.element,
+    in: PropTypes.bool.isRequired,
+    onEnter: PropTypes.func,
+    onExited: PropTypes.func,
+  };
 
 
 const SubscriberDetails = (props) => {
@@ -67,33 +126,18 @@ const SubscriberDetails = (props) => {
     const [show, setShow] = useState(false);
     const [Decommisionshow, setDecommisionshow] = useState(false);
     const [Errorshow, setErrorshow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleClose_Decomm = () => setDecommisionshow(false);
-    const handleShow = () => setShow(true);
     const [NewIPAddress, setNewIPAddress] = useState("");
     const [apiResponse, setapiResponse] = useState("");
- 
-    async function ChangeSubscriberIPapi(){
-        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-         axios({
-             method: 'POST',
-             url:'http://192.168.6.253:32598/fwb/changeipaddress',
-             data:{
-                "name": subscriber_name,
-                "Old_ip": subscriber_ip,
-                "new_ip": NewIPAddress
-             },
-             headers:{
-               'Authorization': 'Bearer '+ auth_token
-             }
-         }) .then(function(response){
-                 setapiResponse(response.data);
-                 
-         }) .catch(err=>{
-                 setErrorshow(true)
-         })
-     }
-    
+    const [open, setOpen] = useState(false);
+    const [attrbuteChange, setattrbuteChange] = useState(false);
+    const [decommmissionValidate, setdecommmissionValidate] = useState("")
+    const handleClose = () => setErrorshow(false);
+    const handleClose_Decomm = () => setDecommisionshow(false);
+    const handleShow = () => setShow(false);
+    const decommModalOpen = () => setOpen(true);
+    const decommModalClose = () => setOpen(false);
+    const classes = useStyles();
+
     function DecommissionSubscriberapi(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
@@ -107,7 +151,9 @@ const SubscriberDetails = (props) => {
              }
          }) .then(function(response){
                  setapiResponse(response.data);
+                 setOpen(false)
                  setDecommisionshow(true);
+                 
                  
          }) .catch(err=>{
                  setErrorshow(true)
@@ -128,6 +174,7 @@ const SubscriberDetails = (props) => {
              }
          }) .then(function(response){
                  setapiResponse(response.data);
+                 setShow(true);
                  
          }) .catch(err=>{
                 setErrorshow(true)
@@ -138,7 +185,7 @@ const SubscriberDetails = (props) => {
     const UpdateFilterStreaming = () => {
         setFilterStreaming(!FilterStreaming);
         change_attr_api('filterStreaming',`${!FilterStreaming}`);
-  }
+    }
     const UpdateFilterAppleUpdate = () => {
         setFilterAppleUpdate(!FilterAppleUpdate);
         change_attr_api('filterappleupdate',`${!FilterAppleUpdate}`);
@@ -176,80 +223,68 @@ const SubscriberDetails = (props) => {
         DecommissionSubscriberapi();
     }
 
-    const IPchangeModal = (event) => {
-        setShow(true)
-        event.preventDefault();
-    }
-
      function validateForm() {
-        return NewIPAddress.length > 0 ;
+        return decommmissionValidate === subscriber_name ;
       }
     
 
-    function MyVerticallyCenteredModal(props) {
-
-        const override = css`
-        position:fixed;
-        margin-left:12%;
-      }
-      `;
-        return (
-            <Modal show={true}
-              backdrop={false}
-              centered
-              className='my-modal'
-            >
-                <Modal.Header>
-                  <RingLoader
-                    css={override}
-                    size={120}
-                    color={"#3678D7"}
-                    loading={true}
-                  />
-                </Modal.Header>
-              </Modal>         
-        );
-      }
-
     return(
-        <div>
-             
-          <Modal show={Decommisionshow} className='otherModal' 
-              onHide={handleClose_Decomm} 
-              style={{padding:"300px"}}
-              >
-              <Modal.Body> 
-                    <Row>
-                        <Col>
-                            <p style={{fontFamily:"Muli", paddingBottom:"20px", paddingLeft:"5px", fontWeight:"bold", fontSize:"17px"}}>Subscriber Successfully Deleted</p>
-                        </Col>
-                        <Col>
-                            <Button variant="secondary" style={{backgroundColor:"transparent", borderStyle:"none", marginLeft:"80%", fontSize:"10px"}} onClick={handleClose_Decomm}>
-                            ✖
-                            </Button>
-                        </Col>      
-                    </Row>
-              </Modal.Body>
-          </Modal>  
-          <Modal show={Errorshow} className='otherModal' 
-              onHide={handleClose} 
-              style={{padding:"300px"}}
-              >
-              <Modal.Body> 
-                    <Row>
-                        <Col>
-                            <p style={{fontFamily:"Muli", paddingBottom:"20px", paddingLeft:"5px", fontWeight:"bold", fontSize:"17px"}}>
-                                An error occured please try again later
-                            </p>
-                        </Col>
-                        <Col>
-                            <Button variant="secondary" style={{backgroundColor:"transparent", borderStyle:"none", marginLeft:"80%", fontSize:"10px"}} onClick={handleClose}>
-                            ✖
-                            </Button>
-                        </Col>      
-                    </Row>
-              </Modal.Body>
-          </Modal>  
+        <div>            
+            <Snackbar open={Decommisionshow} autoHideDuration={6000} onClose={handleClose_Decomm}>
+                <Alert onClose={handleClose_Decomm} severity="success">
+                Subscriber Successfully Deleted
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={Errorshow} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                An error occured please try again later
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={show} autoHideDuration={6000} onClose={handleShow}>
+                <Alert onClose={handleShow} severity="success">
+                Subscriber Attribute Successfully changed
+                </Alert>
+            </Snackbar>
+
+        <Modal
+                aria-labelledby="spring-modal-title"
+                aria-describedby="spring-modal-description"
+                className={classes.modal}
+                open={open}
+                onClose={decommModalClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                timeout: 500,
+                }}
+            >
+                <Fade in={open}>
+                <div className={classes.paper}>
+                    <h2 id="spring-modal-title" style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>Confirm Delete</h2>
+                    <p id="spring-modal-description" style={{fontFamily:'Muli'}}>
+                        This action cannot be undone. This will permanently delete the subscriber <mark>{subscriber_name}</mark> and remove all associations from coollink network management devices.
+                    </p>
+                    <p style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>
+                        Please type <mark>{subscriber_name}</mark> to confirm.
+                    </p>
+                    <form onSubmit={DecommissionSusbscriber}>
+                        <FormGroup controlId="subscriberName">
+                            <FormControl
+                            autoFocus
+                            type="text"
+                            value={decommmissionValidate}
+                            onChange={e => setdecommmissionValidate(e.target.value)}
+                            />
+                        </FormGroup>
+                        <Button block disabled={!validateForm()} type="submit" variant="danger">
+                            I understand. Delete subscriber
+                        </Button>
+                    </form>
+                </div>
+                </Fade>
+        </Modal>
 
         <div className='contentpager'>      
             <Scroll>
@@ -422,7 +457,7 @@ const SubscriberDetails = (props) => {
                     </Row>
                     <Row className="pt4">
                         <Button style={{display:"flex",width:"100%", justifyContent:"center",fontFamily:"Muli",fontWeight:"bold", backgroundColor:"#b80202"}}
-                        onClick={DecommissionSusbscriber}>
+                        onClick={decommModalOpen}>
                             Decommision Subscriber</Button>
                     </Row>
                 </div>                

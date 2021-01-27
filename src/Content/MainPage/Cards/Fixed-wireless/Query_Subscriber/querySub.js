@@ -41,7 +41,7 @@ const QuerySubscriber = (props) =>{
     }
     return(
         <Router>
-        <div className='contentpage'>
+        <div className='contentpage'>e
             <Row className='centered'>
                 
                 <form className="formstyle" onSubmit={handleSubmit}>
