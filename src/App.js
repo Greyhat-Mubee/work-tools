@@ -58,9 +58,6 @@ function App () {
   useEffect(() => {
   })
 
-
-  console.log("isSignedIn State: ",isSignedIn)
-  console.log("isSignedIn localStorage: ",localStorage.getItem("isSignedIn"))
   return (
       <div>
         <Row className={css(styles.container)}>
