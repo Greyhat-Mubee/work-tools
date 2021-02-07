@@ -3,7 +3,7 @@
 This is a web application that gives a UI platform to automation APIs for subscriber on-boarding of various services \
 Successful login should show the dashboard in the image below
 
-![application infrastructure diagram](https://github.com/dy9amix/antamedia/blob/main/antamedia.png?raw=true)
+![application infrastructure diagram](https://github.com/sorodeji/work-tools/blob/master/dashboard.png?raw=true)
 
 # Running the web application locally
 
