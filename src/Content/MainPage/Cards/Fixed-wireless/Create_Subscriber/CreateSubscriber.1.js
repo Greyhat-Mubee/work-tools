@@ -76,9 +76,9 @@ const FwbCreate = (props) => {
     const [subscriberName, setsubscriberName] = useState("");
     const [manualPublicIP, setmanualPublicIP] = useState("");
     const [vlanID, setvlanID] = useState("");
-    const [pop, setpop] = useState("");
-    const [lanSubnetAddress, setlanSubnetAddress] = useState("");
-    const [SubscriberPlan, setSubscriberPlan] = useState("");
+    const [pop, setpop] = useState("VI POP");
+    const [lanSubnetAddress, setlanSubnetAddress] = useState("/30");
+    const [SubscriberPlan, setSubscriberPlan] = useState("1/1 Mbps");
     const [hasLoaded, sethasLoaded] = useState("");
     const [apiResponse, setapiResponse] = useState("");
     const [loadingModal, setloadingModal] = useState(false);
@@ -98,7 +98,7 @@ const FwbCreate = (props) => {
     };
     
     function validateForm() {
-        return subscriberName.length > 0 && pop.length > 0;
+        return subscriberName.length > 0 && pop.length > 0 && SubscriberPlan.length > 0;
       }
       
       async function apiRequest(){
@@ -133,7 +133,7 @@ const FwbCreate = (props) => {
       axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
        axios({
            method: 'POST',
-           url:'http://192.168.6.253:32598/fwb/newsubscriber',
+           url:'http://localhost:8000/fwb/newsubscriber',
            data:{
              "name": subscriberName,
              "subnet": lanSubnetAddress,
@@ -325,18 +325,18 @@ const FwbCreate = (props) => {
                                 <FormControl
                                   autoFocus
                                   type="text"
-                                  value={manualPublicIP}
-                                  onChange={e => setmanualPublicIP(e.target.value)}
+                                  value={subscriberName}
+                                  onChange={e => setsubscriberName(e.target.value)}
                                 />
                                 </FormGroup>
                               </Col>
                               <Col>
-                              <FormGroup controlId="subscriberName">
+                              <FormGroup controlId="subscriberManualIP">
                               <FormLabel>IP Address</FormLabel>
                                 <FormControl
                                   type="text"
-                                  value={subscriberName}
-                                  onChange={e => setsubscriberName(e.target.value)}
+                                  value={manualPublicIP}
+                                  onChange={e => setmanualPublicIP(e.target.value)}
                                 />
                                 </FormGroup>
                               </Col>
