@@ -52,6 +52,7 @@ const IpComponent = (props) => {
     const [SubIp , setSubIp] = useState(ip);
     const [apiResponse, setapiResponse] = useState("");
     const [pop, setpop] = useState("Select POP");
+    const [changeLoading, setchangeLoading] = useState("Change")
     const IPchangeModal = (event) => {
         setShow(true)
         event.preventDefault();
@@ -74,15 +75,18 @@ const IpComponent = (props) => {
              }
          }) .then(function(response){
                  setapiResponse(response.data);
+                 setchangeLoading("Change")
                  setSubIp(NewIPAddress);
                  handleClose1()
 
                  
          }) .catch(err=>{
                  setErrorshow(true)
+                 setchangeLoading("Change")
          })
      }
     function handleSubmit(event) {
+        setchangeLoading("Processing")
         ChangeSubscriberIPapi();
         event.preventDefault();
         }
@@ -142,7 +146,7 @@ const IpComponent = (props) => {
                     </Row>
                     <Row xs lg="4" style={{display:'flex',justifyContent:'flex-end', paddingRight:'20px'}}>
                             <Button block disabled={!validateForm()} type="submit">
-                                Change
+                                {changeLoading}
                             </Button>
                        </Row> 
                     
