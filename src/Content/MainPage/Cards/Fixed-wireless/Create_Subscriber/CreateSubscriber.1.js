@@ -112,7 +112,7 @@ const FwbCreate = (props) => {
               "master_subnet": pop,
               "vlan": vlanID,
               "plan": SubscriberPlan,
-              "manualIP": true
+              "manualIP": false
             },
             headers:{
               'Authorization': 'Bearer '+ auth_token
