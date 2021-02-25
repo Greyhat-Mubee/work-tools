@@ -89,6 +89,10 @@ const FwbCreate = (props) => {
     const theme = useTheme();
     const [value, setValue] = useState(0);
 
+    const onItemClicked = (item) => {
+      return props.onChange(item);    
+  }
+
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
@@ -121,6 +125,8 @@ const FwbCreate = (props) => {
                 setapiResponse(response.data['message']);
                 setloadingModal(false);
                 sethasLoaded('loaded');
+                setShow(true)
+                onItemClicked("Fixed Wireless Broadband")
                 handleShow();
         }) .catch(err=>{
                 setloadingModal(false);
@@ -133,7 +139,7 @@ const FwbCreate = (props) => {
       axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
        axios({
            method: 'POST',
-           url:'http://localhost:8000/fwb/newsubscriber',
+           url:'http://192.168.6.253:32598/fwb/newsubscriber',
            data:{
              "name": subscriberName,
              "subnet": lanSubnetAddress,
@@ -150,6 +156,7 @@ const FwbCreate = (props) => {
                setapiResponse(response.data['message']);
                setloadingModal(false);
                sethasLoaded('loaded');
+               setShow(true)
                handleShow();
        }) .catch(err=>{
                setloadingModal(false);
@@ -173,7 +180,7 @@ const FwbCreate = (props) => {
     }
 
     return (
-        <div className='contentpage3'>
+        <div>
           
           <Backdrop className={classes.backdrop} open={loadingModal}>
                 <RingLoader
@@ -188,14 +195,14 @@ const FwbCreate = (props) => {
           <div>
             <FwbCards/>
 
-            <Snackbar open={show} autoHideDuration={6000} onClose={handleSuccessClose}>
+            <Snackbar open={true} autoHideDuration={6000} onClose={handleSuccessClose}>
                 <Alert onClose={handleSuccessClose} severity="success">
                 Subscriber Successfully Created
                 </Alert>
             </Snackbar>
           </div>
           :
-          <div>
+          <div className='contentpage3'>
           <Snackbar open={errorModal} autoHideDuration={6000} onClose={handleClose}>
               <Alert onClose={handleClose} severity="error">
               An error occured please try again later

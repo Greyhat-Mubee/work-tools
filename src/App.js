@@ -97,7 +97,9 @@ function App () {
                         : selectedItem === 'Sophos > Decommission' && isSignedIn === true?
                         <Decommission auth_token={auth_token}/>
                         : selectedItem === 'Fwb > Create Subscriber' && isSignedIn === true?
-                        <FwbCreate auth_token={auth_token}/>
+                        <FwbCreate auth_token={auth_token}
+                        onChange={(selectedItem) => setselectedItem(selectedItem)}
+                        />
                         : selectedItem === 'Fwb > Query Subscriber' && isSignedIn === true?
                         <QuerySubscriber auth_token={auth_token}/>
                         :<Login ClassName={css(styles.content)} 
