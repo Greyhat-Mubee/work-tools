@@ -8,10 +8,37 @@ import Col from 'react-bootstrap/Col';
 import {FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import "react-toggle/style.css";
 import Scroll from '../../../Scroll';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
 import RingLoader from "react-spinners/HashLoader";
 import { css } from "@emotion/core";
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
+
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  
+  
+  const useStyles = makeStyles((theme) => ({
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      
+    },
+    paper: {
+      marginLeft:'25em',
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      width: '60%'
+    },
+  }));
+
 
 const IpComponent = (props) => {
     const [show, setShow] = useState(false);
@@ -24,6 +51,8 @@ const IpComponent = (props) => {
     const {ip} = props;
     const [SubIp , setSubIp] = useState(ip);
     const [apiResponse, setapiResponse] = useState("");
+    const [pop, setpop] = useState("Select POP");
+    const [changeLoading, setchangeLoading] = useState("Change")
     const IPchangeModal = (event) => {
         setShow(true)
         event.preventDefault();
@@ -37,22 +66,27 @@ const IpComponent = (props) => {
              data:{
                 "name": subscriber_name,
                 "Old_ip": SubIp,
-                "new_ip": NewIPAddress
+                "new_ip": NewIPAddress,
+                "new_subnetID": pop
+
              },
              headers:{
                'Authorization': 'Bearer '+ authen_token
              }
          }) .then(function(response){
                  setapiResponse(response.data);
+                 setchangeLoading("Change")
                  setSubIp(NewIPAddress);
                  handleClose1()
 
                  
          }) .catch(err=>{
                  setErrorshow(true)
+                 setchangeLoading("Change")
          })
      }
     function handleSubmit(event) {
+        setchangeLoading("Processing")
         ChangeSubscriberIPapi();
         event.preventDefault();
         }
@@ -87,17 +121,46 @@ const IpComponent = (props) => {
                                 onChange={e => setNewIPAddress(e.target.value)}
                             />
                        </Col>
-                       <Col xs lg="4">
+                       <Col>
+                        <FormGroup controlId="pop">
+                            <FormControl as="select"  value={pop}
+                                onChange={e => setpop(e.target.value)}
+                                >
+                                <option>VI POP</option>
+                                <option>LEKKI POP</option>
+                                <option>IKOTA POP</option>
+                                <option>TANGO POP</option>
+                                <option>CRESTVIEW POP</option>
+                                <option>NETCOM POP</option>
+                                <option>CBN POP</option>
+                                <option>ABUJA POP</option>
+                                <option>CBN ABUJA POP</option>
+                                <option>MEDALLION POP</option>
+                                <option>SAKA 18 POP</option>
+                                <option>SAKA 25 POP</option>
+                                <option>IJORA POP</option>
+                                <option>IKORODU POP</option>
+                            </FormControl>
+                        </FormGroup>
+                       </Col>
+                    </Row>
+                    <Row xs lg="4" style={{display:'flex',justifyContent:'flex-end', paddingRight:'20px'}}>
                             <Button block disabled={!validateForm()} type="submit">
-                                Change
+                                {changeLoading}
                             </Button>
-                       </Col> 
-                    </Row>                    
+                       </Row> 
+                    
                 </form> 
               </Modal.Body>
           </Modal>  
 
-          <Modal show={Errorshow} className='otherModal' 
+          <Snackbar open={Errorshow} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                An error occured please try again later
+                </Alert>
+            </Snackbar>
+
+          {/* <Modal show={Errorshow} className='otherModal' 
               onHide={handleClose} 
               style={{padding:"300px"}}
               >
@@ -115,7 +178,7 @@ const IpComponent = (props) => {
                         </Col>      
                     </Row>
               </Modal.Body>
-          </Modal> 
+          </Modal>  */}
 
             <form onSubmit={IPchangeModal}>
                 <Row style={{padding:"5px"}}>
