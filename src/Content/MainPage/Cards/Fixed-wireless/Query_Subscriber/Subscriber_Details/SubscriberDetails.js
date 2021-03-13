@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './SubscriberDetails.css';
 import Toggle from 'react-toggle'
@@ -112,15 +112,15 @@ const SubscriberDetails = (props) => {
     const {auth_token} = props;
     const subscriber_name = subscriberdata['name'];
     const subscriber_ip = subscriberdata['ip address'];
-    const sub_plan = subscriberdata['attributes'][0]['attribute value']
-    const [SubscriberPlan, setSubscriberPlan] = useState(subscriber_plans[sub_plan])
-    const [FilterStreaming, setFilterStreaming] = useState(check_attr(subscriberdata['attributes'][1]['attribute value']))
-    const [FilterAppleUpdate, setFilterAppleUpdate] = useState(check_attr(subscriberdata['attributes'][2]['attribute value']))
-    const [FilterItunes, setFilterItunes] = useState(check_attr(subscriberdata['attributes'][3]['attribute value']))
-    const [FilterMicrosoftUpdate, setFilterMicrosoftUpdate] = useState(check_attr(subscriberdata['attributes'][4]['attribute value']))
-    const [FilterMovies, setFilterMovies] = useState(check_attr(subscriberdata['attributes'][5]['attribute value']))
-    const [FilterP2P, setFilterP2P] = useState(check_attr(subscriberdata['attributes'][6]['attribute value']))
-    const [FilterYoutube, setFilterYoutube] = useState(check_attr(subscriberdata['attributes'][7]['attribute value']))
+    const sub_plan = subscriberdata['attributes']['Plan']
+    const [SubscriberPlan, setSubscriberPlan] = useState(subscriber_plans[sub_plan] || 'None')
+    const [FilterStreaming, setFilterStreaming] = useState(check_attr(subscriberdata['attributes']['filterStreaming']) || false)
+    const [FilterAppleUpdate, setFilterAppleUpdate] = useState(check_attr(subscriberdata['attributes']['filterappleupdate']) || false)
+    const [FilterItunes, setFilterItunes] = useState(check_attr(subscriberdata['attributes']['filteritunes']) || false)
+    const [FilterMicrosoftUpdate, setFilterMicrosoftUpdate] = useState(check_attr(subscriberdata['attributes']['filtermicrosoftupdate']) || false)
+    const [FilterMovies, setFilterMovies] = useState(check_attr(subscriberdata['attributes']['filtermovies']) || false)
+    const [FilterP2P, setFilterP2P] = useState(check_attr(subscriberdata['attributes']['filterp2p']) || false)
+    const [FilterYoutube, setFilterYoutube] = useState(check_attr(subscriberdata['attributes']['filteryoutube']) || false)
     const [show, setShow] = useState(false);
     const [Decommisionshow, setDecommisionshow] = useState(false);
     const [Errorshow, setErrorshow] = useState(false);
