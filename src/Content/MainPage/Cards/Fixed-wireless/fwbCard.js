@@ -74,59 +74,66 @@ const Card = (props) => {
         "movamo": "Movamo",
         "PLAN25": "25/25 Mbps"
     }
-    const {auth_token} =props;
     const [apiResponse, setapiResponse] = useState("");
     const [apiResponse2, setapiResponse2] = useState([]);
     const [apiResponse3, setapiResponse3] = useState([]);
-    async function apiRequest(){
-        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-         axios({
-             method: 'GET',
-             url:'http://192.168.6.253:32598/fwb/dashboardstats',
-             data:{
-             },
-             headers:{
-               'Authorization': 'Bearer '+ auth_token
-             }
-         }) .then(function(response){
-                setapiResponse(response.data);
-         }) .catch(err=>{
-            
-         })
-     }
-     async function apiRequest2(){
-        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-         axios({
-             method: 'GET',
-             url:'http://192.168.6.253:32598/fwb/topplans',
-             data:{
-             },
-             headers:{
-               'Authorization': 'Bearer '+ auth_token
-             }
-         }) .then(function(response){
-                setapiResponse2(response.data);                                 
-         }) .catch(err=>{
-            
-         })
-     }
-     async function apiRequest3(){
-        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-         axios({
-             method: 'GET',
-             url:'http://192.168.6.253:32598/fwb/topsubscribers',
-             data:{
-             },
-             headers:{
-               'Authorization': 'Bearer '+ auth_token
-             }
-         }) .then(function(response){
-                setapiResponse3(response.data);                                 
-         }) .catch(err=>{
-            
-         })
-     }
+    
     useEffect(()=>{
+        const {auth_token} =props;
+        async function apiRequest(){
+            axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+             axios({
+                 method: 'GET',
+                 url:'http://192.168.6.253:32598/fwb/dashboardstats',
+                 data:{
+                 },
+                 headers:{
+                   'Authorization': 'Bearer '+ auth_token
+                 }
+             }) 
+                .then(function(response){
+                        setapiResponse(response.data);
+                }) 
+                .catch(err=>{
+                    
+                })
+            }
+         async function apiRequest2(){
+            axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+             axios({
+                 method: 'GET',
+                 url:'http://192.168.6.253:32598/fwb/topplans',
+                 data:{
+                 },
+                 headers:{
+                   'Authorization': 'Bearer '+ auth_token
+                 }
+             }) 
+                .then(function(response){
+                        setapiResponse2(response.data);                                 
+                }) 
+                .catch(err=>{
+                    
+                })
+            }
+         async function apiRequest3(){
+            axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+             axios({
+                 method: 'GET',
+                 url:'http://192.168.6.253:32598/fwb/topsubscribers',
+                 data:{
+                 },
+                 headers:{
+                   'Authorization': 'Bearer '+ auth_token
+                 }
+             }) 
+                .then(function(response){
+                        setapiResponse3(response.data);                                 
+                }) 
+                .catch(err=>{
+                    
+                })
+            }
         apiRequest()
         apiRequest2()
         apiRequest3()

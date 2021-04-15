@@ -11,7 +11,7 @@ export default function Login(props) {
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
   const [loginCheck, setLoginCheck] = useState("Login")
-  const {isSignedIn, auth_token} = props
+  const {isSignedIn} = props
   let history = useHistory();
 
 
@@ -41,20 +41,22 @@ export default function Login(props) {
     bodyFormData.append('username',email);
     bodyFormData.append('password', password);
     axios({
-        method: 'POST',
-        url:'http://192.168.6.253:32598/token',
-        data: bodyFormData
-    }) .then(function(response){
-            onItemClicked(true)
-            StoreToken(response.data['access_token'])
-            StoreName(response.data['name'])  
-            history.push('/dashboard')
-            SignInChange('Dashboard')     
-    }).catch(err => {
-          onItemClicked(false)
-          setLoginStatus('false')
-          setLoginCheck("Login")
-    }) 
+          method: 'POST',
+          url:'http://192.168.6.253:32598/token',
+          data: bodyFormData
+      }) 
+      .then(function(response){
+              onItemClicked(true)
+              StoreToken(response.data['access_token'])
+              StoreName(response.data['name'])  
+              history.push('/')
+              SignInChange('Dashboard')     
+      })
+      .catch(err => {
+            onItemClicked(false)
+            setLoginStatus('false')
+            setLoginCheck("Login")
+      }) 
     event.preventDefault();
   }
 

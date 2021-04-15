@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button';
 import Menu from './Menu';
 import SubMenu from './SubMenu';
 import IconBurger from '../../assets/icon-burger';
-import { BrowserRouter as Router, Switch, Route, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 
 const styles = StyleSheet.create({
@@ -114,7 +114,7 @@ class Sidebar extends Component {
                                 <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
                                     <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
                                     <Accordion.Toggle as={Button} variant="link" eventKey="0" style={{padding:0,margin:0}}>
-                                    <NavLink to="/dashboard">
+                                    <NavLink to="/">
                                         <Menu
                                             title="Dashboard"
                                             onClick={() => this.onItemClicked('Dashboard')}

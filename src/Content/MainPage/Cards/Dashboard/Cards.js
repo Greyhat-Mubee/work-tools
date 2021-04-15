@@ -88,12 +88,14 @@ const Card = (props) => {
              headers:{
                'Authorization': 'Bearer '+ auth_token
              }
-         }) .then(function(response){
-                setapiResponse(response.data);
-         }) .catch(err=>{
-            
-         })
-     }
+         }) 
+            .then(function(response){
+                    setapiResponse(response.data);
+            }) 
+            .catch(err=>{
+                
+            })
+        }
      async function apiRequest2(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
@@ -104,12 +106,14 @@ const Card = (props) => {
              headers:{
                'Authorization': 'Bearer '+ auth_token
              }
-         }) .then(function(response){
-                setapiResponse2(response.data);                                 
-         }) .catch(err=>{
-            
-         })
-     }
+         }) 
+            .then(function(response){
+                    setapiResponse2(response.data);                                 
+            }) 
+            .catch(err=>{
+                
+            })
+        }
      async function apiRequest3(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
@@ -120,12 +124,14 @@ const Card = (props) => {
              headers:{
                'Authorization': 'Bearer '+ auth_token
              }
-         }) .then(function(response){
-                setapiResponse3(response.data);                                 
-         }) .catch(err=>{
-            
-         })
-     }
+         }) 
+            .then(function(response){
+                    setapiResponse3(response.data);                                 
+            }) 
+            .catch(err=>{
+                
+            })
+        }
     useEffect(()=>{
         apiRequest()
         apiRequest2()

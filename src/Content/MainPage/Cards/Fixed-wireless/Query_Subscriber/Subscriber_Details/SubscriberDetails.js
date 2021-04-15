@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './SubscriberDetails.css';
 import Toggle from 'react-toggle'
@@ -7,7 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {FormGroup, FormControl, FormLabel} from "react-bootstrap";
+import {FormGroup, FormControl} from "react-bootstrap";
 import "react-toggle/style.css";
 import Scroll from '../../../Scroll';
 import axios from 'axios';
@@ -124,10 +124,8 @@ const SubscriberDetails = (props) => {
     const [show, setShow] = useState(false);
     const [Decommisionshow, setDecommisionshow] = useState(false);
     const [Errorshow, setErrorshow] = useState(false);
-    const [NewIPAddress, setNewIPAddress] = useState("");
-    const [apiResponse, setapiResponse] = useState("");
+    const [, setapiResponse] = useState("");
     const [open, setOpen] = useState(false);
-    const [attrbuteChange, setattrbuteChange] = useState(false);
     const [decommmissionValidate, setdecommmissionValidate] = useState("")
     const handleClose = () => setErrorshow(false);
     const handleClose_Decomm = () => setDecommisionshow(false);
@@ -138,24 +136,26 @@ const SubscriberDetails = (props) => {
 
     function DecommissionSubscriberapi(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-         axios({
-             method: 'POST',
-             url:'http://192.168.6.253:32598/fwb/deletesubscriber',
-             data:{
-               "name": subscriber_name,
-             },
-             headers:{
-               'Authorization': 'Bearer '+ auth_token
-             }
-         }) .then(function(response){
-                 setapiResponse(response.data);
-                 setOpen(false)
-                 setDecommisionshow(true);
-                 
-                 
-         }) .catch(err=>{
-                 setErrorshow(true)
-         })
+        axios({
+            method: 'POST',
+            url:'http://192.168.6.253:32598/fwb/deletesubscriber',
+            data:{
+            "name": subscriber_name,
+            },
+            headers:{
+            'Authorization': 'Bearer '+ auth_token
+            }
+        }) 
+        .then(function(response){
+                setapiResponse(response.data);
+                setOpen(false)
+                setDecommisionshow(true);
+                
+                
+        }) 
+        .catch(err=>{
+                setErrorshow(true)
+        })
      }
      async function change_attr_api(attribute_name, attribute_val){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -170,11 +170,13 @@ const SubscriberDetails = (props) => {
              headers:{
                'Authorization': 'Bearer '+ auth_token
              }
-         }) .then(function(response){
+         }) 
+         .then(function(response){
                  setapiResponse(response.data);
                  setShow(true);
                  
-         }) .catch(err=>{
+         }) 
+         .catch(err=>{
                 setErrorshow(true)
          })
      }

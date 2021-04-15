@@ -32,7 +32,7 @@ class LogoComponent extends Component {
     render(){
         return(
             <Row className={css(styles.container)} horizontal="center" vertical="center">
-                <img src={Logo} className={css(styles.logoimg)} />
+                <img src={Logo} className={css(styles.logoimg)} alt='Logo'/>
                 <span className={css(styles.title)}>Work Tools</span>
             </Row>
         )

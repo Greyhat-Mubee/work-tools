@@ -71,7 +71,7 @@ function a11yProps(index) {
 
 const FwbCreate = (props) => {
     const {auth_token} =props;
-    const [show, setShow] = useState(false);
+    const [, setShow] = useState(false);
     const handleShow = () => setShow(true);
     const [subscriberName, setsubscriberName] = useState("");
     const [manualPublicIP, setmanualPublicIP] = useState("");
@@ -80,7 +80,7 @@ const FwbCreate = (props) => {
     const [lanSubnetAddress, setlanSubnetAddress] = useState("/30");
     const [SubscriberPlan, setSubscriberPlan] = useState("1/1 Mbps");
     const [hasLoaded, sethasLoaded] = useState("");
-    const [apiResponse, setapiResponse] = useState("");
+    const [, setapiResponse] = useState("");
     const [loadingModal, setloadingModal] = useState(false);
     const [errorModal, seterrorModal] = useState(false);
     const handleClose = () => seterrorModal(false);
@@ -97,9 +97,6 @@ const FwbCreate = (props) => {
       setValue(newValue);
     };
   
-    const handleChangeIndex = (index) => {
-      setValue(index);
-    };
     
     function validateForm() {
         return subscriberName.length > 0 && pop.length > 0 && SubscriberPlan.length > 0;
@@ -121,14 +118,16 @@ const FwbCreate = (props) => {
             headers:{
               'Authorization': 'Bearer '+ auth_token
             }
-        }) .then(function(response){
+        }) 
+        .then(function(response){
                 setapiResponse(response.data['message']);
                 setloadingModal(false);
                 sethasLoaded('loaded');
                 setShow(true)
                 onItemClicked("Fixed Wireless Broadband")
                 handleShow();
-        }) .catch(err=>{
+        }) 
+        .catch(err=>{
                 setloadingModal(false);
                 seterrorModal(true);
                 handleShow();
@@ -152,13 +151,15 @@ const FwbCreate = (props) => {
            headers:{
              'Authorization': 'Bearer '+ auth_token
            }
-       }) .then(function(response){
+       }) 
+       .then(function(response){
                setapiResponse(response.data['message']);
                setloadingModal(false);
                sethasLoaded('loaded');
                setShow(true)
                handleShow();
-       }) .catch(err=>{
+       }) 
+       .catch(err=>{
                setloadingModal(false);
                seterrorModal(true);
                handleShow();

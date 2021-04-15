@@ -1,6 +1,6 @@
-import React,{Component} from 'react';
-import { bool, func, string } from 'prop-types';
-import {Row, Column} from 'simple-flexbox';
+import React from 'react';
+import { bool, string } from 'prop-types';
+import {Row} from 'simple-flexbox';
 import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
@@ -44,7 +44,7 @@ function SubMenu(props) {
     const Icon = icon;
     return (
         <Row className={css(styles.container, active && styles.activeContainer)} vertical="center" {...otherProps}>
-            <img src={Icon} style={{height:'25px',width:'25px'}}/>
+            <img src={Icon} style={{height:'25px',width:'25px'}} alt=' sub menu icon'/>
             {active && <div className={css(styles.activeBar)}></div>}
             <span className={css(styles.title, active && styles.activeTitle)}>{title}</span>
         </Row>

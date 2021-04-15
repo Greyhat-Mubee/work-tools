@@ -1,6 +1,6 @@
-import React, {Component, useEffect, useState, SyntheticEvent} from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import { BrowserRouter, Route, Router, Switch } from 'react-router-dom';
+import {  Route, useLocation} from 'react-router-dom';
 import Card from './MainPage/Cards/Dashboard/Cards';
 import SaasCard from './MainPage/Cards/Sophosaas/SaasCard';
 import FwbCards from './MainPage/Cards/Fixed-wireless/fwbCard';
@@ -30,65 +30,57 @@ const styles = StyleSheet.create({
   
 
 const MainPage = (props) => {
-    const {selectedItem , isSignedIn, auth_token} = props;
-    const [SelectedItem, setSelectedItem] = useState(selectedItem);
-    const [issignedin, setissignedin] = useState(isSignedIn);
-    const [auth_Token, setauth_Token] = useState(auth_token);
+    const {selectedItem , auth_token} = props;
+    const [, setSelectedItem] = useState(selectedItem);
+    let location = useLocation();
+    
+    React.useEffect(() => {
+        const path_dict = {
+            '/':'Dashboard',
+            '/sophosaas' : 'Sophos as a Service',
+            '/sophosaas/create subscriber' : 'Sophos > Create Subscriber',
+            '/sophosaas/decommission': 'Sophos > Decommission',
+            '/fwb' : 'Fixed Wireless Broadband',
+            '/fwb/create subscriber' : 'Fwb > Create Subscriber',
+            '/fwb/query subscriber' : 'Fwb > Query Subscriber'
+          }
+        const onItemClicked = (item) => {
+            return props.onChange(path_dict[item]);    
+        }
+    
+        onItemClicked([location.pathname]);
+    }, [location]);
+  
+
     return(
-        <div>
-            
-                <Switch>
-                    {/* <Route path='/dashboard'>
-                        <Card ClassName={css(styles.content)} selectedItem={selectedItem} 
-                        onChange={(selectedItem) => setSelectedItem({ selectedItem })} 
-                        auth_token={auth_token}/>
-                    </Route>
-                    <Route path='/fwb'>
-                        <FwbCards auth_token={auth_token}/>
-                    </Route>
-                    <Route path='/sophosaas'>
-                        <SaasCard ClassName={css(styles.content)}
-                            auth_token={auth_token}
-                            />
-                    </Route>            */}
-                        {
-                            selectedItem === 'Sophos as a Service' && isSignedIn === true ? 
-                            <Route path='/sophosaas'>
-                                <SaasCard ClassName={css(styles.content)}
-                                auth_token={auth_token}
-                                />
-                            </Route> 
-                            : selectedItem === 'Dashboard' && isSignedIn === true?
-                            <Route path='/dashboard'>
-                                <Card ClassName={css(styles.content)} selectedItem={selectedItem} 
-                                onChange={(selectedItem) => setSelectedItem({ selectedItem })} 
-                                auth_token={auth_token}/>
-                            </Route>
-                            : selectedItem === 'Fixed Wireless Broadband' && isSignedIn === true?
-                            <Route path='/fwb'>
-                                <FwbCards auth_token={auth_token}/>
-                            </Route>    
-                            : selectedItem === 'Sophos > Create Subscriber' && isSignedIn === true?
-                            <Route path='/sophosaas/create subscriber'>    
-                                <CreateSubscriber auth_token={auth_token}/>
-                            </Route>
-                            : selectedItem === 'Sophos > Decommission' && isSignedIn === true?
-                            <Route path='/sophosaas/decommission'>
-                                <Decommission auth_token={auth_token}/>
-                            </Route>
-                            : selectedItem === 'Fwb > Create Subscriber' && isSignedIn === true?
-                            <Route path='/fwb/create subscriber'>
-                                <FwbCreate auth_token={auth_token}
-                                onChange={(selectedItem) => setSelectedItem(selectedItem)}
-                                />
-                            </Route>
-                            : selectedItem === 'Fwb > Query Subscriber' && isSignedIn === true?
-                            <Route path='/fwb/query subscriber'>
-                                <QuerySubscriber auth_token={auth_token}/>
-                            </Route>
-                            : <div></div>
-                        }
-                </Switch>
+        <div>        
+            <Route exact exact path='/sophosaas'>
+                <SaasCard ClassName={css(styles.content)}
+                auth_token={auth_token}
+                />
+            </Route> 
+            <Route exact path='/'>
+                <Card ClassName={css(styles.content)} selectedItem={selectedItem} 
+                onChange={(selectedItem) => setSelectedItem({ selectedItem })} 
+                auth_token={auth_token}/>
+            </Route>
+                <Route exact path='/fwb'>
+                <FwbCards auth_token={auth_token}/>
+            </Route>    
+            <Route exact path='/sophosaas/create subscriber'>    
+                <CreateSubscriber auth_token={auth_token}/>
+            </Route>
+            <Route exact path='/sophosaas/decommission'>
+                <Decommission auth_token={auth_token}/>
+            </Route>
+            <Route exact path='/fwb/create subscriber'>
+                <FwbCreate auth_token={auth_token}
+                onChange={(selectedItem) => setSelectedItem(selectedItem)}
+                />
+            </Route>
+            <Route exact path='/fwb/query subscriber'>
+                <QuerySubscriber auth_token={auth_token}/>
+            </Route>
         </div>
     )
 }

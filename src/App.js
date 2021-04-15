@@ -44,15 +44,15 @@ function App () {
   const [isSignedIn, setisSignedIn] = usePersistedState('isSignedIn',false);;
   const [auth_token, setauth_token] = usePersistedState('auth_token',"");
   const [name, setname] = usePersistedState('name',"");
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [, setWindowWidth] = useState(window.innerWidth);
   const onWindowResize = useGlobalEvent("resize");
-  onWindowResize((event: React.SyntheticEvent) => {
+  onWindowResize((event: SyntheticEvent) => {
     setWindowWidth(window.innerWidth);
   });
-  console.log(document.location.pathname)
+
   useEffect(() => {
     const path_dict = {
-      '/dashboard':'Dashboard',
+      '/':'Dashboard',
       '/sophosaas' : 'Sophos as a Service',
       '/sophosaas/create subscriber' : 'Sophos > Create Subscriber',
       '/sophosaas/decommission': 'Sophos > Decommission',

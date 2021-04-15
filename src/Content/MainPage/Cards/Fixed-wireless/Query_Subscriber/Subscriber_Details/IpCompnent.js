@@ -1,18 +1,11 @@
 import React, {useState} from 'react';
-import Toggle from 'react-toggle'
-import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import {FormGroup, FormControl} from "react-bootstrap";
 import "react-toggle/style.css";
-import Scroll from '../../../Scroll';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { makeStyles } from '@material-ui/core/styles';
-import RingLoader from "react-spinners/HashLoader";
-import { css } from "@emotion/core";
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 
@@ -22,22 +15,6 @@ function Alert(props) {
   }
   
   
-  const useStyles = makeStyles((theme) => ({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      
-    },
-    paper: {
-      marginLeft:'25em',
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-      width: '60%'
-    },
-  }));
 
 
 const IpComponent = (props) => {
@@ -50,7 +27,7 @@ const IpComponent = (props) => {
     const {authen_token} = props;
     const {ip} = props;
     const [SubIp , setSubIp] = useState(ip);
-    const [apiResponse, setapiResponse] = useState("");
+    const [, setapiResponse] = useState("");
     const [pop, setpop] = useState("Select POP");
     const [changeLoading, setchangeLoading] = useState("Change")
     const IPchangeModal = (event) => {
@@ -73,14 +50,16 @@ const IpComponent = (props) => {
              headers:{
                'Authorization': 'Bearer '+ authen_token
              }
-         }) .then(function(response){
+         }) 
+         .then(function(response){
                  setapiResponse(response.data);
                  setchangeLoading("Change")
                  setSubIp(NewIPAddress);
                  handleClose1()
 
                  
-         }) .catch(err=>{
+         }) 
+         .catch(err=>{
                  setErrorshow(true)
                  setchangeLoading("Change")
          })
