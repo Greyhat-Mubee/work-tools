@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import axios from 'axios'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./Login.css";
 import Card from '../../MainPage/Cards/Dashboard/Cards';
 
@@ -12,6 +12,8 @@ export default function Login(props) {
   const [loginStatus, setLoginStatus] = useState("");
   const [loginCheck, setLoginCheck] = useState("Login")
   const {isSignedIn, auth_token} = props
+  let history = useHistory();
+
 
   function SignInChange (val) {
     return props.onSignChange(val)
@@ -45,7 +47,8 @@ export default function Login(props) {
     }) .then(function(response){
             onItemClicked(true)
             StoreToken(response.data['access_token'])
-            StoreName(response.data['name'])       
+            StoreName(response.data['name'])  
+            history.push('/dashboard')
             SignInChange('Dashboard')     
     }).catch(err => {
           onItemClicked(false)

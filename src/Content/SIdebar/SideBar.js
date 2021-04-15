@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button';
 import Menu from './Menu';
 import SubMenu from './SubMenu';
 import IconBurger from '../../assets/icon-burger';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, NavLink } from "react-router-dom";
 
 
 const styles = StyleSheet.create({
@@ -109,89 +109,88 @@ class Sidebar extends Component {
                         {
                             isSignedIn === true ?
                             <Column className={css(styles.menuItemList)}>
-                            <Router>
+                            
                             <Accordion defaultActiveKey="0">
                                 <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
                                     <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
                                     <Accordion.Toggle as={Button} variant="link" eventKey="0" style={{padding:0,margin:0}}>
-                                    <Link to="/dashboard">
+                                    <NavLink to="/dashboard">
                                         <Menu
                                             title="Dashboard"
                                             onClick={() => this.onItemClicked('Dashboard')}
                                             active={this.props.selectedItem === 'Dashboard'}
                                         />
-                                    </Link>
+                                    </NavLink>
                                     </Accordion.Toggle>
                                     </Card.Header>
                                 </Card>
                                 <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
                                     <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
                                     <Accordion.Toggle as={Button} variant="link" eventKey="1" style={{padding:0,margin:0}}>
-                                    <Link to="/sophosaas">
+                                    <NavLink to="/sophosaas">
                                         <Menu
                                             title="Sophos as a Service"
                                             onClick={() => this.onItemClicked('Sophos as a Service')}
                                             active={this.props.selectedItem === 'Sophos as a Service'}
                                         />
-                                    </Link>
+                                    </NavLink>
                                     </Accordion.Toggle>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="1" style={{padding:0,margin:0}}>
                                     <Card.Body style={{padding:0, margin:0, backgroundColor:"#535463"}}>
-                                        <Link to="/sophosaas/create subscriber">
+                                        <NavLink to="/sophosaas/create subscriber">
                                             <SubMenu
                                                 icon = {createlogoSaas}
                                                 title="Create Subscriber"
                                                 onClick={() => this.onItemClicked('Sophos > Create Subscriber')}
                                                 active={this.props.selectedItem === 'Sophos > Create Subscriber'}
                                             />
-                                        </Link>
-                                        <Link to="/sophosaas/decommission">
+                                        </NavLink>
+                                        <NavLink to="/sophosaas/decommission">
                                             <SubMenu
                                                 icon = {decommlogoSaas}
                                                 title="Decommission"
                                                 onClick={() => this.onItemClicked('Sophos > Decommission')}
                                                 active={this.props.selectedItem === 'Sophos > Decommission'}
                                             />
-                                        </Link>
+                                        </NavLink>
                                     </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
                                 <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
                                     <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
                                     <Accordion.Toggle as={Button} variant="link" eventKey="2" style={{padding:0,margin:0}}>
-                                    <Link to="/fwb">
+                                    <NavLink to="/fwb">
                                         <Menu
                                             title="Fixed Wireless"
                                             onClick={() => this.onItemClicked('Fixed Wireless Broadband')}
                                             active={this.props.selectedItem === 'Fixed Wireless Broadband'}
                                         />
-                                    </Link>
+                                    </NavLink>
                                     </Accordion.Toggle>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="2" style={{padding:0,margin:0}}>
                                     <Card.Body style={{padding:0,margin:0, backgroundColor:"#535463"}}>
-                                        <Link to="/fwb/create subscriber">
+                                        <NavLink to="/fwb/create subscriber">
                                             <SubMenu
                                                 icon = {createlogo}
                                                 title="Create Subscriber"
                                                 onClick={() => this.onItemClicked('Fwb > Create Subscriber')}
                                                 active={this.props.selectedItem === 'Fwb > Create Subscriber'}
                                             />
-                                        </Link>
-                                        <Link to="/fwb/query subscriber">
+                                        </NavLink>
+                                        <NavLink to="/fwb/query subscriber">
                                             <SubMenu
                                                 icon = {decommlogo}
                                                 title="Query Subscriber"
                                                 onClick={() => this.onItemClicked('Fwb > Query Subscriber')}
                                                 active={this.props.selectedItem === 'Fwb > Query Subscriber'}
                                             />
-                                        </Link>
+                                        </NavLink>
                                     </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
                             </Accordion>
-                           </Router>
                         </Column>   
                         :<div></div>
                         }

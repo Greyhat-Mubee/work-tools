@@ -1,19 +1,14 @@
-import React, {Component, useEffect, useState, SyntheticEvent} from 'react';
+import React, {useEffect, useState, SyntheticEvent} from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { useGlobalEvent } from "beautiful-react-hooks";
 import { StyleSheet, css } from 'aphrodite';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
-import Scroll from './Content/MainPage/Scroll'
 import Sidebar from './Content/SIdebar/SideBar';
-import HeaderComponent from './Content/Header/HeaderComponent'
-import Card from './Content/MainPage/Cards/Dashboard/Cards';
-import SaasCard from './Content/MainPage/Cards/Sophosaas/SaasCard';
+import HeaderComponent from './Content/Header/HeaderComponent';
+import MainPage from './Content/mainPage';
 import Login from './Content/Login/Login/Login';
-import FwbCards from './Content/MainPage/Cards/Fixed-wireless/fwbCard';
-import CreateSubscriber from './Content/MainPage/Cards/Sophosaas/CreateSubscriber/CreateSubscriber.1';
-import Decommission from './Content/MainPage/Cards/Sophosaas/Decommission/Decommision';
-import FwbCreate from './Content/MainPage/Cards/Fixed-wireless/Create_Subscriber/CreateSubscriber.1';
-import QuerySubscriber from './Content/MainPage/Cards/Fixed-wireless/Query_Subscriber/querySub'
+
 
 const styles = StyleSheet.create({
   container: {
@@ -49,21 +44,34 @@ function App () {
   const [isSignedIn, setisSignedIn] = usePersistedState('isSignedIn',false);;
   const [auth_token, setauth_token] = usePersistedState('auth_token',"");
   const [name, setname] = usePersistedState('name',"");
-  
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const onWindowResize = useGlobalEvent("resize");
   onWindowResize((event: React.SyntheticEvent) => {
     setWindowWidth(window.innerWidth);
   });
+  console.log(document.location.pathname)
   useEffect(() => {
-  })
+    const path_dict = {
+      '/dashboard':'Dashboard',
+      '/sophosaas' : 'Sophos as a Service',
+      '/sophosaas/create subscriber' : 'Sophos > Create Subscriber',
+      '/sophosaas/decommission': 'Sophos > Decommission',
+      '/fwb' : 'Fixed Wireless Broadband',
+      '/fwb/create subscriber' : 'Fwb > Create Subscriber',
+      '/fwb/query subscriber' : 'Fwb > Query Subscriber'
+    }
+    if (isSignedIn===true && document.location.pathname in path_dict) {
+      setselectedItem(path_dict[document.location.pathname])
+    }
+  },[document.location.pathname])
 
   return (
+    <BrowserRouter>
       <div>
         <Row className={css(styles.container)}>
                   <Sidebar selectedItem={selectedItem} 
                           onChange={(selectedItem) => setselectedItem(selectedItem)}
-                          isSignedIn={isSignedIn}  />
+                          isSignedIn={isSignedIn} />
                   <Column flexGrow={1} className={css(styles.mainBlock)}>
                   <HeaderComponent title={selectedItem} 
                           onChange={(selectedItem) => setselectedItem(selectedItem)} 
@@ -73,7 +81,7 @@ function App () {
                           onSignChange={(isSignedIn) => setisSignedIn(isSignedIn)}
                           />
                       {
-                        selectedItem === 'Login'? 
+                        isSignedIn === false ? 
                         <Login ClassName={css(styles.content)} 
                             isSignedIn={isSignedIn}
                             auth_token={auth_token} 
@@ -82,36 +90,20 @@ function App () {
                             onSignChange={(selectedItem)=> setselectedItem(selectedItem)}
                             nameChange={(name) => setname(name)}
                             />
-                        : selectedItem === 'Sophos as a Service' && isSignedIn === true ? 
-                        <SaasCard ClassName={css(styles.content)}
-                          auth_token={auth_token}
-                        />
-                        : selectedItem === 'Dashboard' && isSignedIn === true?
-                        <Card ClassName={css(styles.content)} selectedItem={selectedItem} 
-                        onChange={(selectedItem) => setselectedItem({ selectedItem })} 
-                        auth_token={auth_token}/>
-                        : selectedItem === 'Fixed Wireless Broadband' && isSignedIn === true?
-                        <FwbCards auth_token={auth_token}/>
-                        : selectedItem === 'Sophos > Create Subscriber' && isSignedIn === true?
-                        <CreateSubscriber auth_token={auth_token}/>
-                        : selectedItem === 'Sophos > Decommission' && isSignedIn === true?
-                        <Decommission auth_token={auth_token}/>
-                        : selectedItem === 'Fwb > Create Subscriber' && isSignedIn === true?
-                        <FwbCreate auth_token={auth_token}
-                        onChange={(selectedItem) => setselectedItem(selectedItem)}
-                        />
-                        : selectedItem === 'Fwb > Query Subscriber' && isSignedIn === true?
-                        <QuerySubscriber auth_token={auth_token}/>
-                        :<Login ClassName={css(styles.content)} 
-                        isSignedIn={isSignedIn}
-                        auth_token={auth_token} 
-                        onChange={(isSignedIn) => setisSignedIn({ isSignedIn })}
-                        tokenChange={(auth_token) => setauth_token({auth_token})}
-                        />
+                        
+                        :<div>
+                          <MainPage 
+                            isSignedIn={isSignedIn}
+                            auth_token={auth_token}
+                            selectedItem={selectedItem}
+                            onChange={(selectedItem) => setselectedItem(selectedItem)}
+                          />
+                        </div> 
                       }
                   </Column>
               </Row>
       </div>
+    </BrowserRouter>
       );
     }
 
