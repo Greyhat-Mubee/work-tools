@@ -1,5 +1,4 @@
 import React from 'react';
-import Imageicon from './saasicon.png';
 import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
 

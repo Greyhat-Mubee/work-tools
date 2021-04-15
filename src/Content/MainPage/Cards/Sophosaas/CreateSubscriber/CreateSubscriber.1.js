@@ -32,7 +32,7 @@ const CreateSubscriber = (props) => {
     const [wanSubnetAddress, setwanSubnetAddress] = useState("");
     const [wanGatewayAddress, setwanGatewayAddress] = useState("");
     const [hasLoaded, sethasLoaded] = useState("");
-    const [apiResponse, setapiResponse] = useState("");
+    const [, setapiResponse] = useState("");
     const [loadingModal, setloadingModal] = useState(false);
     const [errorModal, seterrorModal] = useState(false);
     const handleSuccessClose = () => setShow(false);
@@ -62,17 +62,19 @@ const CreateSubscriber = (props) => {
             headers:{
               'Authorization': 'Bearer '+ auth_token
             }
-        }) .then(function(response){
-                setapiResponse(response.data['message']);
-                setloadingModal(false);
-                sethasLoaded('loaded');
-                handleShow();
-        }) .catch(err=>{
-                setloadingModal(false);
-                seterrorModal(true);
-                handleShow();
-        })
-    }
+        }) 
+          .then(function(response){
+                  setapiResponse(response.data['message']);
+                  setloadingModal(false);
+                  sethasLoaded('loaded');
+                  handleShow();
+          }) 
+          .catch(err=>{
+                  setloadingModal(false);
+                  seterrorModal(true);
+                  handleShow();
+          })
+      }
 
     function handleSubmit(event) {
       sethasLoaded("loading");

@@ -5,11 +5,13 @@ import App from './App';
 import 'tachyons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as serviceWorker from './serviceWorker';
+import {BrowserRouter} from 'react-router-dom';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+      <App />
+  </BrowserRouter>
+  ,
   document.getElementById('root')
 );
 

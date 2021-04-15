@@ -1,9 +1,9 @@
-import React, {Component, useState} from 'react';
+import React from 'react';
 import { string } from 'prop-types';
-import { Row, Column } from 'simple-flexbox';
+import { Row } from 'simple-flexbox';
 import user_pic from './userpic.png';
 import { StyleSheet, css } from 'aphrodite';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const styles = StyleSheet.create({
     avatar: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 });
 
  function HeaderComponent (props) {
-    const { icon, auth_token,title,isSignedin, user_name} = props;
+    const { title,isSignedin, user_name} = props;
     
     
     const onItemClicked = (item) => {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
                     <Row vertical="center">
                         <div className={css(styles.separator)}></div>
                         <Row vertical="center">
-                        <img src={user_pic} style={{height:"30px", marginRight:"15px"}}/>
+                        <img src={user_pic} style={{height:"30px", marginRight:"15px"}} alt="avatar"/>
                         <p style={{fontFamily:"Muli", fontWeight:"bold",fontSize:"20px",paddingTop:"20px"}}>{user_name}</p> 
                         <Link to="/login">
                             <button className={css(styles.iconStyles)}

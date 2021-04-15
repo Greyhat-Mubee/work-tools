@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import './CreateSubscriber.css';
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import axios from 'axios';
-import Modal from 'react-bootstrap/Modal';
-import { css } from "@emotion/core";
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
 import RingLoader from "react-spinners/GridLoader";
@@ -27,10 +25,9 @@ const Decommission = (props) => {
     const {auth_token} =props;
     const [show, setShow] = useState(false);
     const handleClose = () => seterrorModal(false);
-    const errorClose = () => seterrorModal(false);
     const [subscriberName, setsubscriberName] = useState("");
     const [hasLoaded, sethasLoaded] = useState("");
-    const [apiResponse, setapiResponse] = useState("");
+    const [, setapiResponse] = useState("");
     const [loadingModal, setloadingModal] = useState(false);
     const [errorModal, seterrorModal] = useState(false);
     const handleSuccessClose = () => setShow(false);
@@ -55,16 +52,18 @@ const Decommission = (props) => {
             headers:{
             'Authorization': 'Bearer '+ auth_token
             }
-        }) .then(function(response){
-                setapiResponse(response.data['message']);
-                sethasLoaded('loaded');
-                handleShow();             
-        }) .catch(err=>{
-                setloadingModal(false);
-                seterrorModal(true)
-                handleShow();
-        })
-    }
+        }) 
+          .then(function(response){
+                  setapiResponse(response.data['message']);
+                  sethasLoaded('loaded');
+                  handleShow();             
+          }) 
+          .catch(err=>{
+                  setloadingModal(false);
+                  seterrorModal(true)
+                  handleShow();
+          })
+      }
 
     function handleSubmit(event) {
       sethasLoaded("loading");

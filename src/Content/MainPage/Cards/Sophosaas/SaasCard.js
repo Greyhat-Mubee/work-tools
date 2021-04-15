@@ -7,7 +7,6 @@ import Table from 'react-bootstrap/Table';
 import Icontotal from './totalSubscribers.png';
 import Iconload from './systemload.png';
 import Iconram from './systemram.png';
-import Iconband from './systembandwidth.png';
 
 const styles = StyleSheet.create({
     imageicons:{
@@ -48,7 +47,6 @@ const Card = (props) => {
     const {auth_token} =props;
     const [apiResponse, setapiResponse] = useState("");
     const [apiResponse2, setapiResponse2] = useState([]);
-    const [apiResponse3, setapiResponse3] = useState([]);
     async function apiRequest(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
@@ -59,12 +57,14 @@ const Card = (props) => {
              headers:{
                'Authorization': 'Bearer '+ auth_token
              }
-         }) .then(function(response){
-                setapiResponse(response.data);
-         }) .catch(err=>{
-            
-         })
-     }
+         }) 
+            .then(function(response){
+                    setapiResponse(response.data);
+            }) 
+            .catch(err=>{
+                
+            })
+        }
      async function apiRequest2(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
@@ -75,12 +75,14 @@ const Card = (props) => {
              headers:{
                'Authorization': 'Bearer '+ auth_token
              }
-         }) .then(function(response){
-                setapiResponse2(response.data);                                 
-         }) .catch(err=>{
-            
-         })
-     }
+         }) 
+            .then(function(response){
+                    setapiResponse2(response.data);                                 
+            }) 
+            .catch(err=>{
+                
+            })
+        }
     useEffect(()=>{
         apiRequest()
         apiRequest2()

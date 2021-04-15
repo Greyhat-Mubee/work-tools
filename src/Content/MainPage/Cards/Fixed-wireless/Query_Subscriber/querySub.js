@@ -1,10 +1,9 @@
-import React, {useState,Compnent} from 'react';
-import { unmountComponentAtNode, render } from "react-dom";
+import React, {useState} from 'react';
 import './QuerySubscriber.css';
 import searchimg from './search.png';
 import Row from 'react-bootstrap/Row';
 import axios from 'axios';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
 import SubscriberDetails from './Subscriber_Details/SubscriberDetails';
@@ -29,27 +28,29 @@ const QuerySubscriber = (props) =>{
     
     async function apiRequest(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-         axios({
-             method: 'POST',
-             url:'http://192.168.6.253:32598/fwb/querysubscriber',
-             data:{
-               "name": searchName,
-             },
-             headers:{
-               'Authorization': 'Bearer '+ auth_token
-             }
-         }) .then(function(response){
-                 setapiResponse(response.data);
-                 handleClose();
-                 sethasLoaded('loaded');
+        axios({
+            method: 'POST',
+            url:'http://192.168.6.253:32598/fwb/querysubscriber',
+            data:{
+            "name": searchName,
+            },
+            headers:{
+            'Authorization': 'Bearer '+ auth_token
+            }
+        }) 
+            .then(function(response){
+                    setapiResponse(response.data);
+                    handleClose();
+                    sethasLoaded('loaded');
 
-                 
-         }) .catch(err=>{
+                    
+            }) 
+            .catch(err=>{
                 handleClose();
                 sethasLoaded('loadingError');
-                 
-         })
-     }
+                    
+            })
+        }
     
      function validateForm() {
         return searchName.length > 0 ;
@@ -78,7 +79,7 @@ const QuerySubscriber = (props) =>{
                     className="ml-3 w-50 searchinput" type="text" placeholder="Subscriber Name" aria-label="Search" />
                 {/* Tried to use react router to make to change the url onSubmit but for some reason i get a blank screen if you can please try and fix this. Thanks */}
                 <button className="searchbtn" block disabled={!validateForm()} type="submit">
-                    <img src= {searchimg} className=""/>
+                    <img src= {searchimg} className="" alt='search icon'/>
                 </button>
                 </form> 
             </Row>
