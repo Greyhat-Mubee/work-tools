@@ -3,6 +3,7 @@ import { Column, Row } from 'simple-flexbox';
 import { useGlobalEvent } from "beautiful-react-hooks";
 import { StyleSheet, css } from 'aphrodite';
 import { BrowserRouter } from 'react-router-dom';
+import lscache from 'lscache';
 import './App.css';
 import Sidebar from './Content/SIdebar/SideBar';
 import HeaderComponent from './Content/Header/HeaderComponent';
@@ -33,10 +34,10 @@ function App () {
   
   function usePersistedState(key, defaultValue) {
     const [state, setState] = React.useState(
-      () => JSON.parse(localStorage.getItem(key)) || defaultValue
+      () => JSON.parse(lscache.get(key)) || defaultValue
     );
     useEffect(() => {
-      localStorage.setItem(key, JSON.stringify(state));
+      lscache.set(key, JSON.stringify(state), 90);
     }, [key, state]);
     return [state, setState];
   }
