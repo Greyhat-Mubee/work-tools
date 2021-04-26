@@ -211,7 +211,7 @@ const SubscriberDetails = (props) => {
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'POST',
-             url:'http://192.168.6.253:8000/fwb/querysubscriber/addip',
+             url:'http://192.168.6.253:32598/fwb/querysubscriber/subscriberdetails/addip',
              data:{
                 "name": subscriber_name,
                 "ip_address": NewIPAddress,

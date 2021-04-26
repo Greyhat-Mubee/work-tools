@@ -4,6 +4,7 @@
     width: 82vw;
     background-color:#F7F8FC;
     bottom: 60px;
+    opacity: 1;
 }
 @media(max-width: 1360px){
     .contentpage{
@@ -11,7 +12,7 @@
     }
 }
 .centerdets{
-    margin-left: 35%;
+    margin-left: 32%;
     padding: 30px;
 }
 .roboimg{
