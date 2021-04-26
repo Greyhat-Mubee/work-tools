@@ -3,7 +3,7 @@ import './QuerySubscriber.css';
 import searchimg from './search.png';
 import Row from 'react-bootstrap/Row';
 import axios from 'axios';
-import { BrowserRouter as Router } from "react-router-dom";
+import { Switch, Route,useHistory } from "react-router-dom";
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
 import SubscriberDetails from './Subscriber_Details/SubscriberDetails';
@@ -24,6 +24,7 @@ const QuerySubscriber = (props) =>{
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const classes = useStyles();
+    let history = useHistory();
 
     
     async function apiRequest(){
@@ -41,9 +42,7 @@ const QuerySubscriber = (props) =>{
             .then(function(response){
                     setapiResponse(response.data);
                     handleClose();
-                    sethasLoaded('loaded');
-
-                    
+                    sethasLoaded('loaded');                    
             }) 
             .catch(err=>{
                 handleClose();
@@ -61,7 +60,7 @@ const QuerySubscriber = (props) =>{
     event.preventDefault();
     }
     return(
-        <Router>
+        <Switch>
         <div className='contentpage'>
 
             <Backdrop className={classes.backdrop} open={open}>
@@ -100,7 +99,7 @@ const QuerySubscriber = (props) =>{
                 
             
         </div>
-        </Router>
+        </Switch>
     )
 }
 
