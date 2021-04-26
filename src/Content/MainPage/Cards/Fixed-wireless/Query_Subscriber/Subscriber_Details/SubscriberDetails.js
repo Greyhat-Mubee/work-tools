@@ -7,7 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {FormGroup, FormControl} from "react-bootstrap";
+import {Form,FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import "react-toggle/style.css";
 import Scroll from '../../../Scroll';
 import axios from 'axios';
@@ -39,6 +39,19 @@ function Alert(props) {
       padding: theme.spacing(2, 4, 3),
       width: '60%'
     },
+    paper_map: {
+        marginLeft:'15em',
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+        width: '60%'
+      },
+      Formlabel: {
+        fontStyle: 'Muli',
+        fontWeight: 'bold',
+        
+      },
   }));
   
   const Fade = React.forwardRef(function Fade(props, ref) {
@@ -112,7 +125,8 @@ const SubscriberDetails = (props) => {
     const {auth_token} = props;
     const subscriber_name = subscriberdata['name'];
     const subscriber_ip = subscriberdata['ip address'];
-    const sub_plan = subscriberdata['attributes']['Plan']
+    const sub_plan = subscriberdata['attributes']['Plan'];
+    const [Sub_ip, setSub_ip] = useState(subscriber_ip || []);
     const [SubscriberPlan, setSubscriberPlan] = useState(subscriber_plans[sub_plan] || 'None')
     const [FilterStreaming, setFilterStreaming] = useState(check_attr(subscriberdata['attributes']['filterStreaming']) || false)
     const [FilterAppleUpdate, setFilterAppleUpdate] = useState(check_attr(subscriberdata['attributes']['filterappleupdate']) || false)
@@ -121,18 +135,29 @@ const SubscriberDetails = (props) => {
     const [FilterMovies, setFilterMovies] = useState(check_attr(subscriberdata['attributes']['filtermovies']) || false)
     const [FilterP2P, setFilterP2P] = useState(check_attr(subscriberdata['attributes']['filterp2p']) || false)
     const [FilterYoutube, setFilterYoutube] = useState(check_attr(subscriberdata['attributes']['filteryoutube']) || false)
+    const [NewIPAddress, setNewIPAddress] = useState("");
+    const [pop, setpop] = useState("Select POP");
+    const [vlanID, setvlanID] = useState("");
+    const [changeLoading, setchangeLoading] = useState("Change");
     const [show, setShow] = useState(false);
     const [Decommisionshow, setDecommisionshow] = useState(false);
     const [Errorshow, setErrorshow] = useState(false);
     const [, setapiResponse] = useState("");
     const [open, setOpen] = useState(false);
     const [decommmissionValidate, setdecommmissionValidate] = useState("")
+    const [mapshow, setmapshow] = useState(false)
     const handleClose = () => setErrorshow(false);
     const handleClose_Decomm = () => setDecommisionshow(false);
     const handleShow = () => setShow(false);
     const decommModalOpen = () => setOpen(true);
     const decommModalClose = () => setOpen(false);
+    const mapshowClose = () => setmapshow(false);
     const classes = useStyles();
+    const mapIPModal = (event) => {
+        setmapshow(true)
+        event.preventDefault();
+    }
+
 
     function DecommissionSubscriberapi(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -156,6 +181,7 @@ const SubscriberDetails = (props) => {
         .catch(err=>{
                 setErrorshow(true)
         })
+
      }
      async function change_attr_api(attribute_name, attribute_val){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -179,6 +205,33 @@ const SubscriberDetails = (props) => {
          .catch(err=>{
                 setErrorshow(true)
          })
+     }
+
+     async function map_new_ip(e){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+         axios({
+             method: 'POST',
+             url:'http://192.168.6.253:32598/fwb/querysubscriber/subscriberdetails/addip',
+             data:{
+                "name": subscriber_name,
+                "ip_address": NewIPAddress,
+                "pop": pop,
+                "vlan": vlanID
+              },
+             headers:{
+               'Authorization': 'Bearer '+ auth_token
+             }
+         }) 
+         .then(function(response){
+                 setShow(true);
+                 subscriber_ip.push(NewIPAddress)
+                 mapshowClose()
+                 
+         }) 
+         .catch(err=>{
+                setErrorshow(true)
+         })
+        e.preventDefault();
      }
 
 
@@ -219,14 +272,17 @@ const SubscriberDetails = (props) => {
         setSubscriberPlan(newValue);
         change_attr_api('Plan', newValue);
     }
-    const DecommissionSusbscriber = (newValue) => {
+    const DecommissionSusbscriber = () => {
         DecommissionSubscriberapi();
     }
 
      function validateForm() {
         return decommmissionValidate === subscriber_name ;
       }
-    
+
+      function validateForm1() {
+        return NewIPAddress.length > 0 ;
+        }
 
     return(
         <div>            
@@ -286,6 +342,80 @@ const SubscriberDetails = (props) => {
                 </Fade>
         </Modal>
 
+        <Modal
+                aria-labelledby="spring-modal-title"
+                aria-describedby="spring-modal-description"
+                className={classes.modal}
+                open={mapshow}
+                onClose={mapshowClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                timeout: 500,
+                }}
+            >
+                <Fade in={mapshow}>
+                <div className={classes.paper_map}>
+                <Form onSubmit={map_new_ip}>
+                    <h2 id="spring-modal-title" style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>Map New IP Address</h2>
+                    <div style={{paddingTop: '20px', marginTop: '10px'}}></div>
+                    <Row style={{padding:'30px'}}>
+                       <Col>
+                       <FormLabel className={classes.Formlabel}>IP Address</FormLabel>
+                        <FormControl
+                                autoFocus
+                                type="text"
+                                value={NewIPAddress}
+                                onChange={e => setNewIPAddress(e.target.value)}
+                            />
+                       </Col>
+                       <Col>
+                        <FormGroup controlId="vlanID">
+                        <FormLabel className={classes.Formlabel}>VLAN ID</FormLabel>
+                        <FormControl
+                          value={vlanID}
+                          onChange={e => setvlanID(e.target.value)}
+                          type="number"
+                        />
+                        </FormGroup>
+                      </Col>
+                      </Row>
+                      <Row style={{paddingTop:'0',paddingLeft:'30px',paddingRight:'30px',paddingBottom:'10px'}}>
+                       <Col>
+                        <FormGroup controlId="pop">
+                            <FormLabel className={classes.Formlabel}>POP Location</FormLabel>
+                            <FormControl as="select"  value={pop}
+                                onChange={e => setpop(e.target.value)}
+                                >
+                                <option>VI POP</option>
+                                <option>LEKKI POP</option>
+                                <option>IKOTA POP</option>
+                                <option>TANGO POP</option>
+                                <option>CRESTVIEW POP</option>
+                                <option>NETCOM POP</option>
+                                <option>CBN POP</option>
+                                <option>ABUJA POP</option>
+                                <option>CBN ABUJA POP</option>
+                                <option>MEDALLION POP</option>
+                                <option>SAKA 18 POP</option>
+                                <option>SAKA 25 POP</option>
+                                <option>IJORA POP</option>
+                                <option>IKORODU POP</option>
+                            </FormControl>
+                        </FormGroup>
+                       </Col>
+                    </Row>
+                    <Row xs lg="4" style={{display:'flex',justifyContent:'flex-end', paddingRight:'20px'}}>
+                            <Button block disabled={!validateForm1()} type="submit">
+                                {changeLoading}
+                            </Button>
+                       </Row> 
+                    
+                </Form> 
+                </div>
+                </Fade>
+        </Modal>
+
         <div className='contentpager'>      
             <Scroll>
             <Col className='centerdets'>  
@@ -313,8 +443,14 @@ const SubscriberDetails = (props) => {
                             <Accordion.Collapse eventKey="0">
                             <Card.Body>
                             <div>
+                                <Row style={{display:'flex',justifyContent:'flex-end'}}>
+                                    <form onSubmit={mapIPModal}>
+                                        <Button style={{marginRight:'20px', padding:"7px", fontWeight:"bold", width:'70px'}} type="submit">Map</Button>
+                                    </form>                                
+                                </Row>
+                                <div style={{paddingTop: '20px', borderTop: '0.5vh solid ', padding:3 , left:0, marginTop: '10px', opacity: 0.06}}></div>
                                 {
-                                    subscriber_ip.map((user, i) => {
+                                    Sub_ip.map((user, i) => {
                                     return(<IpComponent key = {i} 
                                                 ip={subscriber_ip[i]}
                                                 authen_token = {auth_token}

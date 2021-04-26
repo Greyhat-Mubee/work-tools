@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {FormGroup, FormControl} from "react-bootstrap";
+import {FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import "react-toggle/style.css";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import Modal from 'react-bootstrap/Modal';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import { useSpring, animated } from 'react-spring/web.cjs'; 
 import axios from 'axios';
 
 
@@ -14,7 +18,67 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
   
-  
+const useStyles = makeStyles((theme) => ({
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        
+    },
+    paper: {
+        marginLeft:'25em',
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+        width: '60%'
+    },
+    paper_map: {
+        marginLeft:'8em',
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+        width: '80%'
+        },
+        Formlabel: {
+        fontStyle: 'Muli',
+        fontWeight: 'bold',
+        
+        },
+    }));
+
+const Fade = React.forwardRef(function Fade(props, ref) {
+    const { in: open, children, onEnter, onExited, ...other } = props;
+    const style = useSpring({
+        from: { opacity: 0 },
+        to: { opacity: open ? 1 : 0 },
+        onStart: () => {
+        if (open && onEnter) {
+            onEnter();
+        }
+        },
+        onRest: () => {
+        if (!open && onExited) {
+            onExited();
+        }
+        },
+    });
+
+    return (
+        <animated.div ref={ref} style={style} {...other}>
+        {children}
+        </animated.div>
+    );
+});
+
+Fade.propTypes = {
+children: PropTypes.element,
+in: PropTypes.bool.isRequired,
+onEnter: PropTypes.func,
+onExited: PropTypes.func,
+};
+
 
 
 const IpComponent = (props) => {
@@ -30,10 +94,12 @@ const IpComponent = (props) => {
     const [, setapiResponse] = useState("");
     const [pop, setpop] = useState("Select POP");
     const [changeLoading, setchangeLoading] = useState("Change")
+    const classes = useStyles();
     const IPchangeModal = (event) => {
         setShow(true)
         event.preventDefault();
     }
+    
 
     function ChangeSubscriberIPapi(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -75,24 +141,26 @@ const IpComponent = (props) => {
 
     return (
         <div>
-            <Modal show={show} className='otherModal' 
-              onHide={handleClose1} centered backdrop="static" 
-              style={{padding:"300px"}} animation={false}
-              >
-              <Modal.Body> 
+                 <Modal
+                aria-labelledby="spring-modal-title"
+                aria-describedby="spring-modal-description"
+                className={classes.modal}
+                open={show}
+                onClose={handleClose1}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                timeout: 500,
+                }}
+            >
+                <Fade in={show}>
+                <div className={classes.paper_map}>
                 <form onSubmit={handleSubmit}>
-                    <Row>
-                        <Col>
-                            <p style={{fontFamily:"Muli", paddingBottom:"20px", paddingLeft:"5px", fontWeight:"bold", fontSize:"17px"}}>Change IP Address</p>
-                        </Col>
-                        <Col>
-                            <Button variant="secondary" style={{backgroundColor:"transparent", borderStyle:"none", marginLeft:"80%", fontSize:"10px"}} onClick={handleClose1}>
-                            ✖
-                            </Button>
-                        </Col>      
-                    </Row>
-                    <Row>
+                    <h2 id="spring-modal-title" style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>Map New IP Address</h2>
+                    <div style={{paddingTop: '20px', marginTop: '10px'}}></div>
+                    <Row style={{padding:'30px'}}>
                        <Col>
+                       <FormLabel className={classes.Formlabel}>IP Address</FormLabel>
                         <FormControl
                                 autoFocus
                                 type="text"
@@ -100,8 +168,12 @@ const IpComponent = (props) => {
                                 onChange={e => setNewIPAddress(e.target.value)}
                             />
                        </Col>
+                      </Row>
+
+                      <Row style={{paddingTop:'0',paddingLeft:'30px',paddingRight:'30px',paddingBottom:'10px'}}>
                        <Col>
                         <FormGroup controlId="pop">
+                            <FormLabel className={classes.Formlabel}>POP Location</FormLabel>
                             <FormControl as="select"  value={pop}
                                 onChange={e => setpop(e.target.value)}
                                 >
@@ -130,43 +202,24 @@ const IpComponent = (props) => {
                        </Row> 
                     
                 </form> 
-              </Modal.Body>
-          </Modal>  
+                </div>
+                </Fade>
+        </Modal>
+        <Snackbar open={Errorshow} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error">
+            An error occured please try again later
+            </Alert>
+        </Snackbar>
 
-          <Snackbar open={Errorshow} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                An error occured please try again later
-                </Alert>
-            </Snackbar>
-
-          {/* <Modal show={Errorshow} className='otherModal' 
-              onHide={handleClose} 
-              style={{padding:"300px"}}
-              >
-              <Modal.Body> 
-                    <Row>
-                        <Col>
-                            <p style={{fontFamily:"Muli", paddingBottom:"20px", paddingLeft:"5px", fontWeight:"bold", fontSize:"17px"}}>
-                                An error occured please try again later
-                            </p>
-                        </Col>
-                        <Col>
-                            <Button variant="secondary" style={{backgroundColor:"transparent", borderStyle:"none", marginLeft:"80%", fontSize:"10px"}} onClick={handleClose}>
-                            ✖
-                            </Button>
-                        </Col>      
-                    </Row>
-              </Modal.Body>
-          </Modal>  */}
-
-            <form onSubmit={IPchangeModal}>
-                <Row style={{padding:"5px"}}>
-                <Col>{SubIp}</Col>
-                <Col></Col>
-                <Col><Button style={{height:"90%", padding:"3px", marginTop:"1px", fontWeight:"bold"}} type="submit">Change</Button></Col>
-                </Row>                         
-             </form>
-        </div>
+        <form onSubmit={IPchangeModal}>
+            <Row style={{padding:"5px"}}>
+            <Col>{SubIp}</Col>
+            <Col style={{display:'flex', justifyContent:'flex-end'}}>
+                <Button style={{padding:"7px", fontSize:'15px', fontWeight:"bold"}} type="submit">Change</Button>
+            </Col>
+            </Row>                         
+        </form>
+    </div>
     )
 }
 
