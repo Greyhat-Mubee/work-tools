@@ -252,19 +252,24 @@ const FwbCreate = (props) => {
                             onChange={e => setpop(e.target.value)}
                             >
                             <option>VI POP</option>
+                            <option>NETCOM POP</option>
+                            <option>CBN LAGOS POP</option>
+                            <option>ABUJA POP</option>
+                            <option>BCN FIBER POP</option>
                             <option>LEKKI POP</option>
                             <option>IKOTA POP</option>
                             <option>TANGO POP</option>
                             <option>CRESTVIEW POP</option>
-                            <option>NETCOM POP</option>
-                            <option>CBN POP</option>
-                            <option>ABUJA POP</option>
-                            <option>CBN ABUJA POP</option>
-                            <option>MEDALLION POP</option>
+                            <option>AIM POP</option>
                             <option>SAKA 18 POP</option>
                             <option>SAKA 25 POP</option>
                             <option>IJORA POP</option>
                             <option>IKORODU POP</option>
+                            <option>ACME IKEJA POP</option>
+                            <option>RADICAL WIRELESS POP</option>
+                            <option>SETRACO POP</option>
+                            <option>ASO POP</option>
+                            <option>CBN ABUJA POP</option>
                           </FormControl>
                         </FormGroup>
                       </Col>
@@ -368,19 +373,24 @@ const FwbCreate = (props) => {
                                 onChange={e => setpop(e.target.value)}
                                 >
                                 <option>VI POP</option>
+                                <option>NETCOM POP</option>
+                                <option>CBN LAGOS POP</option>
+                                <option>ABUJA POP</option>
+                                <option>BCN FIBER POP</option>
                                 <option>LEKKI POP</option>
                                 <option>IKOTA POP</option>
                                 <option>TANGO POP</option>
                                 <option>CRESTVIEW POP</option>
-                                <option>NETCOM POP</option>
-                                <option>CBN POP</option>
-                                <option>ABUJA POP</option>
-                                <option>CBN ABUJA POP</option>
-                                <option>MEDALLION POP</option>
+                                <option>AIM POP</option>
                                 <option>SAKA 18 POP</option>
                                 <option>SAKA 25 POP</option>
                                 <option>IJORA POP</option>
                                 <option>IKORODU POP</option>
+                                <option>ACME IKEJA POP</option>
+                                <option>RADICAL WIRELESS POP</option>
+                                <option>SETRACO POP</option>
+                                <option>ASO POP</option>
+                                <option>CBN ABUJA POP</option>
                               </FormControl>
                             </FormGroup>
                           </Col>

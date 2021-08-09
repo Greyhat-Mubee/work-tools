@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
     },
     container: {
         height: 40,
-        width:'84%',
+        paddingTop: 20,
+        width:'80%',
         position:'fixed',
         backgroundColor:'#F7F8FC'
     },

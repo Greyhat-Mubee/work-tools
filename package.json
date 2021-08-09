@@ -12,6 +12,7 @@
     "axios": "^0.20.0",
     "beautiful-react-hooks": "^0.31.0",
     "bootstrap": "^4.5.2",
+    "caniuse-lite": "^1.0.30001248",
     "jquery": "^1.9.1",
     "lscache": "^1.3.0",
     "mdbreact": "^4.27.0",

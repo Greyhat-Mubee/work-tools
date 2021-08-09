@@ -14,7 +14,8 @@ import Login from './Content/Login/Login/Login';
 const styles = StyleSheet.create({
   container: {
       height: '100%',
-      minHeight: '100vh'
+      minHeight: '100vh',
+      width: '100%'
   },
   content: {
       marginTop: 54
@@ -22,7 +23,8 @@ const styles = StyleSheet.create({
   mainBlock: {
       backgroundColor: '#F7F8FC',
       marginLeft: 255,
-      padding: 30,
+      paddingLeft: 30,
+      paddingRight: 30,
       borderBottom: '30px',
       '@media(max-width: 768px)':{
         marginLeft:0
