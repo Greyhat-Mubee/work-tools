@@ -107,6 +107,7 @@ const SubscriberDetails = (props) => {
         "PLAN60": "60/60 Mbps",
         "PLAN80": "80/80 Mbps",
         "PLAN100": "100/100 Mbps",
+        "PLAN155": "155/155 Mbps",
         "PLAN255": "255/255 Mbps",
         "PLAN400": "400/400 Mbps",
         "Night2": "2/2 Mbps (Night)",
@@ -506,6 +507,7 @@ const SubscriberDetails = (props) => {
                                                 <option>60/60 Mbps</option>
                                                 <option>80/80 Mbps</option>
                                                 <option>100/100 Mbps</option>
+                                                <option>155/155 Mbps</option>
                                                 <option>255/255 Mbps</option>
                                                 <option>400/400 Mbps</option>
                                                 <option>2/2 Mbps (Night)</option>
