@@ -164,6 +164,7 @@ export default function CreateSubForm() {
                             <option>60/60 Mbps</option>
                             <option>80/80 Mbps</option>
                             <option>100/100 Mbps</option>
+                            <option>155/155 Mbps</option>
                             <option>255/255 Mbps</option>
                             <option>400/400 Mbps</option>
                             <option>2/2 Mbps (Night)</option>
