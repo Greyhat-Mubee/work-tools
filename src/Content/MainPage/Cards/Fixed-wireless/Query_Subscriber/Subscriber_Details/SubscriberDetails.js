@@ -402,6 +402,10 @@ const SubscriberDetails = (props) => {
                                 <option>SAKA 25 POP</option>
                                 <option>IJORA POP</option>
                                 <option>IKORODU POP</option>
+                                <option>KANO POP</option>
+                                <option>PH POP</option>
+                                <option>BLACK-DIAMOND POP</option>
+                                <option>KARAMEH POP</option>
                             </FormControl>
                         </FormGroup>
                        </Col>

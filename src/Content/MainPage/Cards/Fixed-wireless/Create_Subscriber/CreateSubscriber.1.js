@@ -392,6 +392,10 @@ const FwbCreate = (props) => {
                                 <option>SETRACO POP</option>
                                 <option>ASO POP</option>
                                 <option>CBN ABUJA POP</option>
+                                <option>KANO POP</option>
+                                <option>PH POP</option>
+                                <option>BLACK-DIAMOND POP</option>
+                                <option>KARAMEH POP</option>
                               </FormControl>
                             </FormGroup>
                           </Col>
