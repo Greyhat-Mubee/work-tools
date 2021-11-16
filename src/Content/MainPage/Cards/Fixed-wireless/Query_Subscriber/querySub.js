@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useSelector } from 'react-redux';
 import './QuerySubscriber.css';
 import searchimg from './search.png';
 import Row from 'react-bootstrap/Row';
@@ -14,6 +15,7 @@ import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
+import {login} from '../../../../../redux_features/authSlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -73,7 +75,7 @@ TabPanel.propTypes = {
   }
 
 const QuerySubscriber = (props) =>{
-    const {auth_token} =props;
+    const auth_token = useSelector(login).payload.authentication.auth.token;
     const [searchName, setsearchName] = useState("");
     const [hasLoaded, sethasLoaded] = useState("");
     const [apiResponse, setapiResponse] = useState("");
@@ -214,7 +216,7 @@ const QuerySubscriber = (props) =>{
             {
                 hasLoaded === 'loaded'?
                 <div>
-                    <SubscriberDetails subscriberdata={apiResponse} auth_token={auth_token}/>
+                    <SubscriberDetails subscriberdata={apiResponse}/>
                 </div>
                 :<div></div>
             }

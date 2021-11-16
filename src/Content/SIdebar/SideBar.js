@@ -1,6 +1,8 @@
-import React,{Component} from 'react';
+import React, {useState} from 'react';
 import {Row, Column} from 'simple-flexbox';
 import { StyleSheet, css } from 'aphrodite';
+import { useDispatch, useSelector } from 'react-redux';
+import {Route, useLocation} from 'react-router-dom';
 import LogoComponent from './LogoComponent';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
@@ -13,7 +15,7 @@ import Menu from './Menu';
 import SubMenu from './SubMenu';
 import IconBurger from '../../assets/icon-burger';
 import { NavLink } from "react-router-dom";
-
+import { change_selectedItem, login } from '../../redux_features/authSlice';
 
 const styles = StyleSheet.create({
     burgerIcon: {
@@ -76,131 +78,142 @@ const styles = StyleSheet.create({
 
 
 
-class Sidebar extends Component {
+function Sidebar (props) {
 
-    state = { expanded: false };
+    const [expanded, setexpanded] = useState(false);
+    const dispatch = useDispatch()
+    let location = useLocation();
+    function onItemClicked(item) {
 
-    onItemClicked = (item) => {
-        this.setState({ expanded: false });
-        return this.props.onChange(item);    
+        setexpanded(false);
     }
-
-    isMobile = () => window.innerWidth <= 768;
-
-    toggleMenu = () => this.setState(prevState => ({ expanded: !prevState.expanded }));
-
-    renderBurger = () => {
-        return <div onClick={this.toggleMenu} className={css(styles.burgerIcon)}>
+    React.useEffect(() => {
+        const path_dict = {
+            '/':'Dashboard',
+            '/sophosaas' : 'Sophos as a Service',
+            '/sophosaas/create subscriber' : 'Sophos > Create Subscriber',
+            '/sophosaas/decommission': 'Sophos > Decommission',
+            '/fwb' : 'Fixed Wireless Broadband',
+            '/fwb/create subscriber' : 'Fwb > Create Subscriber',
+            '/fwb/query subscriber' : 'Fwb > Query Subscriber'
+          }
+        const onItemClick = (item) => {
+            return props.onChange(path_dict[item]);    
+        }
+        dispatch(change_selectedItem(path_dict[location.pathname]))    
+        onItemClick([location.pathname]);
+    }, [location.pathname]);
+    
+    const isMobile = () => window.innerWidth <= 768;
+    const toggleMenu = () => setexpanded(!expanded);
+    const renderBurger = () => {
+        return <div onClick={toggleMenu} className={css(styles.burgerIcon)}>
             <IconBurger />
         </div>
-    }
-    
-    render(){
-        const { expanded } = this.state;
-        const {isSignedIn} = this.props;
-        const isMobile = this.isMobile();
-        
-        return(
-            <div>
-                <Row className={css(styles.mainContainer)} breakpoints={{ 768: css(styles.mainContainerMobile, expanded && styles.mainContainerExpanded) }}>
-                    {(isMobile && !expanded) && this.renderBurger()}
-                    <Column className={css(styles.container)} breakpoints={{ 768: css(styles.containerMobile, expanded ? styles.show : styles.hide) }}>
-                        <LogoComponent />
-                        {
-                            isSignedIn === true ?
-                            <Column className={css(styles.menuItemList)}>
-                            
-                            <Accordion defaultActiveKey="0">
-                                <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
-                                    <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
-                                    <Accordion.Toggle as={Button} variant="link" eventKey="0" style={{padding:0,margin:0}}>
-                                    <NavLink to="/">
-                                        <Menu
-                                            title="Dashboard"
-                                            onClick={() => this.onItemClicked('Dashboard')}
-                                            active={this.props.selectedItem === 'Dashboard'}
-                                        />
-                                    </NavLink>
-                                    </Accordion.Toggle>
-                                    </Card.Header>
-                                </Card>
-                                <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
-                                    <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
-                                    <Accordion.Toggle as={Button} variant="link" eventKey="1" style={{padding:0,margin:0}}>
-                                    <NavLink to="/sophosaas">
-                                        <Menu
-                                            title="Sophos as a Service"
-                                            onClick={() => this.onItemClicked('Sophos as a Service')}
-                                            active={this.props.selectedItem === 'Sophos as a Service'}
-                                        />
-                                    </NavLink>
-                                    </Accordion.Toggle>
-                                    </Card.Header>
-                                    <Accordion.Collapse eventKey="1" style={{padding:0,margin:0}}>
-                                    <Card.Body style={{padding:0, margin:0, backgroundColor:"#535463"}}>
-                                        <NavLink to="/sophosaas/create subscriber">
-                                            <SubMenu
-                                                icon = {createlogoSaas}
-                                                title="Create Subscriber"
-                                                onClick={() => this.onItemClicked('Sophos > Create Subscriber')}
-                                                active={this.props.selectedItem === 'Sophos > Create Subscriber'}
-                                            />
-                                        </NavLink>
-                                        <NavLink to="/sophosaas/decommission">
-                                            <SubMenu
-                                                icon = {decommlogoSaas}
-                                                title="Decommission"
-                                                onClick={() => this.onItemClicked('Sophos > Decommission')}
-                                                active={this.props.selectedItem === 'Sophos > Decommission'}
-                                            />
-                                        </NavLink>
-                                    </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
-                                <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
-                                    <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
-                                    <Accordion.Toggle as={Button} variant="link" eventKey="2" style={{padding:0,margin:0}}>
-                                    <NavLink to="/fwb">
-                                        <Menu
-                                            title="Fixed Wireless"
-                                            onClick={() => this.onItemClicked('Fixed Wireless Broadband')}
-                                            active={this.props.selectedItem === 'Fixed Wireless Broadband'}
-                                        />
-                                    </NavLink>
-                                    </Accordion.Toggle>
-                                    </Card.Header>
-                                    <Accordion.Collapse eventKey="2" style={{padding:0,margin:0}}>
-                                    <Card.Body style={{padding:0,margin:0, backgroundColor:"#535463"}}>
-                                        <NavLink to="/fwb/create subscriber">
-                                            <SubMenu
-                                                icon = {createlogo}
-                                                title="Create Subscriber"
-                                                onClick={() => this.onItemClicked('Fwb > Create Subscriber')}
-                                                active={this.props.selectedItem === 'Fwb > Create Subscriber'}
-                                            />
-                                        </NavLink>
-                                        <NavLink to="/fwb/query subscriber">
-                                            <SubMenu
-                                                icon = {decommlogo}
-                                                title="Query Subscriber"
-                                                onClick={() => this.onItemClicked('Fwb > Query Subscriber')}
-                                                active={this.props.selectedItem === 'Fwb > Query Subscriber'}
-                                            />
-                                        </NavLink>
-                                    </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
-                            </Accordion>
-                        </Column>   
-                        :<div></div>
-                        }
+    };
+    const isSignedIn = useSelector(login).payload.authentication.auth.loginStatus;    
+    const selectedItem = useSelector(login).payload.authentication.auth.selectedItem;    
+
+    return(
+        <div>
+            <Row className={css(styles.mainContainer)} breakpoints={{ 768: css(styles.mainContainerMobile, expanded && styles.mainContainerExpanded) }}>
+                {(isMobile() && !expanded) && renderBurger()}
+                <Column className={css(styles.container)} breakpoints={{ 768: css(styles.containerMobile, expanded ? styles.show : styles.hide) }}>
+                    <LogoComponent />
+                    {
+                        isSignedIn === true || isSignedIn === "true" ?
+                        <Column className={css(styles.menuItemList)}>
                         
-                    </Column>
-                    {isMobile && expanded && <div className={css(styles.outsideLayer)} onClick={this.toggleMenu}></div>}
-                </Row>
-            </div>
-        )
-    }
+                        <Accordion defaultActiveKey="0">
+                            <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
+                                <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
+                                <Accordion.Toggle as={Button} variant="link" eventKey="0" style={{padding:0,margin:0}}>
+                                <NavLink to="/">
+                                    <Menu
+                                        title="Dashboard"
+                                        onClick={() => onItemClicked('Dashboard')}
+                                        active={selectedItem === 'Dashboard'}
+                                    />
+                                </NavLink>
+                                </Accordion.Toggle>
+                                </Card.Header>
+                            </Card>
+                            <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
+                                <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
+                                <Accordion.Toggle as={Button} variant="link" eventKey="1" style={{padding:0,margin:0}}>
+                                <NavLink to="/sophosaas">
+                                    <Menu
+                                        title="Sophos as a Service"
+                                        onClick={() => onItemClicked('Sophos as a Service')}
+                                        active={selectedItem === 'Sophos as a Service'}
+                                    />
+                                </NavLink>
+                                </Accordion.Toggle>
+                                </Card.Header>
+                                <Accordion.Collapse eventKey="1" style={{padding:0,margin:0}}>
+                                <Card.Body style={{padding:0, margin:0, backgroundColor:"#535463"}}>
+                                    <NavLink to="/sophosaas/create subscriber">
+                                        <SubMenu
+                                            icon = {createlogoSaas}
+                                            title="Create Subscriber"
+                                            onClick={() => onItemClicked('Sophos > Create Subscriber')}
+                                            active={selectedItem === 'Sophos > Create Subscriber'}
+                                        />
+                                    </NavLink>
+                                    <NavLink to="/sophosaas/decommission">
+                                        <SubMenu
+                                            icon = {decommlogoSaas}
+                                            title="Decommission"
+                                            onClick={() => onItemClicked('Sophos > Decommission')}
+                                            active={selectedItem === 'Sophos > Decommission'}
+                                        />
+                                    </NavLink>
+                                </Card.Body>
+                                </Accordion.Collapse>
+                            </Card>
+                            <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
+                                <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
+                                <Accordion.Toggle as={Button} variant="link" eventKey="2" style={{padding:0,margin:0}}>
+                                <NavLink to="/fwb">
+                                    <Menu
+                                        title="Fixed Wireless"
+                                        onClick={() => onItemClicked('Fixed Wireless Broadband')}
+                                        active={selectedItem === 'Fixed Wireless Broadband'}
+                                    />
+                                </NavLink>
+                                </Accordion.Toggle>
+                                </Card.Header>
+                                <Accordion.Collapse eventKey="2" style={{padding:0,margin:0}}>
+                                <Card.Body style={{padding:0,margin:0, backgroundColor:"#535463"}}>
+                                    <NavLink to="/fwb/create subscriber">
+                                        <SubMenu
+                                            icon = {createlogo}
+                                            title="Create Subscriber"
+                                            onClick={() => onItemClicked('Fwb > Create Subscriber')}
+                                            active={selectedItem === 'Fwb > Create Subscriber'}
+                                        />
+                                    </NavLink>
+                                    <NavLink to="/fwb/query subscriber">
+                                        <SubMenu
+                                            icon = {decommlogo}
+                                            title="Query Subscriber"
+                                            onClick={() => onItemClicked('Fwb > Query Subscriber')}
+                                            active={selectedItem === 'Fwb > Query Subscriber'}
+                                        />
+                                    </NavLink>
+                                </Card.Body>
+                                </Accordion.Collapse>
+                            </Card>
+                        </Accordion>
+                    </Column>   
+                    :<div></div>
+                    }
+                    
+                </Column>
+                {isMobile && expanded && <div className={css(styles.outsideLayer)} onClick={toggleMenu}></div>}
+            </Row>
+        </div>
+    )
 }
 
 export default Sidebar;

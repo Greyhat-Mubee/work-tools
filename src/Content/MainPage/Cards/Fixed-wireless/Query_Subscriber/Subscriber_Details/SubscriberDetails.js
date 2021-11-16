@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import './SubscriberDetails.css';
 import Toggle from 'react-toggle'
@@ -18,6 +19,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import IpComponent from './IpCompnent';
+import {login} from '../../../../../../redux_features/authSlice';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -123,7 +125,7 @@ const SubscriberDetails = (props) => {
     }
 
     const {subscriberdata} = props;
-    const {auth_token} = props;
+    const auth_token = useSelector(login).payload.authentication.auth.token;
     const subscriber_name = subscriberdata['name'];
     const subscriber_ip = subscriberdata['ip address'];
     const sub_plan = subscriberdata['attributes']['Plan'];

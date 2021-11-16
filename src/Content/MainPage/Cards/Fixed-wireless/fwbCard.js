@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import TopCard from '../Dashboard/TopCard';
 import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Icontotal from './totalSubscribers.png';
 import Iconactive from './activeSub.png';
-import Iconsus from './suspendSub.png'
+import Iconsus from './suspendSub.png';
+import {login} from '../../../../redux_features/authSlice';
 
 const styles = StyleSheet.create({
     imageicons:{
@@ -78,9 +80,8 @@ const Card = (props) => {
     const [apiResponse2, setapiResponse2] = useState([]);
     const [apiResponse3, setapiResponse3] = useState([]);
     
-    useEffect(()=>{
-        const {auth_token} =props;
-        async function apiRequest(){
+    const auth_token = useSelector(login).payload.authentication.auth.token;
+    function apiRequest(){
             axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
              axios({
                  method: 'GET',
@@ -98,46 +99,47 @@ const Card = (props) => {
                     
                 })
             }
-         async function apiRequest2(){
-            axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-             axios({
-                 method: 'GET',
-                 url:'http://192.168.6.253:32598/fwb/topplans',
-                 data:{
-                 },
-                 headers:{
-                   'Authorization': 'Bearer '+ auth_token
-                 }
-             }) 
-                .then(function(response){
-                        setapiResponse2(response.data);                                 
-                }) 
-                .catch(err=>{
-                    
-                })
-            }
-         async function apiRequest3(){
-            axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-             axios({
-                 method: 'GET',
-                 url:'http://192.168.6.253:32598/fwb/topsubscribers',
-                 data:{
-                 },
-                 headers:{
-                   'Authorization': 'Bearer '+ auth_token
-                 }
-             }) 
-                .then(function(response){
-                        setapiResponse3(response.data);                                 
-                }) 
-                .catch(err=>{
-                    
-                })
-            }
+    function apiRequest2(){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+            axios({
+                method: 'GET',
+                url:'http://192.168.6.253:32598/fwb/topplans',
+                data:{
+                },
+                headers:{
+                'Authorization': 'Bearer '+ auth_token
+                }
+            }) 
+            .then(function(response){
+                    setapiResponse2(response.data);                                 
+            }) 
+            .catch(err=>{
+                
+            })
+        }
+    function apiRequest3(){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+            axios({
+                method: 'GET',
+                url:'http://192.168.6.253:32598/fwb/topsubscribers',
+                data:{
+                },
+                headers:{
+                'Authorization': 'Bearer '+ auth_token
+                }
+            }) 
+            .then(function(response){
+                    setapiResponse3(response.data);                                 
+            }) 
+            .catch(err=>{
+                
+            })
+        }
+    useEffect(()=>{
         apiRequest()
         apiRequest2()
         apiRequest3()
-    },[apiResponse2])
+    },[])
 
     return (
         <div style={{marginTop:'60px'}}>
