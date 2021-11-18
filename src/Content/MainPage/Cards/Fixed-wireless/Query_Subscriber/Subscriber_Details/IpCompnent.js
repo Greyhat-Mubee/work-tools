@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
@@ -12,6 +13,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; 
 import axios from 'axios';
+import {login} from '../../../../../../redux_features/authSlice';
 
 
 function Alert(props) {
@@ -82,14 +84,14 @@ onExited: PropTypes.func,
 
 
 const IpComponent = (props) => {
+    const {subscriber_name} = props;
+    const {authen_token} = props;
+    const {ip} = useSelector(login).payload.authentication.auth.token;
     const [show, setShow] = useState(false);
     const handleClose = () => setErrorshow(false);
     const handleClose1 = () => setShow(false);
     const [NewIPAddress, setNewIPAddress] = useState("");
     const [Errorshow, setErrorshow] = useState(false);
-    const {subscriber_name} = props;
-    const {authen_token} = props;
-    const {ip} = props;
     const [SubIp , setSubIp] = useState(ip);
     const [, setapiResponse] = useState("");
     const [pop, setpop] = useState("Select POP");

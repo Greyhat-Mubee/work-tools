@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import './CreateSubscriber.css';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Button, FormGroup, FormControl, FormLabel, Row, Col } from "react-bootstrap";
 import PropTypes from 'prop-types';
@@ -14,6 +15,7 @@ import RingLoader from "react-spinners/GridLoader";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import FwbCards from '../fwbCard';
+import {login} from '../../../../../redux_features/authSlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -70,7 +72,7 @@ function a11yProps(index) {
 }
 
 const FwbCreate = (props) => {
-    const {auth_token} =props;
+    const auth_token = useSelector(login).payload.authentication.auth.token;
     const [, setShow] = useState(false);
     const handleShow = () => setShow(true);
     const [subscriberName, setsubscriberName] = useState("");

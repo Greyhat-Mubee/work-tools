@@ -1,9 +1,12 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { string } from 'prop-types';
 import { Row } from 'simple-flexbox';
 import user_pic from './userpic.png';
 import { StyleSheet, css } from 'aphrodite';
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import {logout, login,change_selectedItem} from '../../redux_features/authSlice';
+ 
 
 const styles = StyleSheet.create({
     avatar: {
@@ -15,8 +18,7 @@ const styles = StyleSheet.create({
     container: {
         height: 40,
         paddingTop: 20,
-        width:'80%',
-        position:'fixed',
+        position:'flex',
         backgroundColor:'#F7F8FC'
     },
     cursorPointer: {
@@ -76,35 +78,37 @@ const styles = StyleSheet.create({
 });
 
  function HeaderComponent (props) {
-    const { title,isSignedin, user_name} = props;
-    
-    
+    const dispatch = useDispatch()
+    const loginVars = useSelector(login).payload.authentication.auth
     const onItemClicked = (item) => {
-        return props.onChange(item);    
+        dispatch(change_selectedItem(item));    
     }
-
     const onLogoutClick = (item) => {
         onItemClicked('Login');
+        dispatch(logout())
         localStorage.clear()
-        return props.onSignChange(item)
+        return props.onChange(item)
     }
-        if (isSignedin === true) {
-            return (
-                <Router>
-                    <Row
-                    className={css(styles.container)}
-                    vertical="center"
-                    horizontal="space-between"
-                    >
-                    <span className={css(styles.title)}>{title}</span>
+    return(
+        <div>
+            {
+                loginVars.loginStatus === true || loginVars.loginStatus === 'true' ?
+                <Row
+                className={css(styles.container)}
+                vertical="center"
+                horizontal="space-between"
+                >
+                    <span className={css(styles.title)}>
+                        {loginVars.SelectedItem}
+                    </span>
                     <Row vertical="center">
                         <div className={css(styles.separator)}></div>
                         <Row vertical="center">
                         <img src={user_pic} style={{height:"30px", marginRight:"15px"}} alt="avatar"/>
-                        <p style={{fontFamily:"Muli", fontWeight:"bold",fontSize:"20px",paddingTop:"20px"}}>{user_name}</p> 
+                        <p style={{fontFamily:"Muli", fontWeight:"bold",fontSize:"20px",paddingTop:"20px"}}>{loginVars.name}</p> 
                         <Link to="/login">
                             <button className={css(styles.iconStyles)}
-                              onClick= {() => onLogoutClick(false)}
+                                onClick= {() => onLogoutClick(false)}
                             >
                             <img src="https://img.icons8.com/material/64/000000/exit.png" alt="avatar" className={css(styles.avatar)} />
                             <span className={css(styles.name, styles.cursorPointer)}>Sign Out</span>
@@ -112,18 +116,14 @@ const styles = StyleSheet.create({
                         </Link>
                         </Row>
                     </Row>
-                    </Row>
-                </Router>
-            )
-        } else {
-            return (
-                <Router>
-                <Row
+                </Row>
+                :<div>
+                    <Row
                     className={css(styles.container)}
                     vertical="center"
                     horizontal="space-between"
-                >
-                    <span className={css(styles.title)}>{title}</span>
+                    >
+                    <span className={css(styles.title)}>{loginVars.SelectedItem}</span>
                     <Row vertical="center">
                         <div className={css(styles.separator)}></div>
                         <Row vertical="center">
@@ -140,13 +140,9 @@ const styles = StyleSheet.create({
                         </Row>
                     </Row>
                     </Row>
-                </Router>
-                )
-        }
-        
-    }
-HeaderComponent.propTypes = {
-    title: string
-};
+                </div>
+            }  
+        </div> 
+    )}
 
 export default HeaderComponent;

@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import TopCard from '../Dashboard/TopCard';
 import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
@@ -7,6 +8,7 @@ import Table from 'react-bootstrap/Table';
 import Icontotal from './totalSubscribers.png';
 import Iconload from './systemload.png';
 import Iconram from './systemram.png';
+import {login} from '../../../../redux_features/authSlice';
 
 const styles = StyleSheet.create({
     imageicons:{
@@ -44,10 +46,10 @@ const styles = StyleSheet.create({
 )
 
 const Card = (props) => { 
-    const {auth_token} =props;
+    const auth_token = useSelector(login).payload.authentication.auth.token;
     const [apiResponse, setapiResponse] = useState("");
     const [apiResponse2, setapiResponse2] = useState([]);
-    async function apiRequest(){
+    function apiRequest(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -65,7 +67,7 @@ const Card = (props) => {
                 
             })
         }
-     async function apiRequest2(){
+    function apiRequest2(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -86,7 +88,7 @@ const Card = (props) => {
     useEffect(()=>{
         apiRequest()
         apiRequest2()
-    },[apiResponse2])
+    },[])
     return (
         <div style={{marginTop:'60px'}}>
             <Row>
@@ -146,9 +148,7 @@ const Card = (props) => {
                     </Table>
                     </Row>
                 </div>
-            </Row>
-
-                
+            </Row>         
         </div>
     )
 }

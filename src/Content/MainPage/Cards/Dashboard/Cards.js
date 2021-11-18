@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
+import { useSelector } from 'react-redux';
 import Imageicon from './saasicon.png';
 import ServiceIcon from './all_services.png';
 import TopCard from './TopCard';
 import WifiIcon from './cll-wifi.png';
 import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
-import Table from 'react-bootstrap/Table'
+import Table from 'react-bootstrap/Table';
+import {login} from '../../../../redux_features/authSlice';
 import wireless_img from './wireless.png'
 import axios from 'axios'
 
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
 )
 
 
-const Card = (props) => { 
+const Card = () => { 
     const subscriber_plans = {
         "PLAN1": "1/1 Mbps",
         "PLAN2": "2/2 Mbps",
@@ -74,11 +76,12 @@ const Card = (props) => {
         "Night16": "16/16 Mbps (Night)",
         "suspend": "Suspended"
     }
-    const {auth_token} =props;
+
+    const auth_token = useSelector(login).payload.authentication.auth.token;
     const [apiResponse, setapiResponse] = useState("");
     const [apiResponse2, setapiResponse2] = useState([]);
     const [apiResponse3, setapiResponse3] = useState([]);
-    async function apiRequest(){
+    function apiRequest(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -96,7 +99,7 @@ const Card = (props) => {
                 
             })
         }
-     async function apiRequest2(){
+    function apiRequest2(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -114,7 +117,7 @@ const Card = (props) => {
                 
             })
         }
-     async function apiRequest3(){
+    function apiRequest3(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -136,7 +139,7 @@ const Card = (props) => {
         apiRequest()
         apiRequest2()
         apiRequest3()
-    },[apiResponse2])
+    },[])
     return (
         <div style={{marginTop:'60px'}}>
             <Row>
