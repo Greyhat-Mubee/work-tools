@@ -37,16 +37,6 @@ const styles = StyleSheet.create({
 function App () {
   const dispatch = useDispatch()
   let history = useHistory()
-  // function usePersistedState(key, defaultValue) {
-  //   const [state, setState] = React.useState(
-  //     () => JSON.parse(lscache.get(key)) || defaultValue
-  //   );
-  //   useEffect(() => {
-  //     lscache.set(key, JSON.stringify(state), 90);
-  //   }, [key, state]);
-  //   return [state, setState];
-  // }
-
   const loginVars = useSelector(login).payload.authentication.auth
   const [selectedItem, setselectedItem] = useState("");
   const [, setWindowWidth] = useState(window.innerWidth);

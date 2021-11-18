@@ -4,7 +4,7 @@ import { string } from 'prop-types';
 import { Row } from 'simple-flexbox';
 import user_pic from './userpic.png';
 import { StyleSheet, css } from 'aphrodite';
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {logout, login,change_selectedItem} from '../../redux_features/authSlice';
  
 
@@ -18,8 +18,7 @@ const styles = StyleSheet.create({
     container: {
         height: 40,
         paddingTop: 20,
-        width:'80%',
-        position:'fixed',
+        position:'flex',
         backgroundColor:'#F7F8FC'
     },
     cursorPointer: {
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
         return props.onChange(item)
     }
     return(
-        <Router>
+        <div>
             {
                 loginVars.loginStatus === true || loginVars.loginStatus === 'true' ?
                 <Row
@@ -143,7 +142,7 @@ const styles = StyleSheet.create({
                     </Row>
                 </div>
             }  
-        </Router> 
+        </div> 
     )}
 
 export default HeaderComponent;
