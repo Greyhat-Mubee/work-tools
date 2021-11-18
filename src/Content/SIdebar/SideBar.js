@@ -95,7 +95,8 @@ function Sidebar (props) {
             '/sophosaas/decommission': 'Sophos > Decommission',
             '/fwb' : 'Fixed Wireless Broadband',
             '/fwb/create subscriber' : 'Fwb > Create Subscriber',
-            '/fwb/query subscriber' : 'Fwb > Query Subscriber'
+            '/fwb/query subscriber' : 'Fwb > Query Subscriber',
+            '/login': 'Login'
           }
         const onItemClick = (item) => {
             return props.onChange(path_dict[item]);    

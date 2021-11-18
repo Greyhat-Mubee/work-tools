@@ -23,7 +23,7 @@ export default function Login(props) {
     var bodyFormData = new FormData();
     bodyFormData.append('username',email);
     bodyFormData.append('password', password);
-    dispatch(login(bodyFormData))    
+    dispatch(login(bodyFormData)) 
     event.preventDefault();
   }
 

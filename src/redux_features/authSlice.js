@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadState } from './localStorage';
+import { loadState, saveState } from './localStorage';
+import { useHistory } from 'react-router';
 
 const initialState = {
     auth: {
@@ -21,13 +22,22 @@ export const loginAttempt = createSlice({
             state.auth = payload.response
         },
         login_error: (state, payload) => {
-            state.auth = payload.errorRes
+            state.auth.loginRetry = payload.errorRes.loginRetry
         },
         change_selectedItem: (state, action) =>{
             state.auth.SelectedItem = action.payload
-        }
+        },
+        logout: (state) =>{
+            state.auth={
+                "token": "",
+                "name": "",
+                "loginStatus":false,
+                "loginRetry": false,
+                "SelectedItem": "Login"
+            }
+        } 
     },
 })
 
-export const {login, login_success, login_error, change_selectedItem} = loginAttempt.actions
+export const {login, login_success, login_error, change_selectedItem,logout, } = loginAttempt.actions
 export default loginAttempt.reducer

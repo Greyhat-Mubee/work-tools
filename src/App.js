@@ -2,9 +2,8 @@ import React, {useEffect, useState, SyntheticEvent} from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { useGlobalEvent } from "beautiful-react-hooks";
 import { StyleSheet, css } from 'aphrodite';
-import { BrowserRouter } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-// import lscache from 'lscache';
+import { useHistory } from 'react-router-dom';
 import './App.css';
 import Sidebar from './Content/SIdebar/SideBar';
 import HeaderComponent from './Content/Header/HeaderComponent';
@@ -13,7 +12,6 @@ import Login from './Content/Login/Login/Login';
 import {login, change_selectedItem} from './redux_features/authSlice';
 import Card from './Content/MainPage/Cards/Dashboard/Cards';
 import { loadState } from './redux_features/localStorage';
-
 
 const styles = StyleSheet.create({
   container: {
@@ -38,6 +36,7 @@ const styles = StyleSheet.create({
 
 function App () {
   const dispatch = useDispatch()
+  let history = useHistory()
   // function usePersistedState(key, defaultValue) {
   //   const [state, setState] = React.useState(
   //     () => JSON.parse(lscache.get(key)) || defaultValue
@@ -47,6 +46,7 @@ function App () {
   //   }, [key, state]);
   //   return [state, setState];
   // }
+
   const loginVars = useSelector(login).payload.authentication.auth
   const [selectedItem, setselectedItem] = useState("");
   const [, setWindowWidth] = useState(window.innerWidth);
@@ -54,19 +54,21 @@ function App () {
   onWindowResize((event: SyntheticEvent) => {
     setWindowWidth(window.innerWidth);
   });
-  
+  useEffect(() => {
+    if (loginVars.SelectedItem === 'Dashboard'){
+      history.push("/")
+    }
+  }, [loginVars.loginStatus])
+
   return (
-    <BrowserRouter>
       <div>
         <Row className={css(styles.container)}>
                   <Sidebar selectedItem={loadState("selectedItem")}
                           isSignedIn={loginVars.loginStatus} 
                           onChange={(selectedItem) => setselectedItem(selectedItem)}/>
                   <Column flexGrow={1} className={css(styles.mainBlock)}>
-                  <HeaderComponent title={useSelector(login).payload.authentication.auth.SelectedItem}
-                          auth_token={loginVars.token}
-                          isSignedin={loginVars.loginStatus}
-                          user_name = {loginVars.name}
+                  <HeaderComponent
+                          onChange={(selectedItem) => setselectedItem(selectedItem)}
                           />
                       {
                         loginVars.loginStatus === "true" || loginVars.loginStatus === true ?
@@ -78,7 +80,6 @@ function App () {
                   </Column>
               </Row>
       </div>
-    </BrowserRouter>
       );
     }
 

@@ -2,12 +2,18 @@ const lscache = require("lscache");
 
 export const loadState = (key) => {
     try {
-      const serializedState = lscache.get(key);
-      if (serializedState === null) {
-        return undefined;
+      const serializedState = () => JSON.parse(lscache.get(key));
+      if (serializedState() === null) {
+        if (key === "loginStatus"){
+          return false
+        }
+        if (key === "SelectedItem"){
+          return "Login"
+        }
+        return "";
       }
     //   return JSON.stringify(serializedState);
-      return serializedState
+      return serializedState()
     } catch (err) {
       return undefined;
     }

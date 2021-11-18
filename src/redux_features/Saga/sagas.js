@@ -17,7 +17,7 @@ async function loginRequest (userCred) {
             "token": response.data['access_token'],
             "name": response.data['name'],
             "loginStatus": true,
-            "selectedItem": "Dashboard"
+            "SelectedItem": "Dashboard"
         }
     })
     for (let vals in response_val ){
