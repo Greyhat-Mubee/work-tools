@@ -4,6 +4,7 @@ import { saveState } from "../localStorage";
 
 export function* watcherSaga() {
     yield takeEvery('login/login', attempt_Login);
+
   }
 
 async function loginRequest (userCred) {
@@ -26,6 +27,14 @@ async function loginRequest (userCred) {
     return response_val
 }
 
+// async function subscriber_name_query () {
+
+// }
+
+// async function subscriber_ip_query(){
+
+// }
+
 function* attempt_Login(action) {
     try {
         const response = yield call(loginRequest, action.payload);
@@ -39,3 +48,11 @@ function* attempt_Login(action) {
         yield put({ type: 'login/login_error', errorRes });
         }
     }
+
+// function* subscriber_query_name(){
+    
+// }
+
+// function* subscriber_query_ip(){
+    
+// }

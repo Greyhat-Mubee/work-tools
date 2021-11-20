@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import './SubscriberDetails.css';
@@ -20,7 +21,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import IpComponent from './IpCompnent';
 import {login} from '../../../../../../redux_features/authSlice';
-
+import { change_selectedItem } from '../../../../../../redux_features/authSlice';
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -124,7 +125,12 @@ const SubscriberDetails = (props) => {
         return (attr_val === 'true')
     }
 
-    const {subscriberdata} = props;
+    const subdata= useSelector(state => {
+            return state.query_subscriber.query;
+          })
+    const dispatch = useDispatch()
+    dispatch(change_selectedItem(subdata.subscriber_data['name']))
+    const subscriberdata = subdata.subscriber_data
     const auth_token = useSelector(login).payload.authentication.auth.token;
     const subscriber_name = subscriberdata['name'];
     const subscriber_ip = subscriberdata['ip address'];
@@ -160,7 +166,6 @@ const SubscriberDetails = (props) => {
         setmapshow(true)
         event.preventDefault();
     }
-
 
     function DecommissionSubscriberapi(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -460,7 +465,6 @@ const SubscriberDetails = (props) => {
                                     Sub_ip.map((user, i) => {
                                     return(<IpComponent key = {i} 
                                                 ip={subscriber_ip[i]}
-                                                authen_token = {auth_token}
                                                 subscriber_name = {subscriberdata['name']}
                                                 />)
                                 })

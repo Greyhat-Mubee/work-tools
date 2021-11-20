@@ -1,9 +1,4 @@
 .contentpager{
-    position: absolute;
-    max-height: 90vh;
-    width: 82vw;
-    background-color:#F7F8FC;
-    bottom: 60px;
     opacity: 1;
 }
 @media(max-width: 1360px){
