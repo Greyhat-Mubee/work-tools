@@ -7,7 +7,8 @@ import FwbCards from './MainPage/Cards/Fixed-wireless/fwbCard';
 import CreateSubscriber from './MainPage/Cards/Sophosaas/CreateSubscriber/CreateSubscriber.1';
 import Decommission from './MainPage/Cards/Sophosaas/Decommission/Decommision';
 import FwbCreate from './MainPage/Cards/Fixed-wireless/Create_Subscriber/CreateSubscriber.1';
-import QuerySubscriber from './MainPage/Cards/Fixed-wireless/Query_Subscriber/querySub'
+import QuerySubscriber from './MainPage/Cards/Fixed-wireless/Query_Subscriber/querySub';
+import SubscriberDetails from './MainPage/Cards/Fixed-wireless/Query_Subscriber/Subscriber_Details/SubscriberDetails';
 
 const styles = StyleSheet.create({
     container: {
@@ -53,6 +54,9 @@ const MainPage = () => {
             </Route>
             <Route exact path='/fwb/query subscriber'>
                 <QuerySubscriber />
+            </Route>
+            <Route path='/fwb/query subscriber/:username'>
+                <SubscriberDetails/>
             </Route>
         </div>
     )

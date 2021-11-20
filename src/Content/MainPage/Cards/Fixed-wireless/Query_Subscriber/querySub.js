@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import './QuerySubscriber.css';
 import searchimg from './search.png';
 import Row from 'react-bootstrap/Row';
@@ -16,6 +16,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import {login} from '../../../../../redux_features/authSlice';
+import { query, query_success } from '../../../../../redux_features/fwbQuerySlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -78,19 +79,19 @@ const QuerySubscriber = (props) =>{
     const auth_token = useSelector(login).payload.authentication.auth.token;
     const [searchName, setsearchName] = useState("");
     const [hasLoaded, sethasLoaded] = useState("");
-    const [apiResponse, setapiResponse] = useState("");
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const classes = useStyles();
     const [value, setValue] = useState(0);
     let history = useHistory();
+    const dispatch = useDispatch();
     const theme = useTheme();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };
     
-    async function apiRequest(){
+    function apiRequest(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
         axios({
             method: 'POST',
@@ -103,9 +104,10 @@ const QuerySubscriber = (props) =>{
             }
         }) 
             .then(function(response){
-                    setapiResponse(response.data);
-                    handleClose();
-                    sethasLoaded('loaded');                
+                dispatch(query_success(response.data))
+                handleClose(query_success(response.data));
+                history.push(`/fwb/query subscriber/${searchName}`)
+                sethasLoaded('loaded');               
                 }) 
             .catch(err=>{
                 handleClose();
@@ -114,7 +116,7 @@ const QuerySubscriber = (props) =>{
             })
         }
 
-        async function apiRequest2(){
+        function apiRequest2(){
             axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
             axios({
                 method: 'POST',
@@ -127,8 +129,9 @@ const QuerySubscriber = (props) =>{
                 }
             }) 
                 .then(function(response){
-                        setapiResponse(response.data);
-                        handleClose();
+                        dispatch(query_success(response.data))
+                        handleClose(query_success(response.data));
+                        history.push(`/fwb/query subscriber/${searchName}`)
                         sethasLoaded('loaded');
                 }) 
                 .catch(err=>{
@@ -213,13 +216,13 @@ const QuerySubscriber = (props) =>{
                     </Row>                      
                   </TabPanel>
               </div>
-            {
+            {/* {
                 hasLoaded === 'loaded'?
                 <div>
                     <SubscriberDetails subscriberdata={apiResponse}/>
                 </div>
                 :<div></div>
-            }
+            } */}
                 
             
         </div>

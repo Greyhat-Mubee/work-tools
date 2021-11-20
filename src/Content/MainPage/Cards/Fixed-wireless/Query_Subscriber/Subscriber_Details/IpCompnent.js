@@ -85,8 +85,8 @@ onExited: PropTypes.func,
 
 const IpComponent = (props) => {
     const {subscriber_name} = props;
-    const {authen_token} = props;
-    const {ip} = useSelector(login).payload.authentication.auth.token;
+    const {authen_token} = useSelector(login).payload.authentication.auth.token;
+    const {ip} = props;
     const [show, setShow] = useState(false);
     const handleClose = () => setErrorshow(false);
     const handleClose1 = () => setShow(false);

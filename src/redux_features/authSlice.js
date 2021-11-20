@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loadState, saveState } from './localStorage';
-import { useHistory } from 'react-router';
 
 const initialState = {
     auth: {
