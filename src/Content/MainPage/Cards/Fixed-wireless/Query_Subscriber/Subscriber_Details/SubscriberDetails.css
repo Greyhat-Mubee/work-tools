@@ -26,3 +26,8 @@
     width: 400px;
     margin-top: 20px;
 }
+.attribute-display{
+    height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

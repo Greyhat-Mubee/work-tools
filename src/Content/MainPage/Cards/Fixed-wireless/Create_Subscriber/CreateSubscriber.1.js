@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './CreateSubscriber.css';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -16,6 +16,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import FwbCards from '../fwbCard';
 import {login} from '../../../../../redux_features/authSlice';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, onValue} from "firebase/database";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -79,8 +81,11 @@ const FwbCreate = (props) => {
     const [manualPublicIP, setmanualPublicIP] = useState("");
     const [vlanID, setvlanID] = useState("");
     const [pop, setpop] = useState("VI POP");
+    const [pop_array, setpop_array] = useState([]);
     const [lanSubnetAddress, setlanSubnetAddress] = useState("/30");
+    const [lanSubnetAddress_array, setlanSubnetAddress_array] = useState([]);
     const [SubscriberPlan, setSubscriberPlan] = useState("1/1 Mbps");
+    const [SubscriberPlan_array, setsetSubscriberPlan_array] = useState([]);
     const [hasLoaded, sethasLoaded] = useState("");
     const [, setapiResponse] = useState("");
     const [loadingModal, setloadingModal] = useState(false);
@@ -99,7 +104,34 @@ const FwbCreate = (props) => {
       setValue(newValue);
     };
   
+    const firebaseConfig = {
+      apiKey: "apiKey",
+      authDomain: "projectId.firebaseapp.com",
+      databaseURL: "https://work-tools-d6176-default-rtdb.firebaseio.com/",
+      storageBucket: "bucket.appspot.com"
+    };
     
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    useEffect(() => {
+      const Plans = ref(database, '/FWB/create_subscriber/Plan');
+      const POP = ref(database, '/FWB/create_subscriber/POP');
+      const subnet = ref(database, '/FWB/create_subscriber/Subnet');
+      onValue(Plans, (snapshot) => {
+        const data = snapshot.val();
+        setsetSubscriberPlan_array(data)
+      });
+      onValue(POP, (snapshot) => {
+        const data = snapshot.val();
+        setpop_array(data)
+      });
+      onValue(subnet, (snapshot) => {
+        const data = snapshot.val();
+        setlanSubnetAddress_array(data)
+      });
+    }, [])
+
     function validateForm() {
         return subscriberName.length > 0 && pop.length > 0 && SubscriberPlan.length > 0;
       }
@@ -253,25 +285,10 @@ const FwbCreate = (props) => {
                           <FormControl as="select"  value={pop}
                             onChange={e => setpop(e.target.value)}
                             >
-                            <option>VI POP</option>
-                            <option>NETCOM POP</option>
-                            <option>CBN LAGOS POP</option>
-                            <option>ABUJA POP</option>
-                            <option>BCN FIBER POP</option>
-                            <option>LEKKI POP</option>
-                            <option>IKOTA POP</option>
-                            <option>TANGO POP</option>
-                            <option>CRESTVIEW POP</option>
-                            <option>AIM POP</option>
-                            <option>SAKA 18 POP</option>
-                            <option>SAKA 25 POP</option>
-                            <option>IJORA POP</option>
-                            <option>IKORODU POP</option>
-                            <option>ACME IKEJA POP</option>
-                            <option>RADICAL WIRELESS POP</option>
-                            <option>SETRACO POP</option>
-                            <option>ASO POP</option>
-                            <option>CBN ABUJA POP</option>
+                            {pop_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
                           </FormControl>
                         </FormGroup>
                       </Col>
@@ -283,8 +300,10 @@ const FwbCreate = (props) => {
                           <FormControl as="select"  value={lanSubnetAddress}
                             onChange={e => setlanSubnetAddress(e.target.value)}
                             >
-                            <option> /29</option>
-                            <option> /30</option>
+                            {lanSubnetAddress_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
                           </FormControl>
                         </FormGroup>
                       </Col>
@@ -294,32 +313,10 @@ const FwbCreate = (props) => {
                           <FormControl as="select"  value={SubscriberPlan}
                             onChange={e => setSubscriberPlan(e.target.value)}
                             >
-                            <option>1/1 Mbps</option>
-                            <option>2/2 Mbps</option>
-                            <option>3/3 Mbps</option>
-                            <option>4/4 Mbps</option>
-                            <option>5/5 Mbps</option>
-                            <option>6/6 Mbps</option>
-                            <option>7/7 Mbps</option>
-                            <option>8/8 Mbps</option>
-                            <option>10/10 Mbps</option>
-                            <option>12/12 Mbps</option>
-                            <option>15/15 Mbps</option>
-                            <option>20/20 Mbps</option>
-                            <option>28/28 Mbps</option>
-                            <option>30/30 Mbps</option>
-                            <option>45/45 Mbps</option>
-                            <option>50/50 Mbps</option>
-                            <option>60/60 Mbps</option>
-                            <option>80/80 Mbps</option>
-                            <option>100/100 Mbps</option>
-                            <option>155/155 Mbps</option>
-                            <option>255/255 Mbps</option>
-                            <option>400/400 Mbps</option>
-                            <option>2/2 Mbps (Night)</option>
-                            <option>4/4 Mbps (Night)</option>
-                            <option>8/8 Mbps (Night)</option>
-                            <option>16/16 Mbps (Night)</option>
+                            {SubscriberPlan_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
                           </FormControl>
                         </FormGroup>
                       </Col>
@@ -375,29 +372,10 @@ const FwbCreate = (props) => {
                               <FormControl as="select"  value={pop}
                                 onChange={e => setpop(e.target.value)}
                                 >
-                                <option>VI POP</option>
-                                <option>NETCOM POP</option>
-                                <option>CBN LAGOS POP</option>
-                                <option>ABUJA POP</option>
-                                <option>BCN FIBER POP</option>
-                                <option>LEKKI POP</option>
-                                <option>IKOTA POP</option>
-                                <option>TANGO POP</option>
-                                <option>CRESTVIEW POP</option>
-                                <option>AIM POP</option>
-                                <option>SAKA 18 POP</option>
-                                <option>SAKA 25 POP</option>
-                                <option>IJORA POP</option>
-                                <option>IKORODU POP</option>
-                                <option>ACME IKEJA POP</option>
-                                <option>RADICAL WIRELESS POP</option>
-                                <option>SETRACO POP</option>
-                                <option>ASO POP</option>
-                                <option>CBN ABUJA POP</option>
-                                <option>KANO POP</option>
-                                <option>PH POP</option>
-                                <option>BLACK-DIAMOND POP</option>
-                                <option>KARAMEH POP</option>
+                                {pop_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
                               </FormControl>
                             </FormGroup>
                           </Col>
@@ -409,8 +387,10 @@ const FwbCreate = (props) => {
                               <FormControl as="select"  value={lanSubnetAddress}
                                 onChange={e => setlanSubnetAddress(e.target.value)}
                                 >
-                                <option> /29</option>
-                                <option> /30</option>
+                                {lanSubnetAddress_array.map((option, id) =>
+                                  (
+                                    <option>{option}</option>
+                                  ))}
                               </FormControl>
                             </FormGroup>
                           </Col>
@@ -420,32 +400,10 @@ const FwbCreate = (props) => {
                               <FormControl as="select"  value={SubscriberPlan}
                                 onChange={e => setSubscriberPlan(e.target.value)}
                                 >
-                                <option>1/1 Mbps</option>
-                                <option>2/2 Mbps</option>
-                                <option>3/3 Mbps</option>
-                                <option>4/4 Mbps</option>
-                                <option>5/5 Mbps</option>
-                                <option>6/6 Mbps</option>
-                                <option>7/7 Mbps</option>
-                                <option>8/8 Mbps</option>
-                                <option>10/10 Mbps</option>
-                                <option>12/12 Mbps</option>
-                                <option>15/15 Mbps</option>
-                                <option>20/20 Mbps</option>
-                                <option>28/28 Mbps</option>
-                                <option>30/30 Mbps</option>
-                                <option>45/45 Mbps</option>
-                                <option>50/50 Mbps</option>
-                                <option>60/60 Mbps</option>
-                                <option>80/80 Mbps</option>
-                                <option>100/100 Mbps</option>
-                                <option>155/155 Mbps</option>
-                                <option>255/255 Mbps</option>
-                                <option>400/400 Mbps</option>
-                                <option>2/2 Mbps (Night)</option>
-                                <option>4/4 Mbps (Night)</option>
-                                <option>8/8 Mbps (Night)</option>
-                                <option>16/16 Mbps (Night)</option>
+                                {SubscriberPlan_array.map((option, id) =>
+                                (
+                                  <option>{option}</option>
+                                ))}
                               </FormControl>
                             </FormGroup>
                           </Col>

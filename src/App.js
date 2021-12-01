@@ -9,8 +9,7 @@ import Sidebar from './Content/SIdebar/SideBar';
 import HeaderComponent from './Content/Header/HeaderComponent';
 import MainPage from './Content/mainPage';
 import Login from './Content/Login/Login/Login';
-import {login, change_selectedItem} from './redux_features/authSlice';
-import Card from './Content/MainPage/Cards/Dashboard/Cards';
+import {login} from './redux_features/authSlice';
 import { loadState } from './redux_features/localStorage';
 
 const styles = StyleSheet.create({
@@ -35,10 +34,9 @@ const styles = StyleSheet.create({
 });
 
 function App () {
-  const dispatch = useDispatch()
   let history = useHistory()
   const loginVars = useSelector(login).payload.authentication.auth
-  const [selectedItem, setselectedItem] = useState("");
+  const [, setselectedItem] = useState("");
   const [, setWindowWidth] = useState(window.innerWidth);
   const onWindowResize = useGlobalEvent("resize");
   onWindowResize((event: SyntheticEvent) => {
@@ -53,22 +51,22 @@ function App () {
   return (
       <div>
         <Row className={css(styles.container)}>
-                  <Sidebar selectedItem={loadState("selectedItem")}
-                          isSignedIn={loginVars.loginStatus} 
-                          onChange={(selectedItem) => setselectedItem(selectedItem)}/>
-                  <Column flexGrow={1} className={css(styles.mainBlock)}>
-                  <HeaderComponent
-                          onChange={(selectedItem) => setselectedItem(selectedItem)}
-                          />
-                      {
-                        loginVars.loginStatus === "true" || loginVars.loginStatus === true ?
-                        <MainPage />
-                        :<div>
-                          <Login ClassName={css(styles.content)}/>
-                        </div>
-                      }
-                  </Column>
-              </Row>
+          <Sidebar selectedItem={loadState("selectedItem")}
+                  isSignedIn={loginVars.loginStatus} 
+                  onChange={(selectedItem) => setselectedItem(selectedItem)}/>
+          <Column flexGrow={1} className={css(styles.mainBlock)}>
+          <HeaderComponent
+                  onChange={(selectedItem) => setselectedItem(selectedItem)}
+                  />
+              {
+                loginVars.loginStatus === "true" || loginVars.loginStatus === true ?
+                <MainPage />
+                :<div>
+                  <Login ClassName={css(styles.content)}/>
+                </div>
+              }
+          </Column>
+        </Row>
       </div>
       );
     }

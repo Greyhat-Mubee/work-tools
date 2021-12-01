@@ -27,6 +27,9 @@ export default function Login(props) {
     event.preventDefault();
   }
 
+  useEffect(() =>{
+    history.push("/login")
+  },[])
   useEffect(() => {
     setLoginCheck('Login')
   }, [useSelector(login).payload.authentication.auth.loginRetry])
