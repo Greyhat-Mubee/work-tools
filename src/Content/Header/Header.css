@@ -1,0 +1,76 @@
+.avatar {
+    height: 20px;
+    width: 20px;
+    border-radius: 50px;
+    border: 1px solid #DFE0EB
+}
+.container {
+    height: 40;
+    padding-top: 20;
+    position: flex;
+    background-color: #F7F8FC
+}
+.cursorPointer {
+    cursor: pointer;
+    padding-left: 5px
+}
+.name {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 10px;
+    text-align: right;
+    letter-spacing: 0.2;
+    cursor: pointer;
+    padding-left: 5px
+}
+.separator {
+    border-left: 1px solid #DFE0EB;
+    margin-left: 32px;
+    margin-right: 32px;
+    height: 32px;
+    width: 2px;
+}
+.title {
+    font-family: 'Muli';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    letter-spacing: 0.3;
+}
+.iconStyles {
+    cursor: pointer;
+    margin-left: 25px;
+    }
+.hideButton {
+   visibility: hidden 
+}
+@media (max-width: 768px) { 
+    .name{
+        display: 'none'
+    }
+    .seperator {
+        margin-left: 12px;
+        margin-right: 12px
+    }
+    .iconStyles{
+        margin-left: 12px;
+    }
+}
+@media (max-width: 1080px) {
+    .title{
+        margin-left: 50px
+    }
+}
+@media (max-width: 1366px) {
+    .title{
+        margin-left: 40px
+    }
+}
+@media (max-width: 468px) {
+    .title{
+        margin-left: 20px
+    }
+}

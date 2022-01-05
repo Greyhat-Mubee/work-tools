@@ -1,51 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
+import "./Cards.css";
 import Imageicon from './saasicon.png';
 import ServiceIcon from './all_services.png';
 import TopCard from './TopCard';
 import WifiIcon from './cll-wifi.png';
-import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import {login} from '../../../../redux_features/authSlice';
 import wireless_img from './wireless.png'
 import axios from 'axios'
-
-const styles = StyleSheet.create({
-    imageicons:{
-        height:'25px',
-        width: '33px',
-        borderRadius:'10px',
-        },
-    imageicon:{
-        height:'190px',
-        width: '80px',
-        justifyContent:'center',
-        borderRadius:'10px',
-        paddingTop:"30px",
-        paddingBottom:"80px",
-        },
-    separator: {
-        paddingTop: '20px',
-        borderTop: '0.5vh solid ',
-        padding:0,
-        left:0,
-        marginTop: '10px',
-        opacity: 0.06
-    },
-    text:{
-        paddingTop:"7px",
-        paddingLeft:"10px",
-        fontFamily: 'Muli',
-        fontSize: '17px',
-        fontWeight:'bold',
-        lineHeight: '12px',
-        letterSpacing: '0.2px',
-        color: 'black',
-    }
-    }
-)
-
 
 const Card = () => { 
     const subscriber_plans = {
@@ -141,18 +105,18 @@ const Card = () => {
         apiRequest3()
     },[])
     return (
-        <div style={{marginTop:'60px'}}>
+        <div className='cardContainer'>
             <Row>
-                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer cardRow'>
                     <Row>
-                        <img alt='robots' src= {ServiceIcon} style={{width:'25px',height:'25px', padding:'2px'}}/>
-                        <p className={css(styles.text)}>All Services</p>
+                        <img alt='robots' src= {ServiceIcon} className='imageicons'/>
+                        <p className="cardtext">All Services</p>
                     </Row>
                     <Row>
-                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
+                        <p className='cardTitleText'> Number of Subscribers</p>
                     </Row>
-                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {apiResponse['total']} </p>
+                    <Row className="cardResultRow">
+                        <p className="cardResult"> {apiResponse['total']} </p>
                     </Row>
                 </div>
                 <TopCard
@@ -176,7 +140,7 @@ const Card = () => {
             <Row>
             <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
                     <Row>
-                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Fixed Wireless Users</p>
+                        <p className="tableRowHeader">Top Fixed Wireless Users</p>
                     </Row>
                     <Row>
                     <Table>
@@ -210,7 +174,7 @@ const Card = () => {
             <Row>
             <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow' style={{width:'100%'}}>
                     <Row>
-                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Sophos as Services Users</p>
+                        <p className='tableRowHeader'>Top Sophos as Services Users</p>
                     </Row>
                     <Row>
                     <Table>

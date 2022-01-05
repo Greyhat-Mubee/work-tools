@@ -17,7 +17,6 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue} from "firebase/database";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
@@ -28,55 +27,23 @@ import { change_selectedItem } from '../../../../../../redux_features/authSlice'
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
-  
-  
-  const useStyles = makeStyles((theme) => ({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      
+
+const Fade = React.forwardRef(function Fade(props, ref) {
+const { in: open, children, onEnter, onExited, ...other } = props;
+const style = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: open ? 1 : 0 },
+    onStart: () => {
+    if (open && onEnter) {
+        onEnter();
+    }
     },
-    paper: {
-      marginLeft:'25em',
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-      width: '60%'
+    onRest: () => {
+    if (!open && onExited) {
+        onExited();
+    }
     },
-    paper_map: {
-        marginLeft:'15em',
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-        width: '60%'
-      },
-      Formlabel: {
-        fontStyle: 'Muli',
-        fontWeight: 'bold',
-        
-      },
-  }));
-  
-  const Fade = React.forwardRef(function Fade(props, ref) {
-    const { in: open, children, onEnter, onExited, ...other } = props;
-    const style = useSpring({
-      from: { opacity: 0 },
-      to: { opacity: open ? 1 : 0 },
-      onStart: () => {
-        if (open && onEnter) {
-          onEnter();
-        }
-      },
-      onRest: () => {
-        if (!open && onExited) {
-          onExited();
-        }
-      },
-    });
-  
+});  
     return (
       <animated.div ref={ref} style={style} {...other}>
         {children}
@@ -84,36 +51,30 @@ function Alert(props) {
     );
   });
   
-  Fade.propTypes = {
-    children: PropTypes.element,
-    in: PropTypes.bool.isRequired,
-    onEnter: PropTypes.func,
-    onExited: PropTypes.func,
-  };
+Fade.propTypes = {
+children: PropTypes.element,
+in: PropTypes.bool.isRequired,
+onEnter: PropTypes.func,
+onExited: PropTypes.func,
+};
 
 
 const SubscriberDetails = (props) => {
-    
     const firebaseConfig = {
         apiKey: "apiKey",
         authDomain: "projectId.firebaseapp.com",
         databaseURL: "https://work-tools-d6176-default-rtdb.firebaseio.com/",
         storageBucket: "bucket.appspot.com"
       };
-      
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-     
-    
-    const check_attr = (attr_val) => {
-        return (attr_val === 'true')
-    }
-
+    const database = getDatabase(app);    
     const subdata= useSelector(state => {
             return state.query_subscriber.query;
           })
+    
     const dispatch = useDispatch()
     dispatch(change_selectedItem(subdata.subscriber_data['name']))
+    
     const subscriberdata = subdata.subscriber_data
     const auth_token = useSelector(login).payload.authentication.auth.token;
     const subscriber_name = subscriberdata['name'];
@@ -121,13 +82,13 @@ const SubscriberDetails = (props) => {
     const sub_plan = subscriberdata['attributes']['Plan'];
     const [SubscriberPlan_array, setSubscriberPlan_array] = useState([]);
     const [subscriberAttributes, setsubscriberAttributes] = useState({})
-    const [Sub_ip, setSub_ip] = useState(subscriber_ip || []);
+    const [Sub_ip] = useState(subscriber_ip || []);
     const [SubscriberPlan, setSubscriberPlan] = useState('None')
     const [pop_array, setpop_array] = useState([]);
     const [NewIPAddress, setNewIPAddress] = useState("");
     const [pop, setpop] = useState("Select POP");
     const [vlanID, setvlanID] = useState("");
-    const [changeLoading, setchangeLoading] = useState("Change");
+    const [changeLoading] = useState("Change");
     const [show, setShow] = useState(false);
     const [Decommisionshow, setDecommisionshow] = useState(false);
     const [Errorshow, setErrorshow] = useState(false);
@@ -141,7 +102,6 @@ const SubscriberDetails = (props) => {
     const decommModalOpen = () => setOpen(true);
     const decommModalClose = () => setOpen(false);
     const mapshowClose = () => setmapshow(false);
-    const classes = useStyles();
     const mapIPModal = (event) => {
         setmapshow(true)
         event.preventDefault();
@@ -299,7 +259,7 @@ const SubscriberDetails = (props) => {
         <Modal
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
-                className={classes.modal}
+                className="modal"
                 open={open}
                 onClose={decommModalClose}
                 closeAfterTransition
@@ -309,7 +269,7 @@ const SubscriberDetails = (props) => {
                 }}
             >
                 <Fade in={open}>
-                <div className={classes.paper}>
+                <div className="paper">
                     <h2 id="spring-modal-title" style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>Confirm Delete</h2>
                     <p id="spring-modal-description" style={{fontFamily:'Muli'}}>
                         This action cannot be undone. This will permanently delete the subscriber <mark>{subscriber_name}</mark> and remove all associations from coollink network management devices.
@@ -337,7 +297,7 @@ const SubscriberDetails = (props) => {
         <Modal
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
-                className={classes.modal}
+                className="modal"
                 open={mapshow}
                 onClose={mapshowClose}
                 closeAfterTransition
@@ -347,13 +307,13 @@ const SubscriberDetails = (props) => {
                 }}
             >
                 <Fade in={mapshow}>
-                <div className={classes.paper_map}>
+                <div className="paper_map">
                 <Form onSubmit={map_new_ip}>
                     <h2 id="spring-modal-title" style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>Map New IP Address</h2>
                     <div style={{paddingTop: '20px', marginTop: '10px'}}></div>
                     <Row style={{padding:'30px'}}>
                        <Col>
-                       <FormLabel className={classes.Formlabel}>IP Address</FormLabel>
+                       <FormLabel className="Formlabel">IP Address</FormLabel>
                         <FormControl
                                 autoFocus
                                 type="text"
@@ -363,7 +323,7 @@ const SubscriberDetails = (props) => {
                        </Col>
                        <Col>
                         <FormGroup controlId="vlanID">
-                        <FormLabel className={classes.Formlabel}>VLAN ID</FormLabel>
+                        <FormLabel className="Formlabel">VLAN ID</FormLabel>
                         <FormControl
                           value={vlanID}
                           onChange={e => setvlanID(e.target.value)}
@@ -375,7 +335,7 @@ const SubscriberDetails = (props) => {
                       <Row style={{paddingTop:'0',paddingLeft:'30px',paddingRight:'30px',paddingBottom:'10px'}}>
                        <Col>
                         <FormGroup controlId="pop">
-                            <FormLabel className={classes.Formlabel}>POP Location</FormLabel>
+                            <FormLabel className="Formlabel">POP Location</FormLabel>
                             <FormControl as="select"  value={pop}
                                 onChange={e => setpop(e.target.value)}
                                 >

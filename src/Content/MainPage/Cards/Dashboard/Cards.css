@@ -1,10 +1,59 @@
-.cards{
-    height: 30vh;
-    min-height: 30vh;
-    width: 11vw;
-    min-width: 11vw;
-    border-style: solid;
-    border-color: skyblue;
-    border-radius: 20px;
-    top: 4vh;
+.imageicons {
+    height: 25px;
+    width:  25px;
+    padding: 2px;
+    }
+.imageicon{
+    height:190px;
+    width: 80px;
+    justify-content: center;
+    border-radius: 10px;
+    padding-top: 30px;
+    padding-bottom: 80px;
+    }
+.separator {
+    padding-top: 20px;
+    border-top: 0.5vh solid ;
+    padding:0px;
+    left:0px;
+    margin-top: 10px;
+    opacity: 0.06
+}
+.cardtext {
+    padding-top: 7px;
+    padding-left: 10px;
+    font-family: 'Muli';
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 12px;
+    letter-spacing: 0.2px;
+    color: black;
+}
+.cardContainer{
+    margin-top: 60px;
+}
+.cardRow{
+    width: 370px;
+    height: 180px;
+}
+.cardTitleText{
+    padding-left: 45px;
+    font-family: "Muli";
+    font-weight: bold;
+}
+.cardResultRow{
+    display: flex;
+    justify-content: flex-end;
+}
+.cardResult{
+    font-family: "Muli";
+    font-weight: bold;
+    font-size: 55px;
+    padding-right: 24px;
+}
+.tableRowHeader{
+    font-family: "Muli";
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 12px;
 }

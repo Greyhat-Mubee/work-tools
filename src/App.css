@@ -5,17 +5,25 @@
     justify-content: center;
 }
 
-.container {
-  height: '100%';
-  min-height: '100vh';
+.containerss{
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
 }
 .content {
-  margin-top: 54
+  margin-top: 54px
 }
 
-.mainBlock{
-  background-color: '#F7F8FC';
-  margin-left: 255;
-  padding: 30;
-  border-bottom: '30px';
+.mainBlock {
+  padding-left: 30px;
+  padding-right: 30px;
+  border-bottom: 30px;
+  margin-left: 255px;
+  background-color: #F7F8FC;
+}
+
+@media(max-width: 768px){
+  .mainBlock{
+    margin-left:0
+  }
 }

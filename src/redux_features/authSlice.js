@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadState, saveState } from './localStorage';
+import { loadState } from './localStorage';
 
 const initialState = {
     auth: {
