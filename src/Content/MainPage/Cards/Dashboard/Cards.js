@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import "./Cards.css";
 import Imageicon from './saasicon.png';
-import ServiceIcon from './all_services.png';
+import ServiceIcon from './all_service.png';
 import TopCard from './TopCard';
 import WifiIcon from './cll-wifi.png';
 import Row from 'react-bootstrap/Row';
@@ -105,19 +105,21 @@ const Card = () => {
         apiRequest3()
     },[])
     return (
-        <div className='cardContainer'>
+        <div>
             <Row>
                 <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer cardRow'>
-                    <Row>
-                        <img alt='robots' src= {ServiceIcon} className='imageicons'/>
-                        <p className="cardtext">All Services</p>
-                    </Row>
-                    <Row>
-                        <p className='cardTitleText'> Number of Subscribers</p>
-                    </Row>
-                    <Row className="cardResultRow">
-                        <p className="cardResult"> {apiResponse['total']} </p>
-                    </Row>
+                    <div className="CardRowPad">
+                        <Row>
+                            <img alt='robots' src= {ServiceIcon} className='imageicons'/>
+                            <p className="cardtext">All Services</p>
+                        </Row>
+                        <Row>
+                            <p className='cardTitleText'> Number of Subscribers</p>
+                        </Row>
+                        <Row className="cardResultRow">
+                            <p className="cardResult"> {apiResponse['total']} </p>
+                        </Row>
+                    </div>
                 </div>
                 <TopCard
                 subscriber_no = {apiResponse['saas']}

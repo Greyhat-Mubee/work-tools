@@ -79,7 +79,7 @@
     height: 56px;
     width: 5px;
     background-color: #DDE2FF;
-    position: absolute;
+    position: fixed;
     left: 0px
 }
 .activeContainer{

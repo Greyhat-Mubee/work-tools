@@ -1,7 +1,6 @@
 .imageicons {
     height: 25px;
     width:  25px;
-    padding: 2px;
     }
 .imageicon{
     height:190px;
@@ -35,6 +34,9 @@
 .cardRow{
     width: 370px;
     height: 180px;
+}
+.CardRowPad{
+    padding: 2px;
 }
 .cardTitleText{
     padding-left: 45px;
