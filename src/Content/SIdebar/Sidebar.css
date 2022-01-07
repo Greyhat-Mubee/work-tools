@@ -7,7 +7,7 @@
 .containers {
     background-color: #363740;
     height: 100%;
-    width: 255px;
+    width: 245px;
     padding-top: 32px;
 }
 .containerMobile {
@@ -131,7 +131,7 @@
     .containers{
         transition: all 0.3s ease-out;
         position: absolute;
-        width: 255px;
+        width: 245px;
         height: 100%;
         z-index: 901
     }
