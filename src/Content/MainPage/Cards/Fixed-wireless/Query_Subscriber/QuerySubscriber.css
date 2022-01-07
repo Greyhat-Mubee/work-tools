@@ -38,3 +38,24 @@
     width: 100%;
     margin-left: 30%;
 }
+.backdrop{
+    z-index: 1201;
+    color: transparent;
+}
+.tabroot{
+    background-color: #f8f8ff;
+    border-style: solid;
+    border-top-style: none;
+    height: 78vh;
+    border-color: #ebeefa;
+    border-width: 4px;
+}
+.MuiTab-wrapper{
+    font-family: "Muli";
+    font-weight: bolder;
+    font-size: 17px;
+}
+.loaderrorText{
+    color: red;
+    padding-top: 20px;
+}

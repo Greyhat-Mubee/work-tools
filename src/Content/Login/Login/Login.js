@@ -9,9 +9,7 @@ export default function Login(props) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginStatus, setLoginStatus] = useState("");
   const [loginCheck, setLoginCheck] = useState("Login");
-  const isSignedIn = useSelector(login).payload.authentication.auth.loginStatus;
   let history = useHistory();
 
     function validateForm() {

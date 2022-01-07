@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {Row, Column} from 'simple-flexbox';
-import { StyleSheet, css } from 'aphrodite';
+import { Column, Row } from 'simple-flexbox';
+import './Sidebar.css';
 import { useDispatch, useSelector } from 'react-redux';
-import {Route, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import LogoComponent from './LogoComponent';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
@@ -17,69 +17,7 @@ import IconBurger from '../../assets/icon-burger';
 import { NavLink } from "react-router-dom";
 import { change_selectedItem, login } from '../../redux_features/authSlice';
 
-const styles = StyleSheet.create({
-    burgerIcon: {
-        cursor: 'pointer',
-        position: 'absolute',
-        left: 24,
-        top: 34
-    },
-    container: {
-        backgroundColor: '#363740',
-        width: 255,
-        paddingTop: 32,
-        height: '100%'
-    },
-    containerMobile: {
-        transition: 'left 0.5s, right 0.5s',
-        position: 'absolute',
-        width: 255,
-        height: 'calc(100% - 32px)',
-        zIndex: 901
-    },
-    mainContainer: {
-        height: '100%',
-        position:"fixed",
-        minHeight: '100vh'
-    },
-    mainContainerMobile: {
-        position: 'absolute',
-        top: 0,
-        left: 0
-    },
-    mainContainerExpanded: {
-        width: '100%',
-        minWidth: '100vh',
-    },
-    menuItemList: {
-        marginTop: 52
-    },
-    outsideLayer: {
-        position: 'absolute',
-        width: '100vw',
-        minWidth: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0,0,0,.50)',
-        zIndex: 900
-    },
-    separator: {
-        borderTop: '1px solid #DFE0EB',
-        marginTop: 16,
-        marginBottom: 16,
-        opacity: 0.06
-    },
-    hide: {
-        left: -255
-    },
-    show: {
-        left: 0
-    }
-});
-
-
-
 function Sidebar (props) {
-
     const [expanded, setexpanded] = useState(false);
     const dispatch = useDispatch()
     let location = useLocation();
@@ -108,27 +46,26 @@ function Sidebar (props) {
     const isMobile = () => window.innerWidth <= 768;
     const toggleMenu = () => setexpanded(!expanded);
     const renderBurger = () => {
-        return <div onClick={toggleMenu} className={css(styles.burgerIcon)}>
+        console.log("isMobile")
+        return <div onClick={toggleMenu} className="burgerIcon">
             <IconBurger />
         </div>
     };
     const isSignedIn = useSelector(login).payload.authentication.auth.loginStatus;    
-    const selectedItem = useSelector(login).payload.authentication.auth.selectedItem;    
-
+    const selectedItem = useSelector(login).payload.authentication.auth.SelectedItem;
     return(
         <div>
-            <Row className={css(styles.mainContainer)} breakpoints={{ 768: css(styles.mainContainerMobile, expanded && styles.mainContainerExpanded) }}>
-                {(isMobile() && !expanded) && renderBurger()}
-                <Column className={css(styles.container)} breakpoints={{ 768: css(styles.containerMobile, expanded ? styles.show : styles.hide) }}>
+            <Row className="mainContainer" breakpoints={{ 768: ('mainContainerMobile', expanded && 'mainContainerExpanded')}}>
+            {(isMobile() && !expanded) && renderBurger()}
+                <Column className="containers" breakpoints={{ 768: ('containerMobile', expanded ? 'show' : 'hide')}}>
                     <LogoComponent />
                     {
                         isSignedIn === true || isSignedIn === "true" ?
-                        <Column className={css(styles.menuItemList)}>
-                        
+                        <Column className="menuItemList">     
                         <Accordion defaultActiveKey="0">
-                            <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
-                                <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
-                                <Accordion.Toggle as={Button} variant="link" eventKey="0" style={{padding:0,margin:0}}>
+                            <Card bsPrefix="sidebarCard">
+                                <Card.Header bsPrefix="sidebarCardHeader">
+                                <Accordion.Toggle as={Button} variant="link" eventKey="0" className="cardToggle">
                                 <NavLink to="/">
                                     <Menu
                                         title="Dashboard"
@@ -139,9 +76,9 @@ function Sidebar (props) {
                                 </Accordion.Toggle>
                                 </Card.Header>
                             </Card>
-                            <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
-                                <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
-                                <Accordion.Toggle as={Button} variant="link" eventKey="1" style={{padding:0,margin:0}}>
+                            <Card bsPrefix="sidebarCard">
+                                <Card.Header bsPrefix="sidebarCardHeader">
+                                <Accordion.Toggle as={Button} variant="link" eventKey="1" className="cardToggle">
                                 <NavLink to="/sophosaas">
                                     <Menu
                                         title="Sophos as a Service"
@@ -151,8 +88,8 @@ function Sidebar (props) {
                                 </NavLink>
                                 </Accordion.Toggle>
                                 </Card.Header>
-                                <Accordion.Collapse eventKey="1" style={{padding:0,margin:0}}>
-                                <Card.Body style={{padding:0, margin:0, backgroundColor:"#535463"}}>
+                                <Accordion.Collapse eventKey="1" className="cardToggle">
+                                <Card.Body bsPrefix="sidebarCardSubmenu">
                                     <NavLink to="/sophosaas/create subscriber">
                                         <SubMenu
                                             icon = {createlogoSaas}
@@ -172,9 +109,9 @@ function Sidebar (props) {
                                 </Card.Body>
                                 </Accordion.Collapse>
                             </Card>
-                            <Card style={{backgroundColor:"#363740",borderStyle:"none"}}>
-                                <Card.Header style={{backgroundColor:"#363740", padding:0,marginTop:0}}>
-                                <Accordion.Toggle as={Button} variant="link" eventKey="2" style={{padding:0,margin:0}}>
+                            <Card bsPrefix="sidebarCard">
+                                <Card.Header bsPrefix="sidebarCardHeader">
+                                <Accordion.Toggle as={Button} variant="link" eventKey="2" className="cardToggle">
                                 <NavLink to="/fwb">
                                     <Menu
                                         title="Fixed Wireless"
@@ -184,8 +121,8 @@ function Sidebar (props) {
                                 </NavLink>
                                 </Accordion.Toggle>
                                 </Card.Header>
-                                <Accordion.Collapse eventKey="2" style={{padding:0,margin:0}}>
-                                <Card.Body style={{padding:0,margin:0, backgroundColor:"#535463"}}>
+                                <Accordion.Collapse eventKey="2" className="cardToggle">
+                                <Card.Body bsPrefix="sidebarCardSubmenu">
                                     <NavLink to="/fwb/create subscriber">
                                         <SubMenu
                                             icon = {createlogo}
@@ -211,7 +148,7 @@ function Sidebar (props) {
                     }
                     
                 </Column>
-                {isMobile && expanded && <div className={css(styles.outsideLayer)} onClick={toggleMenu}></div>}
+                {isMobile && expanded && <div className='outsideLayer' onClick={toggleMenu}></div>}
             </Row>
         </div>
     )

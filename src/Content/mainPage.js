@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite';
 import { Route } from 'react-router-dom';
 import Card from './MainPage/Cards/Dashboard/Cards';
 import SaasCard from './MainPage/Cards/Sophosaas/SaasCard';
@@ -9,36 +8,16 @@ import Decommission from './MainPage/Cards/Sophosaas/Decommission/Decommision';
 import FwbCreate from './MainPage/Cards/Fixed-wireless/Create_Subscriber/CreateSubscriber.1';
 import QuerySubscriber from './MainPage/Cards/Fixed-wireless/Query_Subscriber/querySub';
 import SubscriberDetails from './MainPage/Cards/Fixed-wireless/Query_Subscriber/Subscriber_Details/SubscriberDetails';
+import "./mainPage.css"
 
-const styles = StyleSheet.create({
-    container: {
-        height: '100%',
-        minHeight: '100vh'
-    },
-    content: {
-        marginTop: 54
-    },
-    mainBlock: {
-        backgroundColor: '#F7F8FC',
-        marginLeft: 255,
-        padding: 30,
-        borderBottom: '30px',
-        '@media(max-width: 768px)':{
-          marginLeft:0
-        }
-    }
-  });
-  
-
-const MainPage = () => {
-   
+const MainPage = () => {   
     return(
         <div>        
             <Route exact exact path='/sophosaas'>
-                <SaasCard ClassName={css(styles.content)} />
+                <SaasCard ClassName="mainPagecontent" />
             </Route> 
             <Route exact path='/'>
-                <Card ClassName={css(styles.content)} />
+                <Card ClassName="mainPagecontent" />
             </Route>
                 <Route exact path='/fwb'>
                 <FwbCards/>

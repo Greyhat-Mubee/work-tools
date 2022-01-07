@@ -4,14 +4,13 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Button, FormGroup, FormControl, FormLabel, Row, Col } from "react-bootstrap";
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Mybackdrop from "../../../backdrop/backdrop";
+import { useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Backdrop from '@material-ui/core/Backdrop';
-import RingLoader from "react-spinners/GridLoader";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import FwbCards from '../fwbCard';
@@ -19,22 +18,6 @@ import {login} from '../../../../../redux_features/authSlice';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue} from "firebase/database";
 
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: 'transparent',
-  },
-  root: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  tabStyle:{
-    fontFamily: 'Muli',
-    fontWeight:'bolder',
-    fontSize:'17px'
-  }
-
-}));
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -74,42 +57,40 @@ function a11yProps(index) {
 }
 
 const FwbCreate = (props) => {
-    const auth_token = useSelector(login).payload.authentication.auth.token;
-    const [, setShow] = useState(false);
-    const handleShow = () => setShow(true);
-    const [subscriberName, setsubscriberName] = useState("");
-    const [manualPublicIP, setmanualPublicIP] = useState("");
-    const [vlanID, setvlanID] = useState("");
-    const [pop, setpop] = useState("VI POP");
-    const [pop_array, setpop_array] = useState([]);
-    const [lanSubnetAddress, setlanSubnetAddress] = useState("/30");
-    const [lanSubnetAddress_array, setlanSubnetAddress_array] = useState([]);
-    const [SubscriberPlan, setSubscriberPlan] = useState("1/1 Mbps");
-    const [SubscriberPlan_array, setsetSubscriberPlan_array] = useState([]);
-    const [hasLoaded, sethasLoaded] = useState("");
-    const [, setapiResponse] = useState("");
-    const [loadingModal, setloadingModal] = useState(false);
-    const [errorModal, seterrorModal] = useState(false);
-    const handleClose = () => seterrorModal(false);
-    const handleSuccessClose = () => setShow(false);
-    const classes = useStyles();
-    const theme = useTheme();
-    const [value, setValue] = useState(0);
+  const auth_token = useSelector(login).payload.authentication.auth.token;
+  const [, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const [subscriberName, setsubscriberName] = useState("");
+  const [manualPublicIP, setmanualPublicIP] = useState("");
+  const [vlanID, setvlanID] = useState("");
+  const [pop, setpop] = useState("VI POP");
+  const [pop_array, setpop_array] = useState([]);
+  const [lanSubnetAddress, setlanSubnetAddress] = useState("/30");
+  const [lanSubnetAddress_array, setlanSubnetAddress_array] = useState([]);
+  const [SubscriberPlan, setSubscriberPlan] = useState("1/1 Mbps");
+  const [SubscriberPlan_array, setsetSubscriberPlan_array] = useState([]);
+  const [hasLoaded, sethasLoaded] = useState("");
+  const [, setapiResponse] = useState("");
+  const [loadingModal, setloadingModal] = useState(false);
+  const [errorModal, seterrorModal] = useState(false);
+  const handleClose = () => seterrorModal(false);
+  const handleSuccessClose = () => setShow(false);
+  const theme = useTheme();
+  const [value, setValue] = useState(0);
 
-    const onItemClicked = (item) => {
+  const onItemClicked = (item) => {
       return props.onChange(item);    
   }
-
-    const handleChange = (event, newValue) => {
+  const handleChange = (event, newValue) => {
       setValue(newValue);
     };
   
-    const firebaseConfig = {
-      apiKey: "apiKey",
-      authDomain: "projectId.firebaseapp.com",
-      databaseURL: "https://work-tools-d6176-default-rtdb.firebaseio.com/",
-      storageBucket: "bucket.appspot.com"
-    };
+  const firebaseConfig = {
+    apiKey: "apiKey",
+    authDomain: "projectId.firebaseapp.com",
+    databaseURL: "https://work-tools-d6176-default-rtdb.firebaseio.com/",
+    storageBucket: "bucket.appspot.com"
+  };
     
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
@@ -216,20 +197,11 @@ const FwbCreate = (props) => {
 
     return (
         <div>
-          
-          <Backdrop className={classes.backdrop} open={loadingModal}>
-                <RingLoader
-                        size={42}
-                        color={"#3678D7"}
-                        loading={true}
-                    />  
-          </Backdrop>
-
+          <Mybackdrop open={loadingModal}/>
           {
           hasLoaded === 'loaded' ?
           <div>
             <FwbCards/>
-
             <Snackbar open={true} autoHideDuration={6000} onClose={handleSuccessClose}>
                 <Alert onClose={handleSuccessClose} severity="success">
                 Subscriber Successfully Created
@@ -237,14 +209,14 @@ const FwbCreate = (props) => {
             </Snackbar>
           </div>
           :
-          <div className='contentpage3'>
+          <div>
           <Snackbar open={errorModal} autoHideDuration={6000} onClose={handleClose}>
               <Alert onClose={handleClose} severity="error">
               An error occured please try again later
               </Alert>
           </Snackbar>
               <p className="f3 fw6 ph0 mh0 pt4">Create Subscriber</p>
-              <div className={classes.root}>
+              <div className="tabroot">
                 <AppBar position="static" color="default">
                   <Tabs
                     value={value}
@@ -253,8 +225,8 @@ const FwbCreate = (props) => {
                     textColor="primary"
                     variant="fullWidth"
                   >
-                    <Tab className={classes.tabStyle}  label="Automatic IP Assignment" {...a11yProps(0)} />
-                    <Tab className={classes.tabStyle}label="Manual IP Assignment" {...a11yProps(1)} />
+                    <Tab className="tabStyle" label="Automatic IP Assignment" {...a11yProps(0)} />
+                    <Tab className="tabStyle" label="Manual IP Assignment" {...a11yProps(1)} />
                   </Tabs>
                 </AppBar>
                   <TabPanel value={value} index={0} dir={theme.direction}>
@@ -326,9 +298,6 @@ const FwbCreate = (props) => {
                     </Button>
                 </form>
                   </TabPanel>
-
-
-
                   <TabPanel value={value} index={1} dir={theme.direction}>
                       <form onSubmit={handleSubmitManual}>
                           <Row>
@@ -419,6 +388,6 @@ const FwbCreate = (props) => {
           }
             
         </div>
-    );
+  );
 };
 export default FwbCreate;
