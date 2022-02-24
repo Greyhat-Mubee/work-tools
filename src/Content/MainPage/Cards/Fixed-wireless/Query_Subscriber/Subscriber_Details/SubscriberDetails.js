@@ -10,6 +10,8 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {Form,FormGroup, FormControl, FormLabel} from "react-bootstrap";
+import {useAccordionButton} from 'react-bootstrap/AccordionButton';
+import FloatingLabel  from 'react-bootstrap/FloatingLabel';
 import "react-toggle/style.css";
 import Scroll from '../../../Scroll';
 import axios from 'axios';
@@ -18,6 +20,7 @@ import { getDatabase, ref, onValue} from "firebase/database";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Modal from '@material-ui/core/Modal';
+import MapIPAddress from './mapIPAddress';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import IpComponent from './IpCompnent';
@@ -72,6 +75,16 @@ const SubscriberDetails = (props) => {
             return state.query_subscriber.query;
           })
     
+    function CustomAccordion({ eventKey }) {
+        const decoratedOnClick = useAccordionButton(eventKey);
+        return (
+            <div onClick={decoratedOnClick}>
+                ✚
+            </div>
+            
+        );
+    }
+
     const dispatch = useDispatch()
     dispatch(change_selectedItem(subdata.subscriber_data['name']))
     
@@ -293,103 +306,95 @@ const SubscriberDetails = (props) => {
                 </div>
                 </Fade>
         </Modal>
-
-        <Modal
-                aria-labelledby="spring-modal-title"
-                aria-describedby="spring-modal-description"
-                className="modal"
-                open={mapshow}
-                onClose={mapshowClose}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                timeout: 500,
-                }}
-            >
-                <Fade in={mapshow}>
-                <div className="paper_map">
-                <Form onSubmit={map_new_ip}>
-                    <h2 id="spring-modal-title" style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>Map New IP Address</h2>
-                    <div style={{paddingTop: '20px', marginTop: '10px'}}></div>
-                    <Row style={{padding:'30px'}}>
-                       <Col>
-                       <FormLabel className="Formlabel">IP Address</FormLabel>
-                        <FormControl
-                                autoFocus
-                                type="text"
-                                value={NewIPAddress}
-                                onChange={e => setNewIPAddress(e.target.value)}
-                            />
-                       </Col>
-                       <Col>
-                        <FormGroup controlId="vlanID">
-                        <FormLabel className="Formlabel">VLAN ID</FormLabel>
-                        <FormControl
-                          value={vlanID}
-                          onChange={e => setvlanID(e.target.value)}
-                          type="number"
-                        />
-                        </FormGroup>
-                      </Col>
-                      </Row>
-                      <Row style={{paddingTop:'0',paddingLeft:'30px',paddingRight:'30px',paddingBottom:'10px'}}>
-                       <Col>
-                        <FormGroup controlId="pop">
-                            <FormLabel className="Formlabel">POP Location</FormLabel>
-                            <FormControl as="select"  value={pop}
-                                onChange={e => setpop(e.target.value)}
-                                >
-                               {pop_array.map((option, id) =>
-                              (
-                                <option>{option}</option>
-                              ))}
-                            </FormControl>
-                        </FormGroup>
-                       </Col>
-                    </Row>
-                    <Row xs lg="4" style={{display:'flex',justifyContent:'flex-end', paddingRight:'20px'}}>
-                            <Button block disabled={!validateForm1()} type="submit">
-                                {changeLoading}
-                            </Button>
-                       </Row> 
-                    
-                </Form> 
-                </div>
-                </Fade>
-        </Modal>
-
         <div className='contentpager'>      
-            <Scroll>
+            <div>
             <Col className='centerdets'>  
-                <Row>
+                <div className='image-layout'>
                     <img alt='robots' className="roboimg" src= {`https://robohash.org/${subscriber_name}`}/>
-                </Row>
+                </div>
                 <div className="subcard">
                 <Row>
-                    <Col>Subscriber Name</Col>
+                    <Col >Subscriber Name</Col>
                     <Col style={{textAlign:"right"}}>{subscriber_name}</Col>
                 </Row>
                 <Row>
-                    <Accordion defaultActiveKey="1">
+                    <Accordion>
                         <Card className="accordioncard">
                             <Card.Header>
                             <Row>
-                                <Col>IP Address</Col>
-                                <Col style={{textAlign:"right"}}>
-                                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                    ✚
-                                    </Accordion.Toggle>
+                                <Col md={9}><div className='accordion-card-text'>IP Address</div></Col>
+                                <Col>
+                                    <div className='accordion-expand'>
+                                        <CustomAccordion eventKey="0"/>
+                                    </div>
+                                    
                                 </Col>
                             </Row>
                             </Card.Header>
                             <Accordion.Collapse eventKey="0">
                             <Card.Body>
                             <div>
-                                <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                                    <form onSubmit={mapIPModal}>
-                                        <Button style={{marginRight:'20px', padding:"7px", fontWeight:"bold", width:'70px'}} type="submit">Map</Button>
-                                    </form>                                
-                                </Row>
+                                <div className='map-ip-button'>
+                                    <MapIPAddress name="Map">
+                                    <div className="new-ip">
+                                        <Form onSubmit={map_new_ip}>
+                                            <h2 className='sidebar-title'>Map New IP Address</h2>
+                                            <div className='sidebar-body'>
+                                            <FloatingLabel
+                                                controlId="IPAddress"
+                                                label="IP Address"
+                                                className="mb-3"
+                                            >
+                                                <Form.Control
+                                                    placeholder="4.4.4.4"
+                                                    type="text"
+                                                        value={NewIPAddress}
+                                                        onChange={e => setNewIPAddress(e.target.value)}
+                                                />
+                                            </FloatingLabel>
+                                           
+                                            <FloatingLabel
+                                                    controlId="vlanID"
+                                                    label="VLAN ID"
+                                                    className="mb-3"
+                                                >
+                                                    <Form.Control
+                                                    placeholder={1024}
+                                                    value={vlanID}
+                                                    onChange={e => setvlanID(e.target.value)}
+                                                    type="number"
+                                                    />
+                                                </FloatingLabel>
+                                            <Row>
+                                            <Col>
+                                                <FloatingLabel
+                                                    controlId="pop"
+                                                    label="POP Location"
+                                                    className="mb-3"
+                                                >
+                                                    <Form.Select
+                                                    value={pop}
+                                                    onChange={e => setpop(e.target.value)}
+                                                    >
+                                                    {pop_array.map((option, id) =>
+                                                        (
+                                                        <option>{option}</option>
+                                                        ))}
+                                                    </Form.Select>
+                                                </FloatingLabel>
+                                            </Col>
+                                            </Row>
+                                            </div>
+                                            <div className='sidebar-button-div'>
+                                                    <Button className='sidebar-button' block disabled={!validateForm1()} type="submit">
+                                                        {changeLoading}
+                                                    </Button>
+                                            </div> 
+                                            
+                                        </Form> 
+                                        </div>
+                                    </MapIPAddress>
+                                </div>
                                 <div style={{paddingTop: '20px', borderTop: '0.5vh solid ', padding:3 , left:0, marginTop: '10px', opacity: 0.06}}></div>
                                 {
                                     Sub_ip.map((user, i) => {
@@ -406,16 +411,17 @@ const SubscriberDetails = (props) => {
                     </Accordion>
                 </Row>
                 <Row>
-                    <Accordion defaultActiveKey="1">
+                    <Accordion>
                         <Card className="accordioncard">
                             <Card.Header>
                             <Row>
-                                <Col>Subscriber Attributes</Col>
-                                <Col style={{textAlign:"right"}}>
-                                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                    ✚
-                                    </Accordion.Toggle>
-                                </Col>
+                            <Col md={9}><div className='accordion-card-text'>Subscriber Attributes</div></Col>
+                            <Col>
+                                    <div className='accordion-expand'>
+                                        <CustomAccordion eventKey="0"/>
+                                    </div>
+                                    
+                            </Col>
                             </Row>
                             </Card.Header>
                             <Accordion.Collapse eventKey="0">
@@ -469,7 +475,7 @@ const SubscriberDetails = (props) => {
                 </div>                
                 </div>
             </Col>
-            </Scroll>
+            </div>
         </div>
         </div>       
     )

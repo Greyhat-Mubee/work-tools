@@ -94,7 +94,7 @@
     right:10px;
     position: relative;
     cursor: 'pointer';
-    padding-left: 32px;
+    padding-left: 20px;
     padding-right: 32px;
 }
 .menuContainer:hover{
@@ -125,6 +125,9 @@
 .subMenuImage{
     height: 25px;
     width: 25px;
+}
+.linkText{
+    text-decoration: none;
 }
 
 @media(max-width: 768px){
