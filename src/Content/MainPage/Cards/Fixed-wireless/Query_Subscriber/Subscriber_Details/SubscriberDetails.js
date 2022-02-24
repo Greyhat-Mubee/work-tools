@@ -101,7 +101,7 @@ const SubscriberDetails = (props) => {
     const [NewIPAddress, setNewIPAddress] = useState("");
     const [pop, setpop] = useState("Select POP");
     const [vlanID, setvlanID] = useState("");
-    const [changeLoading] = useState("Change");
+    const [changeLoading] = useState("Add");
     const [show, setShow] = useState(false);
     const [Decommisionshow, setDecommisionshow] = useState(false);
     const [Errorshow, setErrorshow] = useState(false);
@@ -335,7 +335,7 @@ const SubscriberDetails = (props) => {
                             <Card.Body>
                             <div>
                                 <div className='map-ip-button'>
-                                    <MapIPAddress name="Map">
+                                    <MapIPAddress name="New">
                                     <div className="new-ip">
                                         <Form onSubmit={map_new_ip}>
                                             <h2 className='sidebar-title'>Map New IP Address</h2>
