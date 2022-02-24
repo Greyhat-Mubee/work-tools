@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/COl';
+import Col from 'react-bootstrap/Col';
 const styles = StyleSheet.create({
     text:{
         paddingTop:"7px",
