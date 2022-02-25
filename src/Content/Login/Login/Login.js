@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import {useDispatch, useSelector} from 'react-redux';
 import { useHistory } from "react-router-dom";
 import "./Login.css";
@@ -36,28 +35,26 @@ export default function Login(props) {
     return (
         <div className="Login">
           <form onSubmit={handleSubmit}>
-            <Form.Group controlId="email">
-              <Form.Label>Username</Form.Label>
-              <Form.Control
+            <FormGroup controlId="email">
+              <FormLabel>Username</FormLabel>
+              <FormControl
                 autoFocus
                 type="text"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
-            </Form.Group>
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
+            </FormGroup>
+            <FormGroup controlId="password">
+              <FormLabel>Password</FormLabel>
+              <FormControl
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 type="password"
               />
-            </Form.Group>
-            <div className="loginButton">
-              <Button block disabled={!validateForm()} className="buttons" type="submit">
-                {loginCheck}
-              </Button>
-            </div>
+            </FormGroup>
+            <Button block disabled={!validateForm()} type="submit">
+              {loginCheck}
+            </Button>
             {
               useSelector(login).payload.authentication.auth.loginRetry === true ? 
               <p style={{color:'red', paddingTop:'20px'}}>Incorrect username or password</p>

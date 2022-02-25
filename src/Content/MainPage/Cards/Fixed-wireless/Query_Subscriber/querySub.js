@@ -129,9 +129,9 @@ const QuerySubscriber = (props) =>{
         }
     return(
         <Switch>
-            <div className='contentpage'>
+            <div>
                 <Mybackdrop open={open}/>
-                <p className="f3 fw6 mh0">Query Subscriber</p>
+                <p className="f3 fw6 ph0 mh0 pt4">Query Subscriber</p>
                 <div className="tabroot">
                     <AppBar position="static" color="default">
                         <Tabs
@@ -146,7 +146,7 @@ const QuerySubscriber = (props) =>{
                         </Tabs>
                     </AppBar>
                         <TabPanel value={value} index={0} dir={theme.direction}>
-                        <div className='centered'>  
+                        <Row className='centered'>  
                         <form className="formstyle" onSubmit={handleSubmit}>
                         <input onChange={e => setsearchName(e.target.value)}
                             className="ml-3 w-50 searchinput" type="text" placeholder="Subscriber Name" aria-label="Search" />
@@ -155,18 +155,18 @@ const QuerySubscriber = (props) =>{
                             <img src= {searchimg} className="" alt='search icon'/>
                         </button>
                         </form> 
-                    </div>
-                    <div className='centeredrd'>
+                    </Row>
+                    <Row className='centeredrd'>
                     {
                         hasLoaded === 'loadingError' ? 
                         <p className='loaderrorText'>Search error check subscriber name and try again</p>
                         :<div></div>
                     }
-                    </div>
+                    </Row>
                         </TabPanel>
 
                         <TabPanel value={value} index={1} dir={theme.direction}>
-                        <div className='centered'>  
+                        <Row className='centered'>  
                             <form className="formstyle" onSubmit={handleSubmit2}>
                             <input onChange={e => setsearchName(e.target.value)}
                                 className="ml-3 w-50 searchinput" type="text" placeholder="Subscriber IP" aria-label="Search" />
@@ -174,14 +174,14 @@ const QuerySubscriber = (props) =>{
                                 <img src= {searchimg} className="" alt='search icon'/>
                             </button>
                             </form> 
-                        </div>
-                        <div className='centeredrd'>
+                        </Row>
+                        <Row className='centeredrd'>
                         {
                             hasLoaded === 'loadingError' ? 
-                            <p className='loaderrorText'>Search error check subscriber IP address and try again</p>
+                            <p className='loaderrorText'>Search error check subscriber name and try again</p>
                             :<div></div>
                         }
-                        </div>                      
+                        </Row>                      
                         </TabPanel>
                     </div>
             </div>

@@ -4,7 +4,7 @@ import { useGlobalEvent } from "beautiful-react-hooks";
 import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import './App.css';
-import Sidebare from './Content/SIdebar/Sidebar';
+import Sidebar from './Content/SIdebar/Sidebar';
 import HeaderComponent from './Content/Header/HeaderComponent';
 import MainPage from './Content/mainPage';
 import Login from './Content/Login/Login/Login';
@@ -30,7 +30,7 @@ function App () {
   return (
       <div>
           <Row className="containerss">
-            <Sidebare selectedItem={loadState("selectedItem")}
+            <Sidebar selectedItem={loadState("selectedItem")}
                     isSignedIn={loginVars.loginStatus} 
                     onChange={(selectedItem) => setselectedItem(selectedItem)}/>
             <Column flexGrow={1} className='mainBlock'>

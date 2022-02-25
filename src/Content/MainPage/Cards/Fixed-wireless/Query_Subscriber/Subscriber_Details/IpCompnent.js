@@ -4,8 +4,6 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import {FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue} from "firebase/database";
@@ -15,7 +13,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import MapIPAddress from './mapIPAddress';
 import { useSpring, animated } from 'react-spring/web.cjs'; 
 import axios from 'axios';
 import {login} from '../../../../../../redux_features/authSlice';
@@ -46,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+        width: '80%'
         },
         Formlabel: {
         fontStyle: 'Muli',
@@ -177,7 +175,45 @@ const IpComponent = (props) => {
                 }}
             >
                 <Fade in={show}>
-                
+                <div className={classes.paper_map}>
+                <form onSubmit={handleSubmit}>
+                    <h2 id="spring-modal-title" style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>Map New IP Address</h2>
+                    <div style={{paddingTop: '20px', marginTop: '10px'}}></div>
+                    <Row style={{padding:'30px'}}>
+                       <Col>
+                       <FormLabel className={classes.Formlabel}>IP Address</FormLabel>
+                        <FormControl
+                                autoFocus
+                                type="text"
+                                value={NewIPAddress}
+                                onChange={e => setNewIPAddress(e.target.value)}
+                            />
+                       </Col>
+                      </Row>
+
+                      <Row style={{paddingTop:'0',paddingLeft:'30px',paddingRight:'30px',paddingBottom:'10px'}}>
+                       <Col>
+                        <FormGroup controlId="pop">
+                            <FormLabel className={classes.Formlabel}>POP Location</FormLabel>
+                            <FormControl as="select"  value={pop}
+                                onChange={e => setpop(e.target.value)}
+                                >
+                               {pop_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
+                            </FormControl>
+                        </FormGroup>
+                       </Col>
+                    </Row>
+                    <Row xs lg="4" style={{display:'flex',justifyContent:'flex-end', paddingRight:'20px'}}>
+                            <Button block disabled={!validateForm()} type="submit">
+                                {changeLoading}
+                            </Button>
+                       </Row> 
+                    
+                </form> 
+                </div>
                 </Fade>
         </Modal>
         <Snackbar open={Errorshow} autoHideDuration={6000} onClose={handleClose}>
@@ -190,56 +226,7 @@ const IpComponent = (props) => {
             <Row style={{padding:"5px"}}>
             <Col>{SubIp}</Col>
             <Col style={{display:'flex', justifyContent:'flex-end'}}>
-            <MapIPAddress name='Change'>
-                <div className='new-ip'>
-                    <form onSubmit={handleSubmit}>
-                        <h2 className='sidebar-title'>Change IP Address</h2>
-                        <div className='sidebar-body'>
-                        <Row>
-                            <Col>
-                                <FloatingLabel
-                                controlId="IPAddress"
-                                label="IP Address"
-                                className="mb-3"
-                                >
-                                    <Form.Control
-                                        placeholder="4.4.4.4"
-                                        type="text"
-                                            value={NewIPAddress}
-                                            onChange={e => setNewIPAddress(e.target.value)}
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                        </Row>
-
-                        <Row>
-                        <Col>
-                        <FloatingLabel
-                            controlId="pop"
-                            label="POP Location"
-                            className="mb-3"
-                        >
-                            <Form.Select
-                            value={pop}
-                            onChange={e => setpop(e.target.value)}
-                            >
-                            {pop_array.map((option, id) =>
-                                (
-                                <option>{option}</option>
-                                ))}
-                            </Form.Select>
-                        </FloatingLabel>
-                        </Col>
-                        </Row>
-                        <div className='sidebar-button-div'>
-                                <Button className='sidebar-button' block disabled={!validateForm()} type="submit">
-                                    {changeLoading}
-                                </Button>
-                        </div> 
-                        </div>
-                    </form> 
-                </div>
-            </MapIPAddress>
+                <Button style={{padding:"7px", fontSize:'15px', fontWeight:"bold"}} type="submit">Change</Button>
             </Col>
             </Row>                         
         </form>

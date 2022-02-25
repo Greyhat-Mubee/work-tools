@@ -2,11 +2,7 @@ import React, {useState} from 'react';
 import { useSelector } from 'react-redux';
 import './CreateSubscriber.css';
 import axios from 'axios';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel'
-import { Button } from "react-bootstrap";
+import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import SaasCard from '../SaasCard';
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
@@ -118,115 +114,77 @@ const CreateSubscriber = () => {
               An error occured please try again later
               </Alert>
           </Snackbar>
+
+          {/* <MyVerticallyCenteredModal
+            show={loadingModal}
+          /> */}
+          {/* <Modal show={errorModal} className='otherModal' onHide={errorClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Error</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Unable to create sophos as a service subscriber. Please try again.
+              </Modal.Body>
+          </Modal> */}
           <form onSubmit={handleSubmit}>
             <p className="f3 fw6 ph0 mh0 pt4">Create Subscriber</p>
-            <Row>
-              <Col>
-              <FloatingLabel
-                  controlId="subscriberName"
-                  label="Subscriber Name"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    placeholder="Demo Account" 
-                    type="text"
-                    value={subscriberName}
-                    onChange={e => setsubscriberName(e.target.value)}
-                  />
-                </FloatingLabel>    
-              </Col>
-              <Col>
-                <FloatingLabel
-                    controlId="vlanID"
-                    label="VLAN ID"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      placeholder={99}
-                      value={vlanID}
-                      onChange={e => setvlanID(e.target.value)}
-                      type="number"
-                    />
-                  </FloatingLabel>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <FloatingLabel
-                      controlId="lanIPAddress"
-                      label="LAN IP Address"
-                      className="mb-3"
-                    >
-                      <Form.Control
-                        placeholder="1.1.1.1"
-                        value={lanIpAddress}
-                        onChange={e => setlanIpAddress(e.target.value)}
-                        type="text"
-                      />
-                  </FloatingLabel>
-              </Col>
-              <Col>
-                <FloatingLabel
-                  controlId="lanSubnetAddress"
-                  label="LAN Subnet Address"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    placeholder="255.255.255.255"
-                    value={lanSubnetAddress}
-                    onChange={e => setlanSubnetAddress(e.target.value)}
-                    type="text"
-                  />
-                </FloatingLabel>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <FloatingLabel
-                    controlId="wanIpAddress"
-                    label="WAN IP Address"
-                    className="mb-3"
-                  >
-                    <Form.Control
-                      placeholder="1.1.1.1"
-                      value={wanIpAddress}
-                      onChange={e => setwanIpAddress(e.target.value)}
-                      type="text"
-                    />
-                  </FloatingLabel>
-              </Col>
-              <Col>
-                <FloatingLabel
-                      controlId="wanSubnetAddress"
-                      label="WAN Subnet Address"
-                      className="mb-3"
-                    >
-                      <Form.Control
-                        placeholder="255.255.255.255"
-                        value={wanSubnetAddress}
-                        onChange={e => setwanSubnetAddress(e.target.value)}
-                        type="text"
-                      />
-                    </FloatingLabel>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-              <FloatingLabel
-                controlId="wanGatewayAddress"
-                label="WAN Gateway Address"
-                className="mb-3"
-              >
-                <Form.Control
-                  placeholder="2.2.2.2"
+              <FormGroup controlId="subscriberName">
+                <FormLabel>Subscriber Name</FormLabel>
+                <FormControl
+                  autoFocus
+                  type="text"
+                  value={subscriberName}
+                  onChange={e => setsubscriberName(e.target.value)}
+                />
+              </FormGroup>
+              <FormGroup controlId="vlanID">
+                <FormLabel>VLAN ID</FormLabel>
+                <FormControl
+                  value={vlanID}
+                  onChange={e => setvlanID(e.target.value)}
+                  type="number"
+                />
+              </FormGroup>
+              <FormGroup controlId="lanIPAddress">
+                <FormLabel>LAN IP Address</FormLabel>
+                <FormControl
+                  value={lanIpAddress}
+                  onChange={e => setlanIpAddress(e.target.value)}
+                  type="text"
+                />
+              </FormGroup>
+              <FormGroup controlId="lanSubnetAddress">
+                <FormLabel>LAN Subnet Address</FormLabel>
+                <FormControl
+                  value={lanSubnetAddress}
+                  onChange={e => setlanSubnetAddress(e.target.value)}
+                  type="text"
+                />
+              </FormGroup>
+              <FormGroup controlId="wanIpAddress">
+                <FormLabel>WAN IP Address</FormLabel>
+                <FormControl
+                  value={wanIpAddress}
+                  onChange={e => setwanIpAddress(e.target.value)}
+                  type="text"
+                />
+              </FormGroup>
+              <FormGroup controlId="wanSubnetAddress">
+                <FormLabel>WAN Subnet Address</FormLabel>
+                <FormControl
+                  value={wanSubnetAddress}
+                  onChange={e => setwanSubnetAddress(e.target.value)}
+                  type="text"
+                />
+              </FormGroup>
+              <FormGroup controlId="wanGatewayAddress">
+                <FormLabel>WAN Gateway Address</FormLabel>
+                <FormControl
                   value={wanGatewayAddress}
                   onChange={e => setwanGatewayAddress(e.target.value)}
                   type="text"
                 />
-              </FloatingLabel>
-              </Col>
-              
-            </Row>
+              </FormGroup>
               <Button block disabled={!validateForm()} type="submit">
                 Create Subscriber
               </Button>
