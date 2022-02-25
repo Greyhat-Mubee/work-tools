@@ -109,37 +109,30 @@ const Card = (props) => {
     return (
         <div className='cardsRow'>
             <Row>
-                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow cards'>
-                    <Row>
-                        <img alt='robots' src={Icontotal} className='cardTitle'/>
-                        <p className="text">Total Subscribers</p>
-                    </Row>
-                    <Row>
-                        <p className='cardTitleText'> Number of Subscribers</p>
-                    </Row>
-                    <Row className='cardValue'>
-                        <p className='cardValueText'> {apiResponse['total']} </p>
-                    </Row>
-                </div>
                 <TopCard
-                subscriber_no = {apiResponse['active']}
-                service_name = 'Active Subscribers'
-                service_img = {Iconactive} 
-                />
+                    subscriber_no = {apiResponse['total']}
+                    service_name = 'Total Subscribers'
+                    service_img = {Icontotal} 
+                    />
                 <TopCard
-                subscriber_no = {apiResponse['suspend']}
-                service_name = 'Suspended Subscribers'
-                service_img = {Iconsus} 
-                />
+                    subscriber_no = {apiResponse['active']}
+                    service_name = 'Active Subscribers'
+                    service_img = {Iconactive} 
+                    />
+                <TopCard
+                    subscriber_no = {apiResponse['suspend']}
+                    service_name = 'Suspended Subscribers'
+                    service_img = {Iconsus} 
+                    />
             </Row>
 
-            <Row>
+            <Row style={{width:'98%'}}>
             <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer tableRow'>
                     <Row>
                         <p className='tableHeader'>Top Subscriber Plans</p>
                     </Row>
                     <Row>
-                    <Table>
+                    <Table striped bordered hover>
                         <thead>
                             <tr>
                             <th></th>
@@ -165,13 +158,13 @@ const Card = (props) => {
                 </div>
             </Row>
 
-            <Row>
+            <Row style={{width:'98%'}}>
             <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer tableRow'>
                     <Row>
                         <p className='tableHeader'>Top Subscribers</p>
                     </Row>
                     <Row>
-                    <Table>
+                    <Table striped bordered hover>
                         <thead>
                             <tr>
                             <th></th>

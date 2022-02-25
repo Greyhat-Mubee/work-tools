@@ -2,6 +2,10 @@ import React, {useState} from 'react';
 import { useSelector } from 'react-redux';
 import './CreateSubscriber.css';
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
@@ -102,24 +106,33 @@ const Decommission = () => {
               An error occured please try again later
               </Alert>
             </Snackbar>
+            <div className='divider-top'></div>
               <form onSubmit={handleSubmit}>
-                  <p className="f3 fw6 ph0 mh0 pt4">Decommission</p>
-                  <FormGroup controlId="subscriberName">
-                    <FormLabel>Subscriber Name</FormLabel>
-                    <FormControl
-                      autoFocus
-                      type="text"
-                      value={subscriberName}
-                      onChange={e => setsubscriberName(e.target.value)}
-                    />
-                  </FormGroup>
-                  <Button block disabled={!validateForm()} 
-                  type="submit"
-                  style={{display:"flex",width:"100%", justifyContent:"center",fontFamily:"Muli",fontWeight:"bold", backgroundColor:"#b80202"}}
-                  >
-                    Decommission
-                  </Button>
-                </form>
+                <Row>
+                <Col>
+                <FloatingLabel
+                  controlId="subscriberName"
+                  label="Decommission"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    placeholder="Demo Account"
+                    autoFocus
+                    type="text"
+                    value={subscriberName}
+                    onChange={e => setsubscriberName(e.target.value)}
+                  />
+                </FloatingLabel>
+                </Col>
+              </Row>
+              <div className='divider'></div>
+              <Button block disabled={!validateForm()} 
+              type="submit"
+              style={{display:"flex",width:"160px", justifyContent:"center",fontFamily:"Muli",fontWeight:"bold", backgroundColor:"#b80202"}}
+              >
+                Decommission
+              </Button>
+            </form>
           </div>
           
         }

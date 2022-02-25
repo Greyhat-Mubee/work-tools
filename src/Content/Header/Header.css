@@ -42,7 +42,11 @@
 }
 .iconStyles {
     cursor: pointer;
+    padding: 2px;
     margin-left: 25px;
+    background-color: #DFE0EB;
+    color: black;
+    border-radius: 5px;
     }
 .hideButton {
    visibility: hidden 

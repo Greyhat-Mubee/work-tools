@@ -10,14 +10,15 @@ import createlogo from './newSub.png';
 import decommlogo from './query.png';
 import createlogoSaas from './Create Subscriber.png';
 import decommlogoSaas from './Decommission.png';
-import Button from 'react-bootstrap/Button';
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import Menu from './Menu';
 import SubMenu from './SubMenu';
+import MapIPAddress from '../MainPage/Cards/Fixed-wireless/Query_Subscriber/Subscriber_Details/mapIPAddress';
 import IconBurger from '../../assets/icon-burger';
 import { NavLink } from "react-router-dom";
 import { change_selectedItem, login } from '../../redux_features/authSlice';
 
-function Sidebar (props) {
+function SideBar (props) {
     const [expanded, setexpanded] = useState(false);
     const dispatch = useDispatch()
     let location = useLocation();
@@ -25,6 +26,18 @@ function Sidebar (props) {
 
         setexpanded(false);
     }
+    
+    function CustomAccordion({ name, eventKey }) {
+        const decoratedOnClick = useAccordionButton(eventKey);
+        return (
+            <Menu
+            title={name}
+            onClick={() => onItemClicked({name})}
+            active={selectedItem === name}
+            onClick={decoratedOnClick}
+        />
+        );
+      }
     React.useEffect(() => {
         const path_dict = {
             '/':'Dashboard',
@@ -65,32 +78,31 @@ function Sidebar (props) {
                         <Accordion defaultActiveKey="0">
                             <Card bsPrefix="sidebarCard">
                                 <Card.Header bsPrefix="sidebarCardHeader">
-                                <Accordion.Toggle as={Button} variant="link" eventKey="0" className="cardToggle">
-                                <NavLink to="/">
-                                    <Menu
-                                        title="Dashboard"
-                                        onClick={() => onItemClicked('Dashboard')}
-                                        active={selectedItem === 'Dashboard'}
-                                    />
-                                </NavLink>
-                                </Accordion.Toggle>
+                                    <Accordion.Item eventKey="0" bsPrefix='menuContainer'>
+                                            <NavLink to="/" className="linkText">
+                                                <Menu
+                                                    title="Dashboard"
+                                                    onClick={() => onItemClicked('Dashboard')}
+                                                    active={selectedItem === 'Dashboard'}
+                                                />
+                                            </NavLink>
+                                    </Accordion.Item>
                                 </Card.Header>
-                            </Card>
+                            </Card> 
                             <Card bsPrefix="sidebarCard">
                                 <Card.Header bsPrefix="sidebarCardHeader">
-                                <Accordion.Toggle as={Button} variant="link" eventKey="1" className="cardToggle">
-                                <NavLink to="/sophosaas">
-                                    <Menu
-                                        title="Sophos as a Service"
-                                        onClick={() => onItemClicked('Sophos as a Service')}
-                                        active={selectedItem === 'Sophos as a Service'}
+                                <Accordion.Item eventKey="1" bsPrefix="menuContainer">
+                                <NavLink to="/sophosaas" className="linkText">
+                                    <CustomAccordion
+                                        name="Sophos as a Service"
+                                        eventKey="1"
                                     />
                                 </NavLink>
-                                </Accordion.Toggle>
+                                </Accordion.Item>
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="1" className="cardToggle">
                                 <Card.Body bsPrefix="sidebarCardSubmenu">
-                                    <NavLink to="/sophosaas/create subscriber">
+                                    <NavLink to="/sophosaas/create subscriber" className="linkText">
                                         <SubMenu
                                             icon = {createlogoSaas}
                                             title="Create Subscriber"
@@ -98,7 +110,7 @@ function Sidebar (props) {
                                             active={selectedItem === 'Sophos > Create Subscriber'}
                                         />
                                     </NavLink>
-                                    <NavLink to="/sophosaas/decommission">
+                                    <NavLink to="/sophosaas/decommission" className="linkText">
                                         <SubMenu
                                             icon = {decommlogoSaas}
                                             title="Decommission"
@@ -111,19 +123,18 @@ function Sidebar (props) {
                             </Card>
                             <Card bsPrefix="sidebarCard">
                                 <Card.Header bsPrefix="sidebarCardHeader">
-                                <Accordion.Toggle as={Button} variant="link" eventKey="2" className="cardToggle">
-                                <NavLink to="/fwb">
-                                    <Menu
-                                        title="Fixed Wireless"
-                                        onClick={() => onItemClicked('Fixed Wireless Broadband')}
-                                        active={selectedItem === 'Fixed Wireless Broadband'}
+                                <Accordion.Item eventKey="2" bsPrefix="menuContainer">
+                                <NavLink to="/fwb" className="linkText">
+                                <CustomAccordion
+                                        name="Fixed Wireless Broadband"
+                                        eventKey="2"
                                     />
                                 </NavLink>
-                                </Accordion.Toggle>
+                                </Accordion.Item>
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="2" className="cardToggle">
                                 <Card.Body bsPrefix="sidebarCardSubmenu">
-                                    <NavLink to="/fwb/create subscriber">
+                                    <NavLink to="/fwb/create subscriber" className="linkText">
                                         <SubMenu
                                             icon = {createlogo}
                                             title="Create Subscriber"
@@ -131,7 +142,7 @@ function Sidebar (props) {
                                             active={selectedItem === 'Fwb > Create Subscriber'}
                                         />
                                     </NavLink>
-                                    <NavLink to="/fwb/query subscriber">
+                                    <NavLink to="/fwb/query subscriber" className="linkText">
                                         <SubMenu
                                             icon = {decommlogo}
                                             title="Query Subscriber"
@@ -154,4 +165,4 @@ function Sidebar (props) {
     )
 }
 
-export default Sidebar;
+export default SideBar;

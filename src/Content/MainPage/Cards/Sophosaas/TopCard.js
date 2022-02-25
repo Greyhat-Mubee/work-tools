@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Col from 'react-bootstrap/COl';
 const styles = StyleSheet.create({
     text:{
         paddingTop:"7px",
@@ -25,11 +25,9 @@ const TopCard = (props) => {
                 <Col md={2}><img alt='robots' src= {service_img} style={{height:'30px',width:'30px'}}/></Col>
                 <Col><p className={css(styles.text)}>{service_name}</p></Col>
             </Row>
+            <div style={{paddingTop:'39px'}}></div>
             <Row>
-                <p style={{paddingLeft:'70px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
-            </Row>
-            <Row>
-                <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px',display:'flex',justifyContent:'flex-end' }}> {subscriber_no} </p>
+                <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px',display:'flex',justifyContent:'flex-end'}}> {subscriber_no} </p>
             </Row>
         </div>
     )
