@@ -1,5 +1,6 @@
 .contentpage{
-    width: 70vw;
+    margin-top: 8px;
+    width: 60vw;
     background-color:#F7F8FC;
 }
 @media(max-width: 1360px){
@@ -25,7 +26,6 @@
     margin-top: 20%;
 }
 .centeredrd{
-    text-align: center;
     display: flex;
     justify-content: center;
 }

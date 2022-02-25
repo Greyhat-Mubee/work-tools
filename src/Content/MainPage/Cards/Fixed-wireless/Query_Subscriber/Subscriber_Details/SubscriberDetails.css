@@ -13,6 +13,7 @@
 .roboimg{
     width: 210px;
     height: 210px;
+    margin-left: 7%;
 }
 .subcard{
     margin-top: 20px;
@@ -22,16 +23,15 @@
     width: 400px;
 }
 .accordioncard{
-    width: 370px;
+    width: 400px;
     margin-top: 20px;
 }
 .attribute-display{
-    margin-top: 20px;
     height: 200px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
-.modals{
+.modal{
     display: flex;
     align-items: center;
     justify-content: center;   
@@ -45,65 +45,14 @@
     width: '60%'
   }
 .paper_map {
-    display: grid;
-    justify-content: center;
     margin-left:'15em';
-    background-color: white;
+    background-color: papayawhip;
     border: '2px solid #000';
     box-shadow: 5;
     padding: (2, 4, 3);
+    width: '60%'
     }
 .Formlabel {
     font-style: 'Muli';
     font-weight: 'bold';
     }
-.cardaccordion{
-    width: 20px;
-    height: 20px;
-}
-.accordion-expand{
-    background-color: aliceblue;
-    cursor: pointer;
-    color: blue;
-    padding: 5px;
-    width: 40px;
-    margin-left: 20px;
-    text-align: center;
-    border-style: solid;
-    border-color: rgb(189, 235, 241);
-    border-radius: 3px;
-}
-.accordion-card-text{
-    padding-top: 5px;
-}
-.image-layout{
-    width: 400px;
-    display: flex;
-    justify-content: center;
-}
-.new-ip{
-    width: 430px;
-}
-.sidebar-title{
-    font-family: 'Muli';
-    font-size: 17px;
-    font-weight: bold;
-    padding: 10px;
-}
-.sidebar-body{
-    border-top-style: solid;
-    padding: 25px;
-}
-.sidebar-button-div{
-    display: flex;
-    justify-content: flex-start;
-    padding-left: 30px;
-}
-.sidebar-button{
-    width: 130px;
-}
-.map-ip-button{
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 7px;
-}

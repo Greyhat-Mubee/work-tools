@@ -2,11 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './CreateSubscriber.css';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { Button, FormGroup, FormControl, FormLabel, Row, Col } from "react-bootstrap";
 import PropTypes from 'prop-types';
 import Mybackdrop from "../../../backdrop/backdrop";
 import { useTheme } from '@material-ui/core/styles';
@@ -234,203 +230,157 @@ const FwbCreate = (props) => {
                   </Tabs>
                 </AppBar>
                   <TabPanel value={value} index={0} dir={theme.direction}>
-                    <div className='createSubPage'>
-                          <form onSubmit={handleSubmit}>
-                          <FloatingLabel
-                            controlId="subscriberName"
-                            label="Subscriber Name"
-                            className="mb-3"
-                          >
-                            <Form.Control
-                              placeholder="Demo Account"
-                              type="text"
-                              value={subscriberName}
-                              onChange={e => setsubscriberName(e.target.value)}
-                            />
-                        </FloatingLabel>
-                            <Row>
-                              <Col>
-                              <FloatingLabel
-                                controlId="vlanID"
-                                label="VLAN ID"
-                                className="mb-3"
-                              >
-                                <Form.Control
-                                  placeholder={1024}
-                                  value={vlanID}
-                                  onChange={e => setvlanID(e.target.value)}
-                                  type="number"
-                                />
-                              </FloatingLabel>
-                            </Col>
-                            <Col>
-                            <FloatingLabel
-                                controlId="pop"
-                                label="POP"
-                                className="mb-3"
-                              >
-                                <Form.Select
-                                  value={pop}
-                                  onChange={e => setpop(e.target.value)}
-                                >
-                                  {pop_array.map((option, id) =>
-                                    (
-                                      <option>{option}</option>
-                                    ))}
-                                </Form.Select>
-                              </FloatingLabel>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <FloatingLabel
-                                  controlId="subnet"
-                                  label="Subnet"
-                                  className="mb-3"
-                                >
-                                  <Form.Select
-                                    value={lanSubnetAddress}
-                                    onChange={e => setlanSubnetAddress(e.target.value)}
-                                  >
-                                    {lanSubnetAddress_array.map((option, id) =>
-                                    (
-                                      <option>{option}</option>
-                                    ))}
-                                  </Form.Select>
-                                </FloatingLabel>
-                            </Col>
-                            <Col>
-                              <FloatingLabel
-                                controlId="plan"
-                                label="Subscriber Plan"
-                                className="mb-3"
-                              >
-                                <Form.Select
-                                  value={SubscriberPlan}
-                                  onChange={e => setSubscriberPlan(e.target.value)}
-                                >
-                                  {SubscriberPlan_array.map((option, id) =>
-                                    (
-                                      <option>{option}</option>
-                                    ))}
-                                </Form.Select>
-                              </FloatingLabel>
-                            </Col>
-                          </Row>              
-                          <Button block disabled={!validateForm()} type="submit">
-                            Create Subscriber
-                          </Button>
-                      </form>
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                      <FormGroup controlId="subscriberName">
+                      <FormLabel>Subscriber Name</FormLabel>
+                      <FormControl
+                        autoFocus
+                        type="text"
+                        value={subscriberName}
+                        onChange={e => setsubscriberName(e.target.value)}
+                      />
+                      </FormGroup>
+                    <Row>
+                        <Col>
+                        <FormGroup controlId="vlanID">
+                        <FormLabel>VLAN ID</FormLabel>
+                        <FormControl
+                          value={vlanID}
+                          onChange={e => setvlanID(e.target.value)}
+                          type="number"
+                        />
+                        </FormGroup>
+                      </Col>
+                      <Col>
+                        <FormGroup controlId="pop">
+                          <FormLabel>POP</FormLabel>
+                          <FormControl as="select"  value={pop}
+                            onChange={e => setpop(e.target.value)}
+                            >
+                            {pop_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
+                          </FormControl>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                        <FormGroup controlId="pop">
+                          <FormLabel>Subnet</FormLabel>
+                          <FormControl as="select"  value={lanSubnetAddress}
+                            onChange={e => setlanSubnetAddress(e.target.value)}
+                            >
+                            {lanSubnetAddress_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
+                          </FormControl>
+                        </FormGroup>
+                      </Col>
+                      <Col>
+                        <FormGroup controlId="pop">
+                          <FormLabel>Subscriber Plan</FormLabel>
+                          <FormControl as="select"  value={SubscriberPlan}
+                            onChange={e => setSubscriberPlan(e.target.value)}
+                            >
+                            {SubscriberPlan_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
+                          </FormControl>
+                        </FormGroup>
+                      </Col>
+                    </Row>              
+                    <Button block disabled={!validateForm()} type="submit">
+                      Create Subscriber
+                    </Button>
+                </form>
                   </TabPanel>
                   <TabPanel value={value} index={1} dir={theme.direction}>
-                    <div className='createSubPage'>
                       <form onSubmit={handleSubmitManual}>
-                            <Row>
-                              <Col>
-                              <FloatingLabel
-                                controlId="subscriberName"
-                                label="Subscriber Name"
-                                className="mb-3"
-                              >
-                                <Form.Control
-                                  placeholder="Demo Account"
+                          <Row>
+                            <Col>
+                              <FormGroup controlId="subscriberName">
+                              <FormLabel>Subscriber Name</FormLabel>
+                                <FormControl
+                                  autoFocus
                                   type="text"
                                   value={subscriberName}
                                   onChange={e => setsubscriberName(e.target.value)}
                                 />
-                            </FloatingLabel>
-                                </Col>
-                                <Col>
-                                <FloatingLabel
-                                  controlId="subscriberManualIP"
-                                  label="IP Address"
-                                  className="mb-3"
-                                >
-                                  <Form.Control
-                                    placeholder="4.4.4.4"
-                                    type="text"
-                                    value={manualPublicIP}
-                                    onChange={e => setmanualPublicIP(e.target.value)}
-                                  />
-                              </FloatingLabel>
-                                </Col>
-                            </Row>
-                            
-                          <Row>
+                                </FormGroup>
+                              </Col>
                               <Col>
-                              <FloatingLabel
-                                controlId="vlanID"
-                                label="VLAN ID"
-                                className="mb-3"
-                              >
-                                <Form.Control
-                                  placeholder={1024}
-                                  value={vlanID}
-                                  onChange={e => setvlanID(e.target.value)}
-                                  type="number"
+                              <FormGroup controlId="subscriberManualIP">
+                              <FormLabel>IP Address</FormLabel>
+                                <FormControl
+                                  type="text"
+                                  value={manualPublicIP}
+                                  onChange={e => setmanualPublicIP(e.target.value)}
                                 />
-                            </FloatingLabel>
-                            </Col>
-                            <Col>
-                            <FloatingLabel
-                                controlId="pop"
-                                label="POP"
-                                className="mb-3"
-                              >
-                                <Form.Select
-                                  value={pop}
-                                  onChange={e => setpop(e.target.value)}
-                                >
-                                  {pop_array.map((option, id) =>
-                                    (
-                                      <option>{option}</option>
-                                    ))}
-                                </Form.Select>
-                            </FloatingLabel>
-                            </Col>
+                                </FormGroup>
+                              </Col>
                           </Row>
-                          <Row>
-                              <Col>
-                              <FloatingLabel
-                                controlId="subnet"
-                                label="Subnet"
-                                className="mb-3"
-                              >
-                                <Form.Select
-                                  value={lanSubnetAddress}
-                                  onChange={e => setlanSubnetAddress(e.target.value)}
+                          
+                        <Row>
+                            <Col>
+                            <FormGroup controlId="vlanID">
+                            <FormLabel>VLAN ID</FormLabel>
+                            <FormControl
+                              value={vlanID}
+                              onChange={e => setvlanID(e.target.value)}
+                              type="number"
+                            />
+                            </FormGroup>
+                          </Col>
+                          <Col>
+                            <FormGroup controlId="pop">
+                              <FormLabel>POP</FormLabel>
+                              <FormControl as="select"  value={pop}
+                                onChange={e => setpop(e.target.value)}
                                 >
-                                  {lanSubnetAddress_array.map((option, id) =>
+                                {pop_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
+                              </FormControl>
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                            <FormGroup controlId="pop">
+                              <FormLabel>Subnet</FormLabel>
+                              <FormControl as="select"  value={lanSubnetAddress}
+                                onChange={e => setlanSubnetAddress(e.target.value)}
+                                >
+                                {lanSubnetAddress_array.map((option, id) =>
                                   (
                                     <option>{option}</option>
                                   ))}
-                                </Form.Select>
-                              </FloatingLabel>
-                            </Col>
-                            <Col>
-                            <FloatingLabel
-                                controlId="plan"
-                                label="Subscriber Plan"
-                                className="mb-3"
-                              >
-                                <Form.Select
-                                  value={SubscriberPlan}
-                                  onChange={e => setSubscriberPlan(e.target.value)}
+                              </FormControl>
+                            </FormGroup>
+                          </Col>
+                          <Col>
+                            <FormGroup controlId="pop">
+                              <FormLabel>Subscriber Plan</FormLabel>
+                              <FormControl as="select"  value={SubscriberPlan}
+                                onChange={e => setSubscriberPlan(e.target.value)}
                                 >
-                                  {SubscriberPlan_array.map((option, id) =>
-                                    (
-                                      <option>{option}</option>
-                                    ))}
-                                </Form.Select>
-                              </FloatingLabel>
-                            </Col>
-                          </Row>              
-                          <Button block disabled={!validateForm()} type="submit">
-                            Create Subscriber
-                          </Button>
-                      </form>
-                    </div>
+                                {SubscriberPlan_array.map((option, id) =>
+                                (
+                                  <option>{option}</option>
+                                ))}
+                              </FormControl>
+                            </FormGroup>
+                          </Col>
+                        </Row>              
+                        <Button block disabled={!validateForm()} type="submit">
+                          Create Subscriber
+                        </Button>
+                    </form>
                   </TabPanel>
               </div>
           </div>

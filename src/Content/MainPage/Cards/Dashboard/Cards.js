@@ -5,14 +5,13 @@ import Imageicon from './saasicon.png';
 import ServiceIcon from './all_service.png';
 import TopCard from './TopCard';
 import WifiIcon from './cll-wifi.png';
-import Container from "react-bootstrap/Container";
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import {login} from '../../../../redux_features/authSlice';
 import wireless_img from './wireless.png'
 import axios from 'axios'
 
-const Cards = () => { 
+const Card = () => { 
     const subscriber_plans = {
         "PLAN1": "1/1 Mbps",
         "PLAN2": "2/2 Mbps",
@@ -108,11 +107,20 @@ const Cards = () => {
     return (
         <div>
             <Row>
-                <TopCard
-                subscriber_no = {apiResponse['total']}
-                service_name = 'All Services'
-                service_img = {ServiceIcon}
-                />
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer cardRow'>
+                    <div className="CardRowPad">
+                        <Row>
+                            <img alt='robots' src= {ServiceIcon} className='imageicons'/>
+                            <p className="cardtext">All Services</p>
+                        </Row>
+                        <Row>
+                            <p className='cardTitleText'> Number of Subscribers</p>
+                        </Row>
+                        <Row className="cardResultRow">
+                            <p className="cardResult"> {apiResponse['total']} </p>
+                        </Row>
+                    </div>
+                </div>
                 <TopCard
                 subscriber_no = {apiResponse['saas']}
                 service_name = 'Sophos as a Service'
@@ -127,16 +135,17 @@ const Cards = () => {
                 subscriber_no = {apiResponse['antamedia']}
                 service_name = 'Coollink Wifi'
                 service_img = {WifiIcon} 
-                />     
+                />
+                
             </Row>
 
             <Row>
-            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'98%'}}>
+            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
                     <Row>
                         <p className="tableRowHeader">Top Fixed Wireless Users</p>
                     </Row>
                     <Row>
-                    <Table striped bordered hover>
+                    <Table>
                         <thead>
                             <tr>
                             <th></th>
@@ -165,12 +174,12 @@ const Cards = () => {
             </Row>
 
             <Row>
-            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow' style={{width:'98%'}}>
+            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow' style={{width:'100%'}}>
                     <Row>
                         <p className='tableRowHeader'>Top Sophos as Services Users</p>
                     </Row>
                     <Row>
-                    <Table striped bordered hover>
+                    <Table>
                         <thead>
                             <tr>
                             <th></th>
@@ -202,4 +211,4 @@ const Cards = () => {
         </div>
     )
 }
-export default Cards;
+export default Card;

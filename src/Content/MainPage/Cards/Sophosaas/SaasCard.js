@@ -2,7 +2,6 @@ import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import TopCard from '../Dashboard/TopCard';
-import SaasTopCard from './TopCard';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Icontotal from './totalSubscribers.png';
@@ -57,29 +56,37 @@ const Card = (props) => {
     return (
         <div className='cardsRow'>
             <Row>
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow cards'>
+                    <Row>
+                        <img alt='robots' src={Icontotal} className='cardTitle'/>
+                        <p className="text">Total Subscribers</p>
+                    </Row>
+                    <Row>
+                        <p className='cardTitleText'> Number of Subscribers</p>
+                    </Row>
+                    <Row className='cardValue'>
+                        <p className='cardValueText'> {apiResponse['subscriber']} </p>
+                    </Row>
+                </div>
                 <TopCard
-                    subscriber_no = {apiResponse['subscriber']}
-                    service_name = 'Total Subscribers'
-                    service_img = {Iconload} 
+                subscriber_no = {apiResponse['cpu']+'%'}
+                service_name = 'Server Load'
+                service_img = {Iconload} 
                 />
-                <SaasTopCard
-                    subscriber_no = {apiResponse['cpu']+'%'}
-                    service_name = 'Server Load'
-                    service_img = {Iconload} 
-                />
-                <SaasTopCard
-                    subscriber_no = {apiResponse['memory']+'%'}
-                    service_name = 'RAM Usage'
-                    service_img = {Iconram} 
+                <TopCard
+                subscriber_no = {apiResponse['memory']+'%'}
+                service_name = 'RAM Usage'
+                service_img = {Iconram} 
                 />
             </Row>
-            <Row style={{width:'98%'}}>
+
+            <Row>
             <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer tableRow'>
                     <Row>
                         <p className='tableHeader'>Top Subscribers</p>
                     </Row>
                     <Row>
-                    <Table striped bordered hover>
+                    <Table>
                     <thead>
                             <tr>
                             <th></th>
