@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import { useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {FormGroup, FormControl, FormLabel} from "react-bootstrap";
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, onValue} from "firebase/database";
 import "react-toggle/style.css";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -12,6 +15,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; 
 import axios from 'axios';
+import {login} from '../../../../../../redux_features/authSlice';
 
 
 function Alert(props) {
@@ -82,14 +86,15 @@ onExited: PropTypes.func,
 
 
 const IpComponent = (props) => {
+    const {subscriber_name} = props;
+    const {authen_token} = useSelector(login).payload.authentication.auth.token;
+    const {ip} = props;
     const [show, setShow] = useState(false);
     const handleClose = () => setErrorshow(false);
     const handleClose1 = () => setShow(false);
     const [NewIPAddress, setNewIPAddress] = useState("");
+    const [pop_array, setpop_array] = useState([]);
     const [Errorshow, setErrorshow] = useState(false);
-    const {subscriber_name} = props;
-    const {authen_token} = props;
-    const {ip} = props;
     const [SubIp , setSubIp] = useState(ip);
     const [, setapiResponse] = useState("");
     const [pop, setpop] = useState("Select POP");
@@ -99,7 +104,23 @@ const IpComponent = (props) => {
         setShow(true)
         event.preventDefault();
     }
+    const firebaseConfig = {
+        apiKey: "apiKey",
+        authDomain: "projectId.firebaseapp.com",
+        databaseURL: "https://work-tools-d6176-default-rtdb.firebaseio.com/",
+        storageBucket: "bucket.appspot.com"
+      };
+      
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
     
+    useEffect(() => {
+        const POP = ref(database, '/FWB/create_subscriber/POP');
+        onValue(POP, (snapshot) => {
+            const data = snapshot.val();
+            setpop_array(data)
+          });
+      }, [])
 
     function ChangeSubscriberIPapi(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -177,25 +198,10 @@ const IpComponent = (props) => {
                             <FormControl as="select"  value={pop}
                                 onChange={e => setpop(e.target.value)}
                                 >
-                                <option>VI POP</option>
-                                <option>NETCOM POP</option>
-                                <option>CBN LAGOS POP</option>
-                                <option>ABUJA POP</option>
-                                <option>BCN FIBER POP</option>
-                                <option>LEKKI POP</option>
-                                <option>IKOTA POP</option>
-                                <option>TANGO POP</option>
-                                <option>CRESTVIEW POP</option>
-                                <option>AIM POP</option>
-                                <option>SAKA 18 POP</option>
-                                <option>SAKA 25 POP</option>
-                                <option>IJORA POP</option>
-                                <option>IKORODU POP</option>
-                                <option>ACME IKEJA POP</option>
-                                <option>RADICAL WIRELESS POP</option>
-                                <option>SETRACO POP</option>
-                                <option>ASO POP</option>
-                                <option>CBN ABUJA POP</option>
+                               {pop_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
                             </FormControl>
                         </FormGroup>
                        </Col>

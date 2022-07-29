@@ -1,51 +1,17 @@
 import React, {useState, useEffect} from 'react';
+import { useSelector } from 'react-redux';
+import "./Cards.css";
 import Imageicon from './saasicon.png';
-import ServiceIcon from './all_services.png';
+import ServiceIcon from './all_service.png';
 import TopCard from './TopCard';
 import WifiIcon from './cll-wifi.png';
-import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
-import Table from 'react-bootstrap/Table'
+import Table from 'react-bootstrap/Table';
+import {login} from '../../../../redux_features/authSlice';
 import wireless_img from './wireless.png'
 import axios from 'axios'
 
-const styles = StyleSheet.create({
-    imageicons:{
-        height:'25px',
-        width: '33px',
-        borderRadius:'10px',
-        },
-    imageicon:{
-        height:'190px',
-        width: '80px',
-        justifyContent:'center',
-        borderRadius:'10px',
-        paddingTop:"30px",
-        paddingBottom:"80px",
-        },
-    separator: {
-        paddingTop: '20px',
-        borderTop: '0.5vh solid ',
-        padding:0,
-        left:0,
-        marginTop: '10px',
-        opacity: 0.06
-    },
-    text:{
-        paddingTop:"7px",
-        paddingLeft:"10px",
-        fontFamily: 'Muli',
-        fontSize: '17px',
-        fontWeight:'bold',
-        lineHeight: '12px',
-        letterSpacing: '0.2px',
-        color: 'black',
-    }
-    }
-)
-
-
-const Card = (props) => { 
+const Card = () => { 
     const subscriber_plans = {
         "PLAN1": "1/1 Mbps",
         "PLAN2": "2/2 Mbps",
@@ -74,11 +40,12 @@ const Card = (props) => {
         "Night16": "16/16 Mbps (Night)",
         "suspend": "Suspended"
     }
-    const {auth_token} =props;
+
+    const auth_token = useSelector(login).payload.authentication.auth.token;
     const [apiResponse, setapiResponse] = useState("");
     const [apiResponse2, setapiResponse2] = useState([]);
     const [apiResponse3, setapiResponse3] = useState([]);
-    async function apiRequest(){
+    function apiRequest(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -96,7 +63,7 @@ const Card = (props) => {
                 
             })
         }
-     async function apiRequest2(){
+    function apiRequest2(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -114,7 +81,7 @@ const Card = (props) => {
                 
             })
         }
-     async function apiRequest3(){
+    function apiRequest3(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -136,21 +103,23 @@ const Card = (props) => {
         apiRequest()
         apiRequest2()
         apiRequest3()
-    },[apiResponse2])
+    },[])
     return (
-        <div style={{marginTop:'60px'}}>
+        <div>
             <Row>
-                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'370px', height:'180px'}}>
-                    <Row>
-                        <img alt='robots' src= {ServiceIcon} style={{width:'25px',height:'25px', padding:'2px'}}/>
-                        <p className={css(styles.text)}>All Services</p>
-                    </Row>
-                    <Row>
-                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
-                    </Row>
-                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {apiResponse['total']} </p>
-                    </Row>
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer cardRow'>
+                    <div className="CardRowPad">
+                        <Row>
+                            <img alt='robots' src= {ServiceIcon} className='imageicons'/>
+                            <p className="cardtext">All Services</p>
+                        </Row>
+                        <Row>
+                            <p className='cardTitleText'> Number of Subscribers</p>
+                        </Row>
+                        <Row className="cardResultRow">
+                            <p className="cardResult"> {apiResponse['total']} </p>
+                        </Row>
+                    </div>
                 </div>
                 <TopCard
                 subscriber_no = {apiResponse['saas']}
@@ -173,7 +142,7 @@ const Card = (props) => {
             <Row>
             <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
                     <Row>
-                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Fixed Wireless Users</p>
+                        <p className="tableRowHeader">Top Fixed Wireless Users</p>
                     </Row>
                     <Row>
                     <Table>
@@ -207,7 +176,7 @@ const Card = (props) => {
             <Row>
             <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow' style={{width:'100%'}}>
                     <Row>
-                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Sophos as Services Users</p>
+                        <p className='tableRowHeader'>Top Sophos as Services Users</p>
                     </Row>
                     <Row>
                     <Table>

@@ -1,34 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import axios from 'axios'
+import {useDispatch, useSelector} from 'react-redux';
 import { useHistory } from "react-router-dom";
 import "./Login.css";
-import Card from '../../MainPage/Cards/Dashboard/Cards';
-
+import {login} from '../../../redux_features/authSlice';
 
 export default function Login(props) {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginStatus, setLoginStatus] = useState("");
-  const [loginCheck, setLoginCheck] = useState("Login")
-  const {isSignedIn} = props
+  const [loginCheck, setLoginCheck] = useState("Login");
   let history = useHistory();
-
-
-  function SignInChange (val) {
-    return props.onSignChange(val)
-  }
-   function onItemClicked (item) {   
-    return props.onChange(item);    
-    }
-
-    function StoreToken(token){
-        return props.tokenChange(token)
-    }
-
-    function StoreName(token){
-      return props.nameChange(token)
-    }
 
     function validateForm() {
       return email.length > 0 && password.length > 0;
@@ -36,31 +18,20 @@ export default function Login(props) {
 
   function handleSubmit(event) {
     setLoginCheck('Loading');
-    axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
     var bodyFormData = new FormData();
     bodyFormData.append('username',email);
     bodyFormData.append('password', password);
-    axios({
-          method: 'POST',
-          url:'http://192.168.6.253:32598/token',
-          data: bodyFormData
-      }) 
-      .then(function(response){
-              onItemClicked(true)
-              StoreToken(response.data['access_token'])
-              StoreName(response.data['name'])  
-              history.push('/')
-              SignInChange('Dashboard')     
-      })
-      .catch(err => {
-            onItemClicked(false)
-            setLoginStatus('false')
-            setLoginCheck("Login")
-      }) 
+    dispatch(login(bodyFormData)) 
     event.preventDefault();
   }
 
-  if (isSignedIn === false){
+  useEffect(() =>{
+    history.push("/login")
+  },[])
+  useEffect(() => {
+    setLoginCheck('Login')
+  }, [useSelector(login).payload.authentication.auth.loginRetry])
+
     return (
         <div className="Login">
           <form onSubmit={handleSubmit}>
@@ -85,17 +56,11 @@ export default function Login(props) {
               {loginCheck}
             </Button>
             {
-              loginStatus === 'false' ? 
+              useSelector(login).payload.authentication.auth.loginRetry === true ? 
               <p style={{color:'red', paddingTop:'20px'}}>Incorrect username or password</p>
               :<div></div>
             }
           </form>
         </div>
       );
-  } else {
-    return (
-        <Card/>
-    )
-  }
- 
 }

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useSelector } from 'react-redux';
 import './CreateSubscriber.css';
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import axios from 'axios';
@@ -8,6 +9,7 @@ import RingLoader from "react-spinners/GridLoader";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import SaasCard from '../SaasCard';
+import { login } from '../../../../../redux_features/authSlice';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -21,8 +23,8 @@ function Alert(props) {
 }
 
 
-const Decommission = (props) => {
-    const {auth_token} =props;
+const Decommission = () => {
+    const {auth_token} = useSelector(login).payload.authentication.auth.token;
     const [show, setShow] = useState(false);
     const handleClose = () => seterrorModal(false);
     const [subscriberName, setsubscriberName] = useState("");

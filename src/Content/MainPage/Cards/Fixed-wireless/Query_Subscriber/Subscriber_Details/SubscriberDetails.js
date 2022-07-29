@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import './SubscriberDetails.css';
 import Toggle from 'react-toggle'
@@ -11,66 +13,37 @@ import {Form,FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import "react-toggle/style.css";
 import Scroll from '../../../Scroll';
 import axios from 'axios';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, onValue} from "firebase/database";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import IpComponent from './IpCompnent';
+import {login} from '../../../../../../redux_features/authSlice';
+import { change_selectedItem } from '../../../../../../redux_features/authSlice';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
-  
-  
-  const useStyles = makeStyles((theme) => ({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      
+
+const Fade = React.forwardRef(function Fade(props, ref) {
+const { in: open, children, onEnter, onExited, ...other } = props;
+const style = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: open ? 1 : 0 },
+    onStart: () => {
+    if (open && onEnter) {
+        onEnter();
+    }
     },
-    paper: {
-      marginLeft:'25em',
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-      width: '60%'
+    onRest: () => {
+    if (!open && onExited) {
+        onExited();
+    }
     },
-    paper_map: {
-        marginLeft:'15em',
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-        width: '60%'
-      },
-      Formlabel: {
-        fontStyle: 'Muli',
-        fontWeight: 'bold',
-        
-      },
-  }));
-  
-  const Fade = React.forwardRef(function Fade(props, ref) {
-    const { in: open, children, onEnter, onExited, ...other } = props;
-    const style = useSpring({
-      from: { opacity: 0 },
-      to: { opacity: open ? 1 : 0 },
-      onStart: () => {
-        if (open && onEnter) {
-          onEnter();
-        }
-      },
-      onRest: () => {
-        if (!open && onExited) {
-          onExited();
-        }
-      },
-    });
-  
+});  
     return (
       <animated.div ref={ref} style={style} {...other}>
         {children}
@@ -78,67 +51,44 @@ function Alert(props) {
     );
   });
   
-  Fade.propTypes = {
-    children: PropTypes.element,
-    in: PropTypes.bool.isRequired,
-    onEnter: PropTypes.func,
-    onExited: PropTypes.func,
-  };
+Fade.propTypes = {
+children: PropTypes.element,
+in: PropTypes.bool.isRequired,
+onEnter: PropTypes.func,
+onExited: PropTypes.func,
+};
 
 
 const SubscriberDetails = (props) => {
-    const subscriber_plans = {
-        "PLAN1": "1/1 Mbps",
-        "PLAN2": "2/2 Mbps",
-        "PLAN3": "3/3 Mbps",
-        "PLAN4": "4/4 Mbps",
-        "PLAN5": "5/5 Mbps",
-        "PLAN6": "6/6 Mbps",
-        "PLAN7": "7/7 Mbps",
-        "PLAN8": "8/8 Mbps",
-        "PLAN10": "10/10 Mbps",
-        "PLAN12": "12/12 Mbps",
-        "PLAN15": "15/15 Mbps",
-        "PLAN20": "20/20 Mbps",
-        "PLAN28": "28/28 Mbps",
-        "PLAN30": "30/30 Mbps",
-        "PLAN45": "45/45 Mbps",
-        "PLAN50": "50/50 Mbps",
-        "PLAN60": "60/60 Mbps",
-        "PLAN80": "80/80 Mbps",
-        "PLAN100": "100/100 Mbps",
-        "PLAN255": "255/255 Mbps",
-        "PLAN400": "400/400 Mbps",
-        "Night2": "2/2 Mbps (Night)",
-        "Night4": "4/4 Mbps (Night)",
-        "Night8": "8/8 Mbps (Night)",
-        "Night16": "16/16 Mbps (Night)",
-        "suspend": "Suspended",
-        "PLAN25": "25/25 Mbps"
-    }
+    const firebaseConfig = {
+        apiKey: "apiKey",
+        authDomain: "projectId.firebaseapp.com",
+        databaseURL: "https://work-tools-d6176-default-rtdb.firebaseio.com/",
+        storageBucket: "bucket.appspot.com"
+      };
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);    
+    const subdata= useSelector(state => {
+            return state.query_subscriber.query;
+          })
     
-    const check_attr = (attr_val) => {
-        return (attr_val === 'true')
-    }
-
-    const {subscriberdata} = props;
-    const {auth_token} = props;
+    const dispatch = useDispatch()
+    dispatch(change_selectedItem(subdata.subscriber_data['name']))
+    
+    const subscriberdata = subdata.subscriber_data
+    const auth_token = useSelector(login).payload.authentication.auth.token;
     const subscriber_name = subscriberdata['name'];
     const subscriber_ip = subscriberdata['ip address'];
     const sub_plan = subscriberdata['attributes']['Plan'];
-    const [Sub_ip, setSub_ip] = useState(subscriber_ip || []);
-    const [SubscriberPlan, setSubscriberPlan] = useState(subscriber_plans[sub_plan] || 'None')
-    const [FilterStreaming, setFilterStreaming] = useState(check_attr(subscriberdata['attributes']['filterStreaming']) || false)
-    const [FilterAppleUpdate, setFilterAppleUpdate] = useState(check_attr(subscriberdata['attributes']['filterappleupdate']) || false)
-    const [FilterItunes, setFilterItunes] = useState(check_attr(subscriberdata['attributes']['filteritunes']) || false)
-    const [FilterMicrosoftUpdate, setFilterMicrosoftUpdate] = useState(check_attr(subscriberdata['attributes']['filtermicrosoftupdate']) || false)
-    const [FilterMovies, setFilterMovies] = useState(check_attr(subscriberdata['attributes']['filtermovies']) || false)
-    const [FilterP2P, setFilterP2P] = useState(check_attr(subscriberdata['attributes']['filterp2p']) || false)
-    const [FilterYoutube, setFilterYoutube] = useState(check_attr(subscriberdata['attributes']['filteryoutube']) || false)
+    const [SubscriberPlan_array, setSubscriberPlan_array] = useState([]);
+    const [subscriberAttributes, setsubscriberAttributes] = useState({})
+    const [Sub_ip] = useState(subscriber_ip || []);
+    const [SubscriberPlan, setSubscriberPlan] = useState('None')
+    const [pop_array, setpop_array] = useState([]);
     const [NewIPAddress, setNewIPAddress] = useState("");
     const [pop, setpop] = useState("Select POP");
     const [vlanID, setvlanID] = useState("");
-    const [changeLoading, setchangeLoading] = useState("Change");
+    const [changeLoading] = useState("Change");
     const [show, setShow] = useState(false);
     const [Decommisionshow, setDecommisionshow] = useState(false);
     const [Errorshow, setErrorshow] = useState(false);
@@ -152,13 +102,33 @@ const SubscriberDetails = (props) => {
     const decommModalOpen = () => setOpen(true);
     const decommModalClose = () => setOpen(false);
     const mapshowClose = () => setmapshow(false);
-    const classes = useStyles();
     const mapIPModal = (event) => {
         setmapshow(true)
         event.preventDefault();
     }
-
-
+    
+    useEffect(() => {
+        const Plans = ref(database, '/FWB/create_subscriber/Plan');
+        const Plan = ref(database, '/FWB/subscriber_details/Plans');
+        const POP = ref(database, '/FWB/create_subscriber/POP');
+        const Attributes = ref(database, '/FWB/subscriber_details/Attributes')
+        onValue(Plans, (snapshot) => {
+          const data = snapshot.val();
+          setSubscriberPlan_array(data)
+        });
+        onValue(Plan, (snapshot) => {
+          const data = snapshot.val();
+          setSubscriberPlan(data[sub_plan])
+        });
+        onValue(POP, (snapshot) => {
+            const data = snapshot.val();
+            setpop_array(data)
+          });
+        onValue(Attributes, (snapshot) => {
+            const data = snapshot.val()
+            setsubscriberAttributes(data)
+        })
+      }, [])
     function DecommissionSubscriberapi(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
         axios({
@@ -234,35 +204,17 @@ const SubscriberDetails = (props) => {
         e.preventDefault();
      }
 
-
-    const UpdateFilterStreaming = () => {
-        setFilterStreaming(!FilterStreaming);
-        change_attr_api('filterStreaming',`${!FilterStreaming}`);
+    const generateAttributeState = (state) => {
+        if (state === 'true'){
+            return true
+        } else {
+            return false
+        }
     }
-    const UpdateFilterAppleUpdate = () => {
-        setFilterAppleUpdate(!FilterAppleUpdate);
-        change_attr_api('filterappleupdate',`${!FilterAppleUpdate}`);
-  }
-    const UpdateFilterItunes = () => {
-        setFilterItunes(!FilterItunes);
-        change_attr_api('filteritunes',`${!FilterItunes}`);
-  }
-    const UpdateFilterMicrosoftUpdate = () => {
-        setFilterMicrosoftUpdate(!FilterMicrosoftUpdate);
-        change_attr_api('filtermicrosoftupdate',`${!FilterMicrosoftUpdate}`);
-  }
-    const UpdateFilterMovies = () => {
-        setFilterMovies(!FilterMovies);
-        change_attr_api('filtermovies',`${!FilterMovies}`);
-  }
-    const UpdateFilterP2P = () => {
-        setFilterP2P(!FilterP2P);
-        change_attr_api('filterp2p',`${!FilterP2P}`);
-  }
-    const UpdateFilterYoutube = () => {
-        setFilterYoutube(!FilterYoutube);
-        change_attr_api('filteryoutube',`${!FilterYoutube}`);
-  }
+
+    const changeSubAttribute = (currentState, attributeName) => {
+        change_attr_api(attributeName, currentState)
+    }
     const SuspendSubscriber = (event) => {
         change_attr_api('Plan', 'suspend');
         setSubscriberPlan("Suspended")
@@ -307,7 +259,7 @@ const SubscriberDetails = (props) => {
         <Modal
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
-                className={classes.modal}
+                className="modal"
                 open={open}
                 onClose={decommModalClose}
                 closeAfterTransition
@@ -317,7 +269,7 @@ const SubscriberDetails = (props) => {
                 }}
             >
                 <Fade in={open}>
-                <div className={classes.paper}>
+                <div className="paper">
                     <h2 id="spring-modal-title" style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>Confirm Delete</h2>
                     <p id="spring-modal-description" style={{fontFamily:'Muli'}}>
                         This action cannot be undone. This will permanently delete the subscriber <mark>{subscriber_name}</mark> and remove all associations from coollink network management devices.
@@ -345,7 +297,7 @@ const SubscriberDetails = (props) => {
         <Modal
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
-                className={classes.modal}
+                className="modal"
                 open={mapshow}
                 onClose={mapshowClose}
                 closeAfterTransition
@@ -355,13 +307,13 @@ const SubscriberDetails = (props) => {
                 }}
             >
                 <Fade in={mapshow}>
-                <div className={classes.paper_map}>
+                <div className="paper_map">
                 <Form onSubmit={map_new_ip}>
                     <h2 id="spring-modal-title" style={{textAlign:'center', fontFamily:'Muli', fontWeight:'bold'}}>Map New IP Address</h2>
                     <div style={{paddingTop: '20px', marginTop: '10px'}}></div>
                     <Row style={{padding:'30px'}}>
                        <Col>
-                       <FormLabel className={classes.Formlabel}>IP Address</FormLabel>
+                       <FormLabel className="Formlabel">IP Address</FormLabel>
                         <FormControl
                                 autoFocus
                                 type="text"
@@ -371,7 +323,7 @@ const SubscriberDetails = (props) => {
                        </Col>
                        <Col>
                         <FormGroup controlId="vlanID">
-                        <FormLabel className={classes.Formlabel}>VLAN ID</FormLabel>
+                        <FormLabel className="Formlabel">VLAN ID</FormLabel>
                         <FormControl
                           value={vlanID}
                           onChange={e => setvlanID(e.target.value)}
@@ -383,24 +335,14 @@ const SubscriberDetails = (props) => {
                       <Row style={{paddingTop:'0',paddingLeft:'30px',paddingRight:'30px',paddingBottom:'10px'}}>
                        <Col>
                         <FormGroup controlId="pop">
-                            <FormLabel className={classes.Formlabel}>POP Location</FormLabel>
+                            <FormLabel className="Formlabel">POP Location</FormLabel>
                             <FormControl as="select"  value={pop}
                                 onChange={e => setpop(e.target.value)}
                                 >
-                                <option>VI POP</option>
-                                <option>LEKKI POP</option>
-                                <option>IKOTA POP</option>
-                                <option>TANGO POP</option>
-                                <option>CRESTVIEW POP</option>
-                                <option>NETCOM POP</option>
-                                <option>CBN POP</option>
-                                <option>ABUJA POP</option>
-                                <option>CBN ABUJA POP</option>
-                                <option>MEDALLION POP</option>
-                                <option>SAKA 18 POP</option>
-                                <option>SAKA 25 POP</option>
-                                <option>IJORA POP</option>
-                                <option>IKORODU POP</option>
+                               {pop_array.map((option, id) =>
+                              (
+                                <option>{option}</option>
+                              ))}
                             </FormControl>
                         </FormGroup>
                        </Col>
@@ -453,7 +395,6 @@ const SubscriberDetails = (props) => {
                                     Sub_ip.map((user, i) => {
                                     return(<IpComponent key = {i} 
                                                 ip={subscriber_ip[i]}
-                                                authen_token = {auth_token}
                                                 subscriber_name = {subscriberdata['name']}
                                                 />)
                                 })
@@ -487,99 +428,28 @@ const SubscriberDetails = (props) => {
                                                 onChange={e => ChangeSubscriberPlan(e.target.value)}
                                                 >
                                                 <option>Suspended</option>
-                                                <option>1/1 Mbps</option>
-                                                <option>2/2 Mbps</option>
-                                                <option>3/3 Mbps</option>
-                                                <option>4/4 Mbps</option>
-                                                <option>5/5 Mbps</option>
-                                                <option>6/6 Mbps</option>
-                                                <option>7/7 Mbps</option>
-                                                <option>8/8 Mbps</option>
-                                                <option>10/10 Mbps</option>
-                                                <option>12/12 Mbps</option>
-                                                <option>15/15 Mbps</option>
-                                                <option>20/20 Mbps</option>
-                                                <option>28/28 Mbps</option>
-                                                <option>30/30 Mbps</option>
-                                                <option>45/45 Mbps</option>
-                                                <option>50/50 Mbps</option>
-                                                <option>60/60 Mbps</option>
-                                                <option>80/80 Mbps</option>
-                                                <option>100/100 Mbps</option>
-                                                <option>255/255 Mbps</option>
-                                                <option>400/400 Mbps</option>
-                                                <option>2/2 Mbps (Night)</option>
-                                                <option>4/4 Mbps (Night)</option>
-                                                <option>8/8 Mbps (Night)</option>
-                                                <option>16/16 Mbps (Night)</option>
-                                                <option>2/2 Mbps (Night)</option>
+                                                {SubscriberPlan_array.map((option, id) =>(
+                                                    <option>{option}</option>
+                                                ))}
                                             </FormControl>
                                         </FormGroup>
                                     </Col>
                                 </Row>
-                                <Row className="ma3">
-                                    <Col sm={8}>Filter Streaming</Col>
+                               <div className='attribute-display'>
+                                    {
+                                    
+                                    Object.keys(subscriberAttributes).map((attribute, id) =>(
+                                    <Row className="ma3">
+                                    <Col sm={8}>{attribute}</Col>
                                     <Col sm={4}>
                                     <Toggle
-                                        id='filterStreaming'
-                                        defaultChecked={FilterStreaming}
-                                        onChange={UpdateFilterStreaming} />
+                                        id={attribute}
+                                        defaultChecked={generateAttributeState(subscriberdata['attributes'][`${subscriberAttributes[attribute]}`])}
+                                        onChange={e => changeSubAttribute(e.target.checked, subscriberAttributes[attribute])} />
                                     </Col>
-                                </Row>
-                                <Row className="ma3">
-                                    <Col sm={8}>Filter Apple Update</Col>
-                                    <Col sm={4}>
-                                    <Toggle
-                                        id='filterappleupdate'
-                                        defaultChecked={FilterAppleUpdate}
-                                        onChange={UpdateFilterAppleUpdate} />
-                                    </Col>                                
-                                </Row>
-                                <Row className="ma3">
-                                    <Col sm={8}>Filter Itunes</Col>
-                                    <Col sm={4}>
-                                    <Toggle
-                                        id='filteritunes'
-                                        defaultChecked={FilterItunes}
-                                        onChange={UpdateFilterItunes} />
-                                    </Col>
-                                </Row>
-                                <Row className="ma3">
-                                    <Col sm={8}>Filter Microsoft Update</Col>
-                                    <Col sm={4}>
-                                    <Toggle
-                                        id='filtermicrosoftupdates'
-                                        defaultChecked={FilterMicrosoftUpdate}
-                                        onChange={UpdateFilterMicrosoftUpdate} />
-                                    </Col>                                
-                                </Row>
-                                <Row className="ma3">
-                                    <Col sm={8}>Filter Movies</Col>
-                                    <Col sm={4}>
-                                    <Toggle
-                                        id='filtermovies'
-                                        defaultChecked={FilterMovies}
-                                        onChange={UpdateFilterMovies} />
-                                    </Col>
-                                </Row>
-                                <Row className="ma3">
-                                    <Col sm={8}>Filter P2P</Col>
-                                    <Col sm={4}>
-                                    <Toggle
-                                        id='filterp2p'
-                                        defaultChecked={FilterP2P}
-                                        onChange={UpdateFilterP2P} />
-                                    </Col>
-                                </Row>
-                                <Row className="ma3">
-                                    <Col sm={8}>Filter Youtube</Col>
-                                    <Col sm={4}>
-                                    <Toggle
-                                        id='filteryoutube'
-                                        defaultChecked={FilterYoutube}
-                                        onChange={UpdateFilterYoutube} />
-                                    </Col>                                
-                                </Row>
+                                    </Row>  
+                                    ))}
+                               </div>
                             </Card.Body>
                             </Accordion.Collapse>
                         </Card>

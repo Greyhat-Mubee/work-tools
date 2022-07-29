@@ -123,6 +123,11 @@ export default function CreateSubForm() {
                             <option>SAKA 25 POP</option>
                             <option>IJORA POP</option>
                             <option>IKORODU POP</option>
+                            <option>KANO POP</option>
+                            <option>PH POP</option>
+                            <option>BLACK-DIAMOND POP</option>
+                            <option>KARAMEH POP</option>
+
                         </FormControl>
                         </FormGroup>
                     </Col>
@@ -164,6 +169,7 @@ export default function CreateSubForm() {
                             <option>60/60 Mbps</option>
                             <option>80/80 Mbps</option>
                             <option>100/100 Mbps</option>
+                            <option>155/155 Mbps</option>
                             <option>255/255 Mbps</option>
                             <option>400/400 Mbps</option>
                             <option>2/2 Mbps (Night)</option>

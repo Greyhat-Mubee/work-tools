@@ -1,53 +1,19 @@
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import TopCard from '../Dashboard/TopCard';
-import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Icontotal from './totalSubscribers.png';
 import Iconload from './systemload.png';
 import Iconram from './systemram.png';
-
-const styles = StyleSheet.create({
-    imageicons:{
-        height:'25px',
-        width: '33px',
-        borderRadius:'10px',
-        },
-    imageicon:{
-        height:'190px',
-        width: '80px',
-        justifyContent:'center',
-        borderRadius:'10px',
-        paddingTop:"30px",
-        paddingBottom:"80px",
-        },
-    separator: {
-        paddingTop: '20px',
-        borderTop: '0.5vh solid ',
-        padding:0,
-        left:0,
-        marginTop: '10px',
-        opacity: 0.06
-    },
-    text:{
-        paddingTop:"7px",
-        paddingLeft:"10px",
-        fontFamily: 'Muli',
-        fontSize: '17px',
-        fontWeight:'bold',
-        lineHeight: '12px',
-        letterSpacing: '0.2px',
-        color: 'black',
-    }
-    }
-)
+import {login} from '../../../../redux_features/authSlice';
 
 const Card = (props) => { 
-    const {auth_token} =props;
+    const auth_token = useSelector(login).payload.authentication.auth.token;
     const [apiResponse, setapiResponse] = useState("");
     const [apiResponse2, setapiResponse2] = useState([]);
-    async function apiRequest(){
+    function apiRequest(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -65,7 +31,7 @@ const Card = (props) => {
                 
             })
         }
-     async function apiRequest2(){
+    function apiRequest2(){
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
          axios({
              method: 'GET',
@@ -86,20 +52,20 @@ const Card = (props) => {
     useEffect(()=>{
         apiRequest()
         apiRequest2()
-    },[apiResponse2])
+    },[])
     return (
-        <div style={{marginTop:'60px'}}>
+        <div className='cardsRow'>
             <Row>
-                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow' style={{width:'370px', height:'180px'}}>
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow cards'>
                     <Row>
-                        <img alt='robots' src={Icontotal} style={{width:'25px',height:'25px', padding:'2px'}}/>
-                        <p className={css(styles.text)}>Total Subscribers</p>
+                        <img alt='robots' src={Icontotal} className='cardTitle'/>
+                        <p className="text">Total Subscribers</p>
                     </Row>
                     <Row>
-                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
+                        <p className='cardTitleText'> Number of Subscribers</p>
                     </Row>
-                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {apiResponse['subscriber']} </p>
+                    <Row className='cardValue'>
+                        <p className='cardValueText'> {apiResponse['subscriber']} </p>
                     </Row>
                 </div>
                 <TopCard
@@ -115,9 +81,9 @@ const Card = (props) => {
             </Row>
 
             <Row>
-            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
+            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer tableRow'>
                     <Row>
-                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Subscribers</p>
+                        <p className='tableHeader'>Top Subscribers</p>
                     </Row>
                     <Row>
                     <Table>
@@ -146,9 +112,7 @@ const Card = (props) => {
                     </Table>
                     </Row>
                 </div>
-            </Row>
-
-                
+            </Row>         
         </div>
     )
 }

@@ -1,47 +1,14 @@
 import React, {useState, useEffect} from 'react';
+import './fwbCard.css';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import TopCard from '../Dashboard/TopCard';
-import { StyleSheet, css } from 'aphrodite';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Icontotal from './totalSubscribers.png';
 import Iconactive from './activeSub.png';
-import Iconsus from './suspendSub.png'
-
-const styles = StyleSheet.create({
-    imageicons:{
-        height:'25px',
-        width: '33px',
-        borderRadius:'10px',
-        },
-    imageicon:{
-        height:'190px',
-        width: '80px',
-        justifyContent:'center',
-        borderRadius:'10px',
-        paddingTop:"30px",
-        paddingBottom:"80px",
-        },
-    separator: {
-        paddingTop: '20px',
-        borderTop: '0.5vh solid ',
-        padding:0,
-        left:0,
-        marginTop: '10px',
-        opacity: 0.06
-    },
-    text:{
-        paddingTop:"7px",
-        paddingLeft:"10px",
-        fontFamily: 'Muli',
-        fontSize: '17px',
-        fontWeight:'bold',
-        lineHeight: '12px',
-        letterSpacing: '0.2px',
-        color: 'black',
-    }
-    }
-)
+import Iconsus from './suspendSub.png';
+import {login} from '../../../../redux_features/authSlice';
 
 const Card = (props) => { 
     const subscriber_plans = {
@@ -78,9 +45,8 @@ const Card = (props) => {
     const [apiResponse2, setapiResponse2] = useState([]);
     const [apiResponse3, setapiResponse3] = useState([]);
     
-    useEffect(()=>{
-        const {auth_token} =props;
-        async function apiRequest(){
+    const auth_token = useSelector(login).payload.authentication.auth.token;
+    function apiRequest(){
             axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
              axios({
                  method: 'GET',
@@ -98,60 +64,61 @@ const Card = (props) => {
                     
                 })
             }
-         async function apiRequest2(){
-            axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-             axios({
-                 method: 'GET',
-                 url:'http://192.168.6.253:32598/fwb/topplans',
-                 data:{
-                 },
-                 headers:{
-                   'Authorization': 'Bearer '+ auth_token
-                 }
-             }) 
-                .then(function(response){
-                        setapiResponse2(response.data);                                 
-                }) 
-                .catch(err=>{
-                    
-                })
-            }
-         async function apiRequest3(){
-            axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-             axios({
-                 method: 'GET',
-                 url:'http://192.168.6.253:32598/fwb/topsubscribers',
-                 data:{
-                 },
-                 headers:{
-                   'Authorization': 'Bearer '+ auth_token
-                 }
-             }) 
-                .then(function(response){
-                        setapiResponse3(response.data);                                 
-                }) 
-                .catch(err=>{
-                    
-                })
-            }
+    function apiRequest2(){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+            axios({
+                method: 'GET',
+                url:'http://192.168.6.253:32598/fwb/topplans',
+                data:{
+                },
+                headers:{
+                'Authorization': 'Bearer '+ auth_token
+                }
+            }) 
+            .then(function(response){
+                    setapiResponse2(response.data);                                 
+            }) 
+            .catch(err=>{
+                
+            })
+        }
+    function apiRequest3(){
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+            axios({
+                method: 'GET',
+                url:'http://192.168.6.253:32598/fwb/topsubscribers',
+                data:{
+                },
+                headers:{
+                'Authorization': 'Bearer '+ auth_token
+                }
+            }) 
+            .then(function(response){
+                    setapiResponse3(response.data);                                 
+            }) 
+            .catch(err=>{
+                
+            })
+        }
+    useEffect(()=>{
         apiRequest()
         apiRequest2()
         apiRequest3()
-    },[apiResponse2])
+    },[])
 
     return (
-        <div style={{marginTop:'60px'}}>
+        <div className='cardsRow'>
             <Row>
-                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow' style={{width:'370px', height:'180px'}}>
+                <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow cards'>
                     <Row>
-                        <img alt='robots' src={Icontotal} style={{width:'25px',height:'25px', padding:'2px'}}/>
-                        <p className={css(styles.text)}>Total Subscribers</p>
+                        <img alt='robots' src={Icontotal} className='cardTitle'/>
+                        <p className="text">Total Subscribers</p>
                     </Row>
                     <Row>
-                        <p style={{paddingLeft:'45px', fontFamily:'Muli', fontWeight:'bold'}}> Number of Subscribers</p>
+                        <p className='cardTitleText'> Number of Subscribers</p>
                     </Row>
-                    <Row style={{display:'flex',justifyContent:'flex-end'}}>
-                        <p style={{fontFamily:'Muli', fontWeight:'bold', fontSize:'55px',paddingRight:'24px' }}> {apiResponse['total']} </p>
+                    <Row className='cardValue'>
+                        <p className='cardValueText'> {apiResponse['total']} </p>
                     </Row>
                 </div>
                 <TopCard
@@ -167,9 +134,9 @@ const Card = (props) => {
             </Row>
 
             <Row>
-            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
+            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer tableRow'>
                     <Row>
-                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Subscriber Plans</p>
+                        <p className='tableHeader'>Top Subscriber Plans</p>
                     </Row>
                     <Row>
                     <Table>
@@ -199,9 +166,9 @@ const Card = (props) => {
             </Row>
 
             <Row>
-            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer' style={{width:'100%'}}>
+            <div className= ' dib br3 ba b--light-gray pa3 ml3 ma3 mt4 shadow pointer tableRow'>
                     <Row>
-                        <p style={{fontFamily:'Muli',fontWeight:'bold',fontSize:'20px', paddingLeft:'12px'}}>Top Subscribers</p>
+                        <p className='tableHeader'>Top Subscribers</p>
                     </Row>
                     <Row>
                     <Table>
