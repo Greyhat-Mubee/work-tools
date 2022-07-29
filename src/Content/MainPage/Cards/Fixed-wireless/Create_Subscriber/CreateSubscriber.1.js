@@ -281,6 +281,7 @@ const FwbCreate = (props) => {
                           <FormControl as="select"  value={lanSubnetAddress}
                             onChange={e => setlanSubnetAddress(e.target.value)}
                             >
+                            <option> /28</option>
                             <option> /29</option>
                             <option> /30</option>
                           </FormControl>
